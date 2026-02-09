@@ -1,6 +1,9 @@
 <style>
   .rmu-sheet { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; color: #333; line-height: 1.4; font-size: 14px; background-color: #eee; padding: 10px}
   
+  /* General Styles*/
+  .header { font-weight: bold; margin-bottom: 5px;border-bottom: 1px solid #ccc; }
+
   /* Header & Quick Info */
   .header-block { border-bottom: 2px solid #333; padding-bottom: 5px; margin-bottom: 10px; }
   .header-title { font-size: 24px; font-weight: bold; text-transform: uppercase; margin: 0; }
@@ -43,19 +46,20 @@
   .attack-ob { font-weight: bold; font-size: 1.1em; }
 
   /* Talents */
+  .talent-container { columns: 2; column-gap: 20px; }
   .talent-group { margin-bottom: 8px; }
   .talent-group-name { font-weight: bold; text-decoration: underline; color: #444; margin-bottom: 2px; }
   .talent-list { display: flex; flex-wrap: wrap; }
   .talent-item { display: inline-block; background: #eee; padding: 2px 6px; border-radius: 3px; margin-right: 5px; margin-bottom: 2px; font-size: 0.9em; }
 
   /* Inventory */
-  .inv-stats { display: flex; justify-content: space-around; background: #fafafa; padding: 5px; border-bottom: 1px solid #ccc; font-size: 0.9em; margin-bottom: 5px; }
+  .inv-stats { display: flex; justify-content: space-between; background: #fafafa; padding: 0.5rem 1rem; border-bottom: 1px solid #ccc; font-size: 0.9em; margin-bottom: 5px; }
   .inv-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
   .inv-table th { text-align: left; border-bottom: 1px solid #999; padding: 2px; color: #555; }
   .inv-table td { border-bottom: 1px dotted #ccc; padding: 2px; }
 
   /* Skills Groups */
-  .skill-list-container { columns: 2; column-gap: 20px; }
+  .skill-list-container { columns: 3; column-gap: 20px; }
   .skill-block { break-inside: avoid; margin-bottom: 12px; }
   .skill-cat-header { 
       font-weight: bold; 
@@ -70,9 +74,9 @@
   .skill-bonus { font-weight: bold; }
 
   /* Spell Lists*/
-  .spell-list-container { column-count: 2; column-gap: 20px; }
+  .spell-list-container { column-count: 3; column-gap: 20px; }
   .spell-block { break-inside: avoid; margin-bottom: 10px; }
-  .spell-list-header { font-weight: bold; border-bottom: 1px solid #ccc; }
+  .list-header { font-weight: bold; margin-bottom: 5px;border-bottom: 1px solid #ccc; }
   .spell-list-type { font-size:0.8em; font-weight:normal; color:#666; }
   .spell-row { display: flex; font-size: 0.9em; }
 </style>
@@ -116,7 +120,7 @@
     <div class="defense-container">
         
         <div class="defense-left">
-            <div style="margin-bottom: 5px; font-weight: bold;">Base Quickness DB: {{defenses.quickness_bonus}}</div>
+            <div class="header">Total DB</div>
             <table class="tactical-table">
                 <tr>
                     <th></th>
@@ -134,7 +138,7 @@
         </div>
 
         <div class="defense-right">
-            <div style="font-weight: bold; margin-bottom: 5px;">Armor Coverage</div>
+            <div class="header">Armor Coverage</div>
             <div class="armor-grid">
                 <div class="armor-box"><span class="armor-loc">Head</span> {{defenses.armor.head.name}} (AT{{defenses.armor.head.at}})</div>
                 <div class="armor-box"><span class="armor-loc">Torso</span> {{defenses.armor.torso.name}} (AT{{defenses.armor.torso.at}})</div>
@@ -158,7 +162,7 @@
         <tbody>
             {{#each attacks}}
             <tr>
-                <td>{{name}} - {{specialization}} {{handed}}</td>
+                <td>{{name}} ({{specialization}} {{handed}})</td>
                 <td class="attack-ob">{{ob}}</td>
                 <td style="color: #c00;">{{fumble}}</td>
                 <td>{{damageType}}</td>
@@ -188,7 +192,7 @@
     <div class="spell-list-container">
         {{#each spells}}
         <div class="spell-block">
-            <div class="spell-list-header">{{listName}} <span class="spell-list-type">({{type}})</span></div>
+            <div class="header">{{listName}} <span class="spell-list-type">({{type}})</span></div>
             {{#each spells}}
             <div class="spell-row">
                 <span>{{level}}. {{name}}</span>
@@ -203,6 +207,7 @@
     <div class="inv-stats">
         <span><strong>Allowance:</strong> {{inventory.weight_allowance}}</span>
         <span><strong>Carried:</strong> {{inventory.weight_carried}}</span>
+        <span><strong>Enc. Penalty:</strong> {{inventory.enc_penalty}}</span>
         <span><strong>Max Pace:</strong> {{inventory.max_pace}}</span>
     </div>
     <table class="inv-table">
@@ -225,7 +230,7 @@
     </table>
 
     <div class="section-title">Talents</div>
-    <div style="column-count: 2; column-gap: 20px;">
+    <div class="talent-container">
         {{#each talents}}
         <div class="talent-group">
             <div class="talent-group-name">{{group}}</div>

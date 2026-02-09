@@ -382,18 +382,15 @@ export class DataExtractor {
     }
 
     static _getSpells(actor) {
-        // USE RMUData LOGIC: access system._spells
-        // Structure: Array of ListTypes -> spellLists -> spells
         const rawSpells = actor.system._spells || [];
         const spellGroups = [];
 
         if (Array.isArray(rawSpells)) {
             rawSpells.forEach((typeGroup) => {
-                const listType = typeGroup.listType; // e.g., "Open Channeling"
+                const listType = typeGroup.listType;
 
                 if (typeGroup.spellLists) {
                     typeGroup.spellLists.forEach((list) => {
-                        // Filter for known lists if necessary, or just known spells
                         const knownSpells = (list.spells || []).filter(
                             (s) => s.known,
                         );
@@ -416,17 +413,15 @@ export class DataExtractor {
     }
 
     static _getInventory(actor) {
-        // Items are standard Foundry Items, not usually in _derived
-        const items = actor.items.filter((i) =>
-            ["weapon", "armor", "equipment", "coin", "herb"].includes(i.type),
-        );
-        let carried = 0;
+        const enc_penalty = actor.system._encManeuverPenalty;
+        const items = actor.system._inventory;
 
         const itemList = items.map((i) => {
-            const weight = i.system.weight || 0;
+            const weight = i.system.weight || i.system._weight.weight || 0;
             const qty = i.system.quantity || 1;
+
             return {
-                name: i.name,
+                name: i.item.name || i.system.name || "Unknown",
                 qty: qty,
                 weight: `${weight} lbs`,
             };
@@ -435,6 +430,7 @@ export class DataExtractor {
         return {
             weight_allowance: `${actor.system._loadAllowed?.weight ?? 0} lbs`,
             weight_carried: `${actor.system._carriedWeight?.weight ?? 0} lbs`,
+            enc_penalty: enc_penalty || 0,
             max_pace: actor.system.encumbrance?.pace || "Dash",
             items: itemList,
         };
