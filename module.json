@@ -1,23 +1,24 @@
 {
-  "id": "MODULE-FOUNDRY-ID",
-  "title": "Mona Lisa",
-  "description": "My greatest work",
-  "version": "0.0.0",
+  "id": "rmu-character-sheet-exporter",
+  "title": "RMU Character Sheet Exporter",
+  "description": "A module to export character sheets into different formats.",
+  "version": "1.0.0-beta1",
   "compatibility": {
     "minimum": "13",
-    "verified": "13"
+    "verified": "13.351"
   },
   "authors": [
-    {
-      "name": "Ken Dearman"
-    }
+    { "name": "Ken Dearman" }
   ],
   "esmodules": [
     "main.js"
   ],
   "styles": [
   ],
-  "manifestPlusVersion": 1,
-  "manifest": "https://github.com/Filroden/fvtt/releases/download/MODULE-FOUNDRY-ID-latest/module.json",
-  "download": " https://github.com/Filroden/fvtt/releases/download/MODULE-FOUNDRY-ID-latest/MODULE-FOUNDRY-ID.zip"
+  "url": "https://github.com/Filroden/rmu-character-sheet-exporter",
+  "manifest": "https://github.com/Filroden/rmu-character-sheet-exporter/releases/latest/download/module.json",
+  "download": " https://github.com/Filroden/rmu-character-sheet-exporter/releases/download/1.0.0-beta1/rmu-character-sheet-exporter.zip",
+  "bugs": "https://github.com/Filroden/rmu-character-sheet-exporter/issues",
+  "readme": "https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/README.md",
+  "license": "https://mit-license.org/"
 }

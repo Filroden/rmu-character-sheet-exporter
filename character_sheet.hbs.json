@@ -1,0 +1,121 @@
+{
+  "header": {
+    "name": "Kirax",
+    "race": "Sibbicai",
+    "culture": "Highland",
+    "profession": "Ranger",
+    "level": 2,
+    "realm": "Channeling",
+    "size": "Medium"
+  },
+  "quick_info": {
+    "bmr": "21'/rnd",
+    "initiative": 6,
+    "hits": { "current": 54, "max": 54 },
+    "endurance": { "current": 54, "max": 54 },
+    "power": { "current": 6, "max": 6 }
+  },
+  "stats": [
+    { "label": "Agility (Ag)", "temp": 77, "bonus": 5 },
+    { "label": "Constitution (Co)", "temp": 65, "bonus": 4 },
+    { "label": "Empathy (Em)", "temp": 39, "bonus": -1 },
+    { "label": "Intuition (In)", "temp": 93, "bonus": 8 },
+    { "label": "Memory (Me)", "temp": 28, "bonus": -3 },
+    { "label": "Presence (Pr)", "temp": 47, "bonus": -1 },
+    { "label": "Quickness (Qu)", "temp": 95, "bonus": 9 },
+    { "label": "Reasoning (Re)", "temp": 81, "bonus": 5 },
+    { "label": "Self Disc (SD)", "temp": 92, "bonus": 8 },
+    { "label": "Strength (St)", "temp": 97, "bonus": 9 }
+  ],
+  "resistances": [
+    { "label": "Channeling", "bonus": 10 },
+    { "label": "Essence", "bonus": 10 },
+    { "label": "Mentalism", "bonus": 10 },
+    { "label": "Physical", "bonus": 15 },
+    { "label": "Fear", "bonus": 5 }
+  ],
+  "defenses": {
+    "quickness_bonus": 9,
+    "tactical": [
+      { "mode": "Passive", "dodge": 44, "block": 29 },
+      { "mode": "Partial (C)", "dodge": 64, "block": 54 },
+      { "mode": "Full (4 AP)", "dodge": 94, "block": 79 }
+    ],
+    "armor": {
+      "torso": { "name": "Leather Coat", "at": 2 },
+      "head": { "name": "Leather Cap", "at": 2 },
+      "arms": { "name": "None", "at": 1 },
+      "legs": { "name": "None", "at": 1 }
+    }
+  },
+  "attacks": [
+    { "name": "Broadsword", "ob": 78, "damageType": "Slash", "range": "Melee", "fumble": "01-04" },
+    { "name": "Long Bow", "ob": 55, "damageType": "Puncture", "range": "100'", "fumble": "01-08" }
+  ],
+  "talents": [
+    {
+      "group": "Racial",
+      "entries": [
+        { "name": "Natural Swimmer", "tier": "I" },
+        { "name": "Thick Coat", "tier": "II" }
+      ]
+    },
+    {
+      "group": "Combat",
+      "entries": [
+        { "name": "Adrenal Defense", "tier": "I" },
+        { "name": "Lightning Reflexes", "tier": "III" }
+      ]
+    }
+  ],
+  "skill_groups": [
+    {
+      "category": "Athletics",
+      "list": [
+        { "name": "Climbing", "specialisation": "", "bonus": 37 },
+        { "name": "Swimming", "specialisation": "", "bonus": 24 },
+        { "name": "Jumping", "specialisation": "", "bonus": 15 }
+      ]
+    },
+    {
+      "category": "Combat",
+      "list": [
+        { "name": "Body Development", "specialisation": "", "bonus": 43 }
+      ]
+    },
+    {
+      "category": "Lore",
+      "list": [
+        { "name": "Region Lore", "specialisation": "Highland", "bonus": 45 },
+        { "name": "Flora/Fauna", "specialisation": "", "bonus": 30 }
+      ]
+    },
+    {
+      "category": "Outdoor",
+      "list": [
+        { "name": "Survival", "specialisation": "Forest", "bonus": 62 },
+        { "name": "Tracking", "specialisation": "", "bonus": 55 },
+        { "name": "Navigation", "specialisation": "", "bonus": 20 }
+      ]
+    },
+    {
+      "category": "Subterfuge",
+      "list": [
+        { "name": "Stalking", "specialisation": "", "bonus": 45 },
+        { "name": "Hiding", "specialisation": "", "bonus": 40 }
+      ]
+    }
+  ],
+  "inventory": {
+    "weight_allowance": "64 lbs",
+    "weight_carried": "43 lbs",
+    "max_pace": "Dash",
+    "items": [
+      { "name": "Broadsword", "qty": 1, "weight": "4 lbs" },
+      { "name": "Long Bow", "qty": 1, "weight": "3 lbs" },
+      { "name": "Leather Coat", "qty": 1, "weight": "15 lbs" },
+      { "name": "Travel Rations", "qty": 5, "weight": "2 lbs" },
+      { "name": "Rope (50')", "qty": 1, "weight": "5 lbs" }
+    ]
+  }
+}
