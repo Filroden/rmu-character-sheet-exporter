@@ -368,9 +368,18 @@ export class DataExtractor {
             // 2. Range Logic
             let rangeDisplay = "";
             if (a.isRanged) {
-                const shortRange = a.usage?.range?.short;
-                if (shortRange) {
-                    rangeDisplay = `<${shortRange}>`;
+                let rawRange = a.usage?.range?._shortRange;
+
+                // Fallback to the raw numeric value if the computed string is missing
+                if (!rawRange) rawRange = a.usage?.range?.short;
+
+                if (rawRange) {
+                    // Convert to string and remove feet/units characters
+                    const cleanRange = String(rawRange).replace(
+                        /['"a-zA-Z\s]/g,
+                        "",
+                    );
+                    rangeDisplay = `<${cleanRange}>`;
                 }
             }
 
@@ -378,7 +387,6 @@ export class DataExtractor {
                 name: a.attackName || "Unknown Weapon",
                 specialization: a.specialization || "Unknown",
                 handed: a.handed || "",
-                // Refactored to use helper
                 ob: this._formatBonus(a.totalBonus ?? 0),
                 damageType: a.chart.name || "Unknown",
                 fumble: a.fumble || 0,
