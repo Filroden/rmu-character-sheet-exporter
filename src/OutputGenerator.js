@@ -3,7 +3,16 @@ export class OutputGenerator {
      * Download the data in the requested format
      */
     static async download(data, format, filenameBase) {
-        const filename = `${filenameBase.replace(/\s+/g, "_")}_Sheet`;
+        // 1. Create a timestamp string (e.g. "2023-10-27_14-30")
+        const now = new Date();
+        const dateString = now.toISOString().split("T")[0]; // YYYY-MM-DD
+        const timeString = now.toTimeString().split(" ")[0].replace(/:/g, "-"); // HH-MM-SS
+        const timestamp = `${dateString}_${timeString}`;
+
+        // 2. Append timestamp to filename
+        // Result: "Aragorn_Sheet_2023-10-27_14-30"
+        const cleanName = filenameBase.replace(/\s+/g, "_");
+        const filename = `${cleanName}_Sheet_${timestamp}`;
 
         if (format === "json") {
             foundry.utils.saveDataToFile(
@@ -17,7 +26,6 @@ export class OutputGenerator {
                 data,
             );
 
-            // Wrap in a basic HTML structure so it opens nicely in Word
             const fullHtml = `
                 <!DOCTYPE html>
                 <html>

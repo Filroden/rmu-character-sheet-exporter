@@ -55,10 +55,12 @@ export class DataExtractor {
         }
     }
 
-    static getCleanData(targetActor) {
+    static getCleanData(targetActor, options = {}) {
         if (!targetActor) return {};
 
         const sys = targetActor.system;
+
+        const { showAllSkills = false, showSpells = true } = options;
 
         return {
             header: this._getHeader(targetActor),
@@ -68,9 +70,16 @@ export class DataExtractor {
             defenses: this._getDefenses(sys, targetActor), // Pass actor for fallback
             attacks: this._getAttacks(targetActor),
             talents: this._getTalents(targetActor),
-            skill_groups: this._getSkills(targetActor),
-            spells: this._getSpells(targetActor),
+            skill_groups: this._getSkills(targetActor, { showAllSkills }),
+            spells: showSpells ? this._getSpells(targetActor) : [],
             inventory: this._getInventory(targetActor),
+            meta: {
+                timestamp: new Date().toLocaleString(),
+                systemVersion: game.system.version,
+                moduleVersion:
+                    game.modules.get("rmu-character-sheet-exporter")?.version ||
+                    "Unknown",
+            },
         };
     }
 
@@ -151,7 +160,6 @@ export class DataExtractor {
 
             stats.push({
                 label: key,
-                temp: data.tmp ?? 0,
                 bonus: data.total > 0 ? `+${data.total}` : (data.total ?? 0),
             });
         }
@@ -275,11 +283,22 @@ export class DataExtractor {
         const attacks = actor.system._attacks || [];
 
         return attacks.map((a) => {
-            let rangeDisplay = "Melee";
+            // 1. Reach Logic
+            // We check the _meleeRange property directly.
+            // If it exists and is greater than 0, we show it (e.g. "5'"). Otherwise empty.
+            let reachDisplay = "";
+            if (a.meleeRange) {
+                reachDisplay = `${a.meleeRange}'`;
+            }
 
+            // 2. Range Logic
+            // We only show range if it is a valid ranged attack interval.
+            let rangeDisplay = "";
             if (a.isRanged) {
                 const shortRange = a.usage?.range?.short;
-                rangeDisplay = shortRange ? `${shortRange}'` : "Ranged";
+                if (shortRange) {
+                    rangeDisplay = `<${shortRange}>`;
+                }
             }
 
             return {
@@ -288,8 +307,9 @@ export class DataExtractor {
                 handed: a.handed || "",
                 ob: a.totalBonus > 0 ? `+${a.totalBonus}` : a.totalBonus,
                 damageType: a.chart.name || "Unknown",
-                range: rangeDisplay,
                 fumble: a.fumble || 0,
+                reach: reachDisplay,
+                range: rangeDisplay,
             };
         });
     }
@@ -317,35 +337,47 @@ export class DataExtractor {
             }));
     }
 
-    static _getSkills(actor) {
+    static _getSkills(actor, options = {}) {
         const src = actor.system._skills;
         if (!src) return [];
 
         const allSkills = [];
 
-        // Recursive helper to find all skill objects deep in the tree
         const collectSkills = (node) => {
             if (!node) return;
 
+            // 1. Handle Array Containers (e.g. groups of skills)
             if (Array.isArray(node)) {
                 node.forEach((child) => collectSkills(child));
-            } else if (typeof node === "object") {
-                // If it has a 'system' property or specific fields, it's likely a Skill Item
-                // RMU derived skills usually have 'system' (if mapped from Item) or direct props like 'ranks' and 'bonus'
-                // We check for 'name' and 'bonus'/'total' to confirm it's a skill we want
-                if (
-                    node.name &&
-                    (node.bonus !== undefined ||
-                        node.total !== undefined ||
-                        node.ranks !== undefined)
-                ) {
-                    allSkills.push(node);
-                } else {
-                    // Otherwise, recurse into its values (it's a category/group container)
-                    Object.values(node).forEach((child) =>
-                        collectSkills(child),
-                    );
+                return;
+            }
+
+            if (typeof node === "object") {
+                // 2. Check for "System Data" nesting
+                // The JSON shows the data is inside a 'system' property.
+                // We check if this node HAS a system property with the flag we need.
+                if (node.system && node.system._canDevelop === true) {
+                    // FOUND IT: This is a wrapper. We push the INNER 'system' object.
+                    // This ensures s.category, s.ranks etc. work in the loop below.
+                    allSkills.push(node.system);
+                    return;
                 }
+
+                // 3. Fallback: Check if 'node' IS the system data object directly
+                // (Some data structures might already be unwrapped)
+                if (node._canDevelop === true) {
+                    allSkills.push(node);
+                    return;
+                }
+
+                // 4. If neither, it is likely a Category container. Recurse.
+                // We avoid recursing into the 'system' key itself if we already checked it.
+                Object.keys(node).forEach((key) => {
+                    if (key !== "system") {
+                        // minor optimization
+                        collectSkills(node[key]);
+                    }
+                });
             }
         };
 
@@ -354,20 +386,18 @@ export class DataExtractor {
         // Group and Sort
         const grouped = {};
         allSkills.forEach((s) => {
+            // Now 's' is the system object, so these properties will exist
             const cat = s.category || "General";
             if (!grouped[cat]) grouped[cat] = [];
 
-            // Filter: Only show if Ranks > 0 or it's a Favorite/Core skill
-            // You can adjust this threshold. Usually ranks > 0 is the standard "sheet" view.
-            if (s._totalRanks > 0 || s.favorite) {
-                // Determine the total bonus value
-                // In RMU derived data: '_bonus' is usually the final total. 'total' is sometimes used.
+            // 4. User Option Filter
+            if (options.showAllSkills || s._totalRanks > 0 || s.favorite) {
                 let finalBonus = s._bonus ?? s.bonus ?? 0;
 
                 grouped[cat].push({
                     name: s.name,
                     specialisation: s.specialization || "",
-                    ranks: s._totalRanks,
+                    ranks: s._totalRanks ?? 0,
                     bonus: finalBonus > 0 ? `+${finalBonus}` : finalBonus,
                 });
             }
@@ -427,11 +457,20 @@ export class DataExtractor {
             };
         });
 
+        let maxPace = "Dash";
+        if (actor.system._movementBlock?.maxPaceForLoadLabel) {
+            maxPace = game.i18n.localize(
+                actor.system._movementBlock.maxPaceForLoadLabel,
+            );
+        } else if (actor.system.encumbrance?.pace) {
+            maxPace = actor.system.encumbrance.pace;
+        }
+
         return {
             weight_allowance: `${actor.system._loadAllowed?.weight ?? 0} lbs`,
             weight_carried: `${actor.system._carriedWeight?.weight ?? 0} lbs`,
             enc_penalty: enc_penalty || 0,
-            max_pace: actor.system.encumbrance?.pace || "Dash",
+            max_pace: maxPace,
             items: itemList,
         };
     }
