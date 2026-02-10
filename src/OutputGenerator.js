@@ -10,7 +10,7 @@ export class OutputGenerator {
         const timestamp = `${dateString}_${timeString}`;
 
         // 2. Append timestamp to filename
-        // Result: "Aragorn_Sheet_2023-10-27_14-30"
+        // Result: "Filroden_Sheet_2023-10-27_14-30"
         const cleanName = filenameBase.replace(/\s+/g, "_");
         const filename = `${cleanName}_Sheet_${timestamp}`;
 

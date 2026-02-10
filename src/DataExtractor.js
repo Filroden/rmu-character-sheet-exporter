@@ -1,24 +1,57 @@
 export class DataExtractor {
     /**
-     * Triggers the system's calculation of derived data
-     * (Attacks, Spells. etc) if they aren't already present.
+     * -----------------------------------------------------------
+     * FORMATTING HELPERS
+     * -----------------------------------------------------------
+     */
+
+    /**
+     * Formats a number to include a sign (e.g., 10 -> "+10", -5 -> "-5", 0 -> "0").
+     * Used for OBs, DBs, Stat Bonuses, and Skill Totals.
+     * @param {number} val - The numeric value to format.
+     * @returns {string|number} - The formatted string or 0.
+     */
+    static _formatBonus(val) {
+        if (val === null || val === undefined) return 0;
+        return val > 0 ? `+${val}` : val;
+    }
+
+    /**
+     * -----------------------------------------------------------
+     * DATA PREPARATION
+     * -----------------------------------------------------------
+     */
+
+    /**
+     * Ensures that the Actor has all derived data calculated before export.
+     *
+     * RMU calculates complex data (like total skill bonuses and attack OBs) lazily
+     * or specifically for the Token HUD. This method forces those calculations.
+     *
+     * @param {Actor} actor - The actor to prepare.
+     * @returns {Promise<Actor|null>} - The prepared actor (or token actor) with data ready.
      */
     static async ensureExtendedData(actor) {
+        // If the system says it's already initialized, we don't need to do anything.
         if (actor.system?._hudInitialized) return actor;
 
         let targetDoc = null;
 
-        // Case A: Actor has a token
+        // Step 1: Find a valid Token Document to run the calculations on.
+        // The HUD calculation method (hudDeriveExtendedData) is defined on the Token, not the Actor.
+
+        // Case A: The actor is already a Token Actor (e.g. opened from the canvas).
         if (actor.token) {
             targetDoc = actor.token;
         }
-        // Case B: Sidebar Actor with active tokens
+        // Case B: It's a sidebar Actor, but it has tokens on the current scene.
         else if (actor.getActiveTokens) {
             const tokens = actor.getActiveTokens();
             if (tokens.length > 0) targetDoc = tokens[0].document;
         }
 
-        // Case C: Create dummy token
+        // Case C: No token exists. We must create a temporary "dummy" token in memory
+        // to trick the system into running the calculation logic.
         if (!targetDoc) {
             try {
                 const tokenData = actor.prototypeToken.toObject();
@@ -27,26 +60,40 @@ export class DataExtractor {
                 targetDoc = new TokenDocument(tokenData, {
                     parent: canvas?.scene || null,
                 });
+                // Link the dummy token back to the real actor
                 if (!targetDoc.actor) targetDoc._actor = actor;
             } catch (e) {
                 console.warn("RMU Export | Failed to create dummy token:", e);
             }
         }
 
-        // Execute Derivation
+        // Step 2: Execute the System's Calculation Method
         if (
             targetDoc &&
             typeof targetDoc.hudDeriveExtendedData === "function"
         ) {
             try {
+                // 1. Initialize Skills, Attacks, and Spells.
+                // This populates actor.system._skills, _attacks, etc.
                 await targetDoc.hudDeriveExtendedData();
-                return targetDoc.actor || actor;
+
+                // 2. FORCE CALCULATE DEFENSES.
+                // The defensive options (Dodge/Block) are lazy getters.
+                // We must explicitly access them on the TOKEN now that skills are ready
+                // to force the system to compute the values.
+                const finalActor = targetDoc.actor || actor;
+
+                // Cache them on the actor so _getDefenses can find them later.
+                finalActor._cachedDodge = targetDoc.dodgeOptions;
+                finalActor._cachedBlock = targetDoc.blockOptions;
+
+                return finalActor;
             } catch (e) {
                 console.warn("RMU Export | HUD derivation crashed:", e);
             }
         }
 
-        // Fallback
+        // Fallback: Standard Foundry data preparation if the HUD method fails/doesn't exist.
         try {
             if (actor.prepareData) actor.prepareData();
             return actor;
@@ -55,11 +102,21 @@ export class DataExtractor {
         }
     }
 
+    /**
+     * -----------------------------------------------------------
+     * MAIN EXTRACTOR
+     * -----------------------------------------------------------
+     */
+
+    /**
+     * Main entry point. Gathers all data sections into a clean object for the template.
+     * @param {Actor} targetActor - The source actor.
+     * @param {Object} options - User options (e.g. { showAllSkills: boolean }).
+     */
     static getCleanData(targetActor, options = {}) {
         if (!targetActor) return {};
 
         const sys = targetActor.system;
-
         const { showAllSkills = false, showSpells = true } = options;
 
         return {
@@ -67,7 +124,7 @@ export class DataExtractor {
             quick_info: this._getQuickInfo(sys),
             stats: this._getStats(sys),
             resistances: this._getResistances(sys),
-            defenses: this._getDefenses(sys, targetActor), // Pass actor for fallback
+            defenses: this._getDefenses(sys, targetActor), // Passes actor to access cached tokens
             attacks: this._getAttacks(targetActor),
             talents: this._getTalents(targetActor),
             skill_groups: this._getSkills(targetActor, { showAllSkills }),
@@ -82,6 +139,12 @@ export class DataExtractor {
             },
         };
     }
+
+    /**
+     * -----------------------------------------------------------
+     * SUB-SECTIONS
+     * -----------------------------------------------------------
+     */
 
     static _getHeader(actor) {
         const sys = actor.system;
@@ -100,7 +163,7 @@ export class DataExtractor {
     }
 
     static _getQuickInfo(sys) {
-        // --- MOVEMENT LOGIC ---
+        // --- MOVEMENT ---
         let bmr = 0;
         const mode = sys.activeMovementName || "Running";
         const moveData = sys._movementBlock || {};
@@ -110,27 +173,28 @@ export class DataExtractor {
             const walkEntry = modeTable.paceRates.find(
                 (p) => p.pace?.value === "Walk",
             );
-
             bmr = walkEntry?.perRound || 0;
         }
 
-        // --- INITIATIVE LOGIC ---
+        // --- INITIATIVE ---
         const init = sys._totalInitiativeBonus || 0;
 
-        // --- ENDURANCE LOGIC ---
+        // --- ENDURANCE ---
         const pEnc = sys._injuryBlock._endurance._bonusWithRacial ?? 0;
         const mEnc = sys._injuryBlock._concentration._bonusWithRacial ?? 0;
 
         return {
             bmr_value: `${bmr}'/rd`,
             bmr_mode: mode,
-            initiative: init > 0 ? `+${init}` : init,
+            // Refactored to use helper
+            initiative: this._formatBonus(init),
             hits: {
                 current: sys.health?.hp?.value ?? 0,
                 max: sys.health?.hp?.max ?? 0,
             },
-            endurance_physical: pEnc > 0 ? `+${pEnc}` : pEnc,
-            endurance_mental: mEnc > 0 ? `+${mEnc}` : mEnc,
+            // Refactored to use helper
+            endurance_physical: this._formatBonus(pEnc),
+            endurance_mental: this._formatBonus(mEnc),
             power: {
                 current: sys.health?.power?.value ?? 0,
                 max: sys.health?.power?.max ?? 0,
@@ -160,7 +224,8 @@ export class DataExtractor {
 
             stats.push({
                 label: key,
-                bonus: data.total > 0 ? `+${data.total}` : (data.total ?? 0),
+                // Refactored to use helper
+                bonus: this._formatBonus(data.total ?? 0),
             });
         }
 
@@ -168,7 +233,7 @@ export class DataExtractor {
     }
 
     static _getResistances(sys) {
-        // Based on RMUData: block?._resistances ?? block?.resistances
+        // Based on RMUData: The path differs between versions/items.
         const block = sys._resistanceBlock || sys.resistanceBlock || {};
         const list =
             block._resistances ||
@@ -177,7 +242,6 @@ export class DataExtractor {
             sys.resistances ||
             [];
 
-        // Map standard 5, but source is an array, so we must find them
         const findRes = (name) => {
             const r = list.find((x) =>
                 x.name.toLowerCase().includes(name.toLowerCase()),
@@ -185,90 +249,102 @@ export class DataExtractor {
             return r ? (r.total ?? r.bonus ?? 0) : 0;
         };
 
+        // Refactored to use helper for all resistance bonuses
         return [
-            { label: "Channeling", bonus: findRes("Channeling") },
-            { label: "Essence", bonus: findRes("Essence") },
-            { label: "Mentalism", bonus: findRes("Mentalism") },
-            { label: "Physical", bonus: findRes("Physical") },
-            { label: "Fear", bonus: findRes("Fear") },
+            {
+                label: "Channeling",
+                bonus: this._formatBonus(findRes("Channeling")),
+            },
+            { label: "Essence", bonus: this._formatBonus(findRes("Essence")) },
+            {
+                label: "Mentalism",
+                bonus: this._formatBonus(findRes("Mentalism")),
+            },
+            {
+                label: "Physical",
+                bonus: this._formatBonus(findRes("Physical")),
+            },
+            { label: "Fear", bonus: this._formatBonus(findRes("Fear")) },
         ];
     }
 
     static _getDefenses(sys, actor) {
-        // 1. Base Quickness DB (Qu Bonus x 3)
-        const statBlock = sys._statBlock || {};
-        const quStatBonus = statBlock.Qu?.total ?? 0;
-        const quDb = quStatBonus * 3;
+        const dbBlock = sys._dbBlock || {};
 
-        // 2. Shield Bonus (if available)
-        // Adjust path if shield bonus is stored elsewhere (e.g. in _armorWorn or separate object)
+        // 1. Extract Base Components
+        const quDb = dbBlock.quicknessDB ?? 0;
+        const armorDb = dbBlock.armorDB ?? 0;
+        const otherDb = sys.defense?.other ?? 0;
         const shieldBonus = sys.defenses?.shield?.bonus || 0;
 
-        // 3. Dodge & Block (Lazy Getter Trigger)
-        // Accessing these getters SHOULD trigger this.prepare() internally per developer notes
-        let dodgeOpts = sys.dodgeOptions || actor.dodgeOptions;
-        let blockOpts = sys.blockOptions || actor.blockOptions;
+        // Static DB applicable to all modes (Passive/Partial/Full)
+        const baseTotal = quDb + armorDb + otherDb;
 
-        // If they are still missing/empty, verify if we need to manually force prepare()
-        // Note: The dev said accessing the getter calls prepare(), but if 'sys' is a plain object
-        // (not the class instance), the getter won't exist. In that case, we try manual prepare.
-        if ((!dodgeOpts || !blockOpts) && typeof sys.prepare === "function") {
-            try {
-                sys.prepare();
-                // Re-read after manual prepare. Try private fields if getters fail.
-                dodgeOpts = sys.dodgeOptions || sys._dodgeOptions;
-                blockOpts = sys.blockOptions || sys._blockOptions;
-            } catch (e) {
-                console.warn("RMU Export | sys.prepare() failed:", e);
-            }
-        }
+        // 2. Get Options (with fallback to the cached values from ensureExtendedData)
+        let dodgeOpts = dbBlock.dodgeOptions;
+        let blockOpts = dbBlock.blockOptions;
 
-        // Safety defaults
+        if (!dodgeOpts && actor._cachedDodge) dodgeOpts = actor._cachedDodge;
+        if (!blockOpts && actor._cachedBlock) blockOpts = actor._cachedBlock;
+
         dodgeOpts = dodgeOpts || [];
         blockOpts = blockOpts || [];
 
+        // Helper: Extract modifier from option object { value: "x", modifier: 10 }
         const getModifier = (opts, modeValue) => {
             if (!Array.isArray(opts)) return 0;
             const found = opts.find((o) => o.value === modeValue);
-            return found ? found.modifier : 0;
+            return found ? (found.modifier ?? 0) : 0;
         };
 
-        // 4. Armor Data from _armor object
-        const armorData = sys._armorWorn || {};
+        // 3. Pre-fetch Passive Modifiers
+        // We need these because RMU rules state:
+        // "Active defenses (Full/Partial) also benefit from the PASSIVE bonus of the OTHER defense type."
+        const passiveDodgeMod = getModifier(dodgeOpts, "passive");
+        const passiveBlockMod = getModifier(blockOpts, "passive");
 
-        const getArmorInfo = (loc) => {
-            const part = armorData[loc];
-            if (!part) return { name: "Unknown", at: 0 };
+        // 4. Build Row Data with Cross-Adding Logic
+        const buildMode = (label, modeKey) => {
+            const currentDodgeMod = getModifier(dodgeOpts, modeKey);
+            const currentBlockMod = getModifier(blockOpts, modeKey);
 
-            let armorName = "Unknown";
-            if (part.piece) {
-                armorName = part.piece._base.material || "Unknown";
+            // Start with Base + Current Mode Modifier
+            let totalDodge = baseTotal + currentDodgeMod;
+            let totalBlock = baseTotal + currentBlockMod + shieldBonus;
+
+            // CROSS-ADD RULE: If Partial or Full, add the Passive modifier from the OTHER defense type.
+            if (modeKey !== "passive") {
+                totalDodge += passiveBlockMod;
+                totalBlock += passiveDodgeMod;
             }
 
             return {
-                name: armorName,
+                mode: label,
+                dodge: this._formatBonus(totalDodge),
+                block: this._formatBonus(totalBlock),
+            };
+        };
+
+        const armorData = sys._armorWorn || {};
+        const getArmorInfo = (loc) => {
+            const part = armorData[loc];
+            if (!part) return { name: "Unknown", at: 0 };
+            return {
+                name: part.piece?._base?.material || "Unknown",
                 at: part.AT ?? 0,
             };
         };
 
+        // Refactored to use helper for summary stats
         return {
-            quickness_bonus: quDb > 0 ? `+${quDb}` : quDb,
+            quickness_bonus: this._formatBonus(quDb),
+            armor_db: this._formatBonus(armorDb),
+            other_db: this._formatBonus(otherDb),
+            total_db_current: this._formatBonus(dbBlock.totalDB ?? 0),
             tactical: [
-                {
-                    mode: "Passive",
-                    dodge: getModifier(dodgeOpts, "passive"),
-                    block: getModifier(blockOpts, "passive"),
-                },
-                {
-                    mode: "Partial (C)",
-                    dodge: getModifier(dodgeOpts, "partial"),
-                    block: getModifier(blockOpts, "partial"),
-                },
-                {
-                    mode: "Full (4 AP)",
-                    dodge: getModifier(dodgeOpts, "full"),
-                    block: getModifier(blockOpts, "full"),
-                },
+                buildMode("Passive", "passive"),
+                buildMode("Partial", "partial"),
+                buildMode("Full", "full"),
             ],
             armor: {
                 head: getArmorInfo("Head"),
@@ -284,15 +360,12 @@ export class DataExtractor {
 
         return attacks.map((a) => {
             // 1. Reach Logic
-            // We check the _meleeRange property directly.
-            // If it exists and is greater than 0, we show it (e.g. "5'"). Otherwise empty.
             let reachDisplay = "";
             if (a.meleeRange) {
                 reachDisplay = `${a.meleeRange}'`;
             }
 
             // 2. Range Logic
-            // We only show range if it is a valid ranged attack interval.
             let rangeDisplay = "";
             if (a.isRanged) {
                 const shortRange = a.usage?.range?.short;
@@ -305,7 +378,8 @@ export class DataExtractor {
                 name: a.attackName || "Unknown Weapon",
                 specialization: a.specialization || "Unknown",
                 handed: a.handed || "",
-                ob: a.totalBonus > 0 ? `+${a.totalBonus}` : a.totalBonus,
+                // Refactored to use helper
+                ob: this._formatBonus(a.totalBonus ?? 0),
                 damageType: a.chart.name || "Unknown",
                 fumble: a.fumble || 0,
                 reach: reachDisplay,
@@ -337,12 +411,17 @@ export class DataExtractor {
             }));
     }
 
+    /**
+     * Extracts skills, optionally filtering out unranked ones.
+     * Handles the complex recursive structure of RMU skill trees.
+     */
     static _getSkills(actor, options = {}) {
         const src = actor.system._skills;
         if (!src) return [];
 
         const allSkills = [];
 
+        // Recursive helper to traverse the skill tree
         const collectSkills = (node) => {
             if (!node) return;
 
@@ -353,28 +432,24 @@ export class DataExtractor {
             }
 
             if (typeof node === "object") {
-                // 2. Check for "System Data" nesting
-                // The JSON shows the data is inside a 'system' property.
-                // We check if this node HAS a system property with the flag we need.
+                // 2. UNWRAPPING: Check for nested "System Data"
+                // RMU Items often wrap the data in a `system` property.
                 if (node.system && node.system._canDevelop === true) {
-                    // FOUND IT: This is a wrapper. We push the INNER 'system' object.
-                    // This ensures s.category, s.ranks etc. work in the loop below.
+                    // We push the inner 'system' object to clean up the data for the loop below.
                     allSkills.push(node.system);
                     return;
                 }
 
-                // 3. Fallback: Check if 'node' IS the system data object directly
-                // (Some data structures might already be unwrapped)
+                // 3. DIRECT DATA: Check if 'node' is already the unwrapped system object
                 if (node._canDevelop === true) {
                     allSkills.push(node);
                     return;
                 }
 
-                // 4. If neither, it is likely a Category container. Recurse.
-                // We avoid recursing into the 'system' key itself if we already checked it.
+                // 4. CATEGORY: If neither, it is likely a Category container. Recurse deeper.
                 Object.keys(node).forEach((key) => {
+                    // Optimization: Don't re-scan 'system' if we already checked it above
                     if (key !== "system") {
-                        // minor optimization
                         collectSkills(node[key]);
                     }
                 });
@@ -383,14 +458,13 @@ export class DataExtractor {
 
         collectSkills(src);
 
-        // Group and Sort
+        // Group by Category and Sort
         const grouped = {};
         allSkills.forEach((s) => {
-            // Now 's' is the system object, so these properties will exist
             const cat = s.category || "General";
             if (!grouped[cat]) grouped[cat] = [];
 
-            // 4. User Option Filter
+            // FILTER: Apply user preference (Show All vs Ranked/Favorites)
             if (options.showAllSkills || s._totalRanks > 0 || s.favorite) {
                 let finalBonus = s._bonus ?? s.bonus ?? 0;
 
@@ -398,11 +472,13 @@ export class DataExtractor {
                     name: s.name,
                     specialisation: s.specialization || "",
                     ranks: s._totalRanks ?? 0,
-                    bonus: finalBonus > 0 ? `+${finalBonus}` : finalBonus,
+                    // Refactored to use helper
+                    bonus: this._formatBonus(finalBonus),
                 });
             }
         });
 
+        // Convert grouped object to array for Handlebars
         return Object.keys(grouped)
             .sort()
             .map((key) => ({
@@ -446,6 +522,7 @@ export class DataExtractor {
         const enc_penalty = actor.system._encManeuverPenalty;
         const items = actor.system._inventory;
 
+        // Map items to a clean format
         const itemList = items.map((i) => {
             const weight = i.system.weight || i.system._weight.weight || 0;
             const qty = i.system.quantity || 1;
@@ -457,6 +534,7 @@ export class DataExtractor {
             };
         });
 
+        // Determine Max Pace label
         let maxPace = "Dash";
         if (actor.system._movementBlock?.maxPaceForLoadLabel) {
             maxPace = game.i18n.localize(
