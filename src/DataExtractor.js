@@ -111,17 +111,24 @@ export class DataExtractor {
         const unknownTxt = this._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
         const noneTxt = this._i18n("RMU_EXPORT.Common.None", "None");
 
-        const getItemName = (type) =>
-            actor.items.find((i) => i.type === type)?.name || unknownTxt;
+        const getSystemLabel = (prefix, val) => {
+            if (!val) return unknownTxt;
+            const key = `${prefix}.${val}`;
+            if (game.i18n.has(key)) return game.i18n.localize(key);
+            return val;
+        };
 
         return {
             name: actor.name,
-            race: getItemName("race"),
-            culture: getItemName("culture"),
-            profession: getItemName("profession"),
+            race: getSystemLabel("RMU.Race", sys._header?._raceName),
+            culture: getSystemLabel("RMU.Culture", sys._header?._cultureName),
+            profession: getSystemLabel(
+                "RMU.Profession",
+                sys._header?._professionName,
+            ),
             level: sys.experience?.level ?? 1,
             realm: sys.realm || noneTxt,
-            size: sys.appearance?.size || unknownTxt,
+            size: getSystemLabel("RMU.Size", sys.appearance?.size),
         };
     }
 
@@ -289,14 +296,14 @@ export class DataExtractor {
         };
 
         const armorData = sys._armorWorn || {};
-        const unknownTxt = this._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
+        const noneTxt = this._i18n("RMU_EXPORT.Common.None", "None");
 
         const getArmorInfo = (loc) => {
             const part = armorData[loc];
-            if (!part) return { name: unknownTxt, at: 0 };
+            if (!part) return { name: noneTxt, at: 1 };
             return {
-                name: part.piece?._base?.material || unknownTxt,
-                at: part.AT ?? 0,
+                name: part.piece?._base?.material || noneTxt,
+                at: part.AT ?? 1,
             };
         };
 

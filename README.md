@@ -9,13 +9,13 @@
 ![Last Commit](https://img.shields.io/github/last-commit/Filroden/rmu-character-sheet-exporter)
 ![Issues](https://img.shields.io/github/issues/Filroden/rmu-character-sheet-exporter)
 
-This is a simple module to create a printable version of the character sheet.
+This is a simple module to create a printable version of a character or creature sheet.
 
 ## How to use
 
-Click the "Export Sheet" button in the window header of any character actor sheet.
+Click the "Export Sheet" button in the window header of any character or creature sheet.
 
-![Window header of a character actor sheet showing the Export Sheet button](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/sheet_header.png)
+![Window header of an actor sheet showing the Export Sheet button](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/sheet_header.png)
 
 Select:
 
@@ -36,7 +36,6 @@ The exported sheet combines text from three different sources. If you see Englis
 
 ## Roadmap
 
-* Support creatures
 * Add compact template for NPC/creature stat blocks
 * Add tournament template for full tabletop gameplay
 * Embed export of actor.json into html for later recovery

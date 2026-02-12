@@ -16,9 +16,6 @@ const addHeaderButton = (app, buttons) => {
     const actor = app.document || app.object || app.actor;
     if (!actor) return;
 
-    // Check type (Case Insensitive for safety)
-    if (actor.type?.toLowerCase() !== "character") return;
-
     const exist = buttons.some((b) => b.class === "rmu-export-btn");
     if (exist) return;
 
