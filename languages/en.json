@@ -69,5 +69,9 @@
   "RMU_EXPORT.Stats.Qu": "Qu",
   "RMU_EXPORT.Stats.Re": "Re",
   "RMU_EXPORT.Stats.SD": "SD",
-  "RMU_EXPORT.Stats.St": "St"
+  "RMU_EXPORT.Stats.St": "St",
+
+  "RMU_EXPORT.Dialog.ChooseTemplate": "Choose Template:",
+  "RMU_EXPORT.Templates.Standard": "Standard Sheet",
+  "RMU_EXPORT.Templates.Compact": "Compact Sheet"
 }

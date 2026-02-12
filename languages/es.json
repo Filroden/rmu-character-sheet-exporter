@@ -69,5 +69,8 @@
   "RMU_EXPORT.Stats.Qu": "Rp",
   "RMU_EXPORT.Stats.Re": "Rz",
   "RMU_EXPORT.Stats.SD": "Ad",
-  "RMU_EXPORT.Stats.St": "Fu"
+  "RMU_EXPORT.Stats.St": "Fu",
+
+  "RMU_EXPORT.Dialog.ChooseTemplate": "Elegir Plantilla:",
+  "RMU_EXPORT.Templates.Standard": "Hoja Estándar"
 }

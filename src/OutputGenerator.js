@@ -2,7 +2,7 @@ export class OutputGenerator {
     /**
      * Download the data in the requested format
      */
-    static async download(data, format, filenameBase) {
+    static async download(data, format, filenameBase, templatePath) {
         // 1. Create a timestamp string (e.g. "2023-10-27_14-30")
         const now = new Date();
         const dateString = now.toISOString().split("T")[0]; // YYYY-MM-DD
@@ -22,7 +22,7 @@ export class OutputGenerator {
             );
         } else if (format === "html") {
             const html = await foundry.applications.handlebars.renderTemplate(
-                "modules/rmu-character-sheet-exporter/templates/character_sheet.hbs",
+                templatePath,
                 data,
             );
 

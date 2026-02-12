@@ -1,0 +1,58 @@
+<div class="rmu-cse rmu-export-wrapper">
+    <div class="rmu-cse form-group">
+        <label>{{localize "RMU_EXPORT.Dialog.ChooseTemplate"}}</label>
+        <select name="templatePath">
+            {{#each templates}}
+                <option
+                    value="{{this.path}}"
+                    data-show-skills="{{this.config.showSkillFilter}}"
+                    data-show-spells="{{this.config.showSpellFilter}}"
+                >
+                    {{localize this.label}}
+                </option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="rmu-cse form-group">
+        <label>{{localize "RMU_EXPORT.Dialog.ChooseFormat"}}</label>
+        <select name="format">
+            <option value="html">HTML</option>
+            <option value="json">{{localize
+                    "RMU_EXPORT.Dialog.FormatJSON"
+                }}</option>
+        </select>
+    </div>
+
+    <div class="rmu-cse form-group" data-id="group-skills">
+        <label>{{localize "RMU_EXPORT.Dialog.SkillFilter"}}</label>
+        <select name="skillFilter">
+            <option value="ranked">{{localize
+                    "RMU_EXPORT.Dialog.FilterRanked"
+                }}</option>
+            <option value="all">{{localize
+                    "RMU_EXPORT.Dialog.FilterAll"
+                }}</option>
+        </select>
+    </div>
+
+    <div class="rmu-cse form-group" data-id="group-spells">
+        <input
+            class="rmu-cse-checkbox"
+            type="checkbox"
+            name="showSpells"
+            id="rmu-show-spells"
+            checked
+        />
+        <label for="rmu-show-spells">{{localize
+                "RMU_EXPORT.Dialog.IncludeSpells"
+            }}</label>
+    </div>
+
+    <div class="form-footer">
+        <button type="submit" class="rmu-export-btn">
+            <i class="rmu-cse-icon save"></i>
+            {{localize "RMU_EXPORT.Dialog.Download"}}
+        </button>
+    </div>
+</div>

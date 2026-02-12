@@ -1,17 +1,37 @@
 import { DataExtractor } from "./src/DataExtractor.js";
 import { OutputGenerator } from "./src/OutputGenerator.js";
+import { ExportDialog } from "./src/ExportDialog.js";
 
 const MODULE_ID = "rmu-character-sheet-exporter";
+
+// 1. Define templates configuration
+const AVAILABLE_TEMPLATES = {
+    standard: {
+        id: "standard",
+        label: "RMU_EXPORT.Templates.Standard",
+        path: "modules/rmu-character-sheet-exporter/templates/standard_actor_sheet.hbs",
+        config: {
+            showSkillFilter: true,
+            showSpellFilter: true,
+        },
+    },
+    compact: {
+        id: "compact",
+        label: "RMU_EXPORT.Templates.Compact",
+        path: "modules/rmu-character-sheet-exporter/templates/compact_actor_sheet.hbs",
+        config: {
+            showSkillFilter: false,
+            forcedSkillFilter: "ranked", // Used in submission logic
+            showSpellFilter: false,
+            forcedShowSpells: false, // Used in submission logic
+        },
+    },
+};
 
 Hooks.once("init", () => {
     console.log(`${MODULE_ID} | Initializing RMU Character Sheet Export`);
 });
 
-/**
- * -----------------------------------------------------------
- * 1. Actor Sheet Header Button
- * -----------------------------------------------------------
- */
 const addHeaderButton = (app, buttons) => {
     const actor = app.document || app.object || app.actor;
     if (!actor) return;
@@ -30,11 +50,6 @@ const addHeaderButton = (app, buttons) => {
 Hooks.on("getActorSheetHeaderButtons", addHeaderButton);
 Hooks.on("getApplicationHeaderButtons", addHeaderButton);
 
-/**
- * -----------------------------------------------------------
- * 2. Export Controller (Using ApplicationV2)
- * -----------------------------------------------------------
- */
 async function startExportProcess(actor) {
     if (!actor) return;
 
@@ -45,7 +60,6 @@ async function startExportProcess(actor) {
             }),
         );
 
-        // 1. Force the System to calculate derived data
         const derivedActor = await DataExtractor.ensureExtendedData(actor);
 
         if (!derivedActor) {
@@ -54,49 +68,15 @@ async function startExportProcess(actor) {
             );
         }
 
-        // 2. Render V2 Dialog
-        const { DialogV2 } = foundry.applications.api;
+        // 2. Use the Custom ApplicationV2 Class
+        const result = await ExportDialog.wait(
+            derivedActor || actor,
+            AVAILABLE_TEMPLATES,
+        );
 
-        const content = `
-            <div class="rmu-cse form-group">
-                <label>${game.i18n.localize("RMU_EXPORT.Dialog.ChooseFormat")}</label>
-                <select name="format" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;">
-                    <option value="html">HTML</option>
-                    <option value="json">${game.i18n.localize("RMU_EXPORT.Dialog.FormatJSON")}</option>
-                </select>
-            </div>
-            <div class="rmu-cse form-group">
-                <label>${game.i18n.localize("RMU_EXPORT.Dialog.SkillFilter")}</label>
-                <select name="skillFilter" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;">
-                    <option value="ranked">${game.i18n.localize("RMU_EXPORT.Dialog.FilterRanked")}</option>
-                    <option value="all">${game.i18n.localize("RMU_EXPORT.Dialog.FilterAll")}</option>
-                </select>
-            </div>
-            <div class="rmu-cse form-group" style="display: flex; align-items: center; gap: 10px;">
-                <input class="rmu-cse-checkbox" type="checkbox" name="showSpells" id="rmu-show-spells" checked />
-                <label for="rmu-show-spells">${game.i18n.localize("RMU_EXPORT.Dialog.IncludeSpells")}</label>
-            </div>
-        `;
-
-        await DialogV2.wait({
-            window: {
-                title: game.i18n.format("RMU_EXPORT.Dialog.Title", {
-                    name: actor.name,
-                }),
-            },
-            content: content,
-            buttons: [
-                {
-                    action: "export",
-                    label: game.i18n.localize("RMU_EXPORT.Dialog.Download"),
-                    icon: "rmu-cse-icon save",
-                    // We pass the actor (or derivedActor) to our helper
-                    callback: (event, button, dialog) =>
-                        handleExportSubmit(button, derivedActor || actor),
-                },
-            ],
-            close: () => {},
-        });
+        if (result) {
+            await handleExportSubmit(result, derivedActor || actor);
+        }
     } catch (error) {
         console.error(`${MODULE_ID} | Export Failed:`, error);
         ui.notifications.error(
@@ -107,26 +87,35 @@ async function startExportProcess(actor) {
     }
 }
 
-/**
- * Helper: Handles reading the form and triggering the download
- */
-async function handleExportSubmit(button, actor) {
-    // 1. Extract values from the form elements
-    const form = button.form.elements;
-    const format = form.format.value;
-    const skillFilter = form.skillFilter.value;
-    const showSpells = form.showSpells.checked;
+async function handleExportSubmit(formData, actor) {
+    const templatePath = formData.templatePath;
+    const format = formData.format;
 
-    // 2. Build Options Object
+    // Default values from form
+    let skillFilter = formData.skillFilter;
+    let showSpells = formData.showSpells;
+
+    // 3. Apply Forced Overrides
+    // We look up the config again to apply security overrides (in case hidden fields were manipulated or missing)
+    const templateKey = Object.keys(AVAILABLE_TEMPLATES).find(
+        (k) => AVAILABLE_TEMPLATES[k].path === templatePath,
+    );
+    const config = AVAILABLE_TEMPLATES[templateKey]?.config || {};
+
+    if (config.forcedSkillFilter !== undefined) {
+        skillFilter = config.forcedSkillFilter;
+    }
+    if (config.forcedShowSpells !== undefined) {
+        showSpells = config.forcedShowSpells;
+    }
+
     const exportOptions = {
         showAllSkills: skillFilter === "all",
         showSpells: showSpells,
     };
 
-    // 3. Extract Data
     console.log("RMU Export | Options:", exportOptions);
     const cleanData = DataExtractor.getCleanData(actor, exportOptions);
 
-    // 4. Generate Output
-    await OutputGenerator.download(cleanData, format, actor.name);
+    await OutputGenerator.download(cleanData, format, actor.name, templatePath);
 }

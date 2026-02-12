@@ -69,5 +69,8 @@
   "RMU_EXPORT.Stats.Qu": "Ra",
   "RMU_EXPORT.Stats.Re": "Rai",
   "RMU_EXPORT.Stats.SD": "DA",
-  "RMU_EXPORT.Stats.St": "Fo"
+  "RMU_EXPORT.Stats.St": "Fo",
+
+  "RMU_EXPORT.Dialog.ChooseTemplate": "Choisir le Modèle :",
+  "RMU_EXPORT.Templates.Standard": "Fiche Standard"
 }

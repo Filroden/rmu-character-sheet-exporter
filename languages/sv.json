@@ -69,5 +69,8 @@
   "RMU_EXPORT.Stats.Qu": "Sna",
   "RMU_EXPORT.Stats.Re": "Res",
   "RMU_EXPORT.Stats.SD": "Sjd",
-  "RMU_EXPORT.Stats.St": "Sty"
+  "RMU_EXPORT.Stats.St": "Sty",
+
+  "RMU_EXPORT.Dialog.ChooseTemplate": "Välj Mall:",
+  "RMU_EXPORT.Templates.Standard": "Standard Rollformulär"
 }

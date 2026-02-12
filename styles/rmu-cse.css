@@ -1,35 +1,36 @@
-dialog:has(.rmu-cse) {
+form:has(.rmu-cse) {
     font-family: var(--filroden-font-family) !important;
     font-size: var(--filroden-font-size-s);
+    background: var(--filroden-color-bg-darkest) !important;
 }
 
-dialog:has(.rmu-cse) .window-header {
+form:has(.rmu-cse) .window-header {
     background: var(--filroden-color-bg-darkest) !important;
     border: none !important;
     color: var(--filroden-color-text-main-solid);
-    flex: 0 0 auto !important; 
-    min-height: 34px; 
+    flex: 0 0 auto !important;
+    min-height: 34px;
     height: auto !important;
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-dialog:has(.rmu-cse) .window-header .window-title {
+form:has(.rmu-cse) .window-header .window-title {
     font-size: var(--filroden-font-size-s);
     line-height: 1.2;
-    text-align: start; 
+    text-align: start;
     padding-inline-start: var(--filroden-space-s);
     padding-inline-end: 0;
     flex: 1;
 }
 
-dialog:has(.rmu-cse) .window-header .window-icon {
+form:has(.rmu-cse) .window-header .window-icon {
     margin-inline-start: var(--filroden-space-xxs);
     margin-inline-end: 0;
 }
 
-dialog:has(.rmu-cse) .window-content {
+form:has(.rmu-cse) .window-content {
     background: var(--filroden-color-bg-darkest) !important;
     color: var(--filroden-color-text-main-solid);
     border: none;
@@ -51,11 +52,16 @@ dialog:has(.rmu-cse) .window-content {
     border-radius: var(--filroden-radius-small);
     min-height: 1.6rem;
     padding-inline: var(--filroden-space-xs);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: var(--filroden-space-m);
+    width: 100%;
+    box-sizing: border-box;
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
 }
 
 .rmu-cse select option {
-    background-color: var(--visage-color-bg-darkest) !important; 
+    background-color: var(--visage-color-bg-darkest) !important;
     color: var(--visage-color-text-main-solid) !important;
 }
 
@@ -77,15 +83,18 @@ dialog:has(.rmu-cse) .window-content {
     content: none;
 }
 
-dialog:has(.rmu-cse) button {
+form:has(.rmu-cse) button {
     background: var(--filroden-color-bg-light-solid);
     border: 1px solid var(--filroden-color-border);
     color: var(--filroden-color-text-main-solid);
     border-radius: var(--filroden-radius-small);
-    transition: background-color 0.1s, border-color 0.1s, color 0.1s ease;
+    transition:
+        background-color 0.1s,
+        border-color 0.1s,
+        color 0.1s ease;
 }
 
-dialog:has(.rmu-cse) button:hover {
+form:has(.rmu-cse) button:hover {
     background: var(--filroden-color-bg-hover-solid);
     border-color: var(--filroden-color-text-accent);
     box-shadow: none;
@@ -93,12 +102,12 @@ dialog:has(.rmu-cse) button:hover {
 
 .rmu-cse-icon {
     display: inline-block;
-    width: var(--filroden-font-size-l); 
+    width: var(--filroden-font-size-l);
     height: var(--filroden-font-size-l);
     min-width: var(--filroden-font-size-l);
     background-color: currentColor;
     background-image: none !important;
-    vertical-align: -0.125em; 
+    vertical-align: -0.125em;
     content: "";
     transform: scaleX(var(--filroden-dir-flip));
     -webkit-mask-size: 100% 100%;
@@ -111,9 +120,15 @@ dialog:has(.rmu-cse) button:hover {
 }
 
 .window-header i.rmu-cse-icon {
-    width: 14px; 
+    width: 14px;
     height: 14px;
 }
 
-.rmu-cse-icon.export        { -webkit-mask-image: url('../icons/file_export.svg'); mask-image: url('../icons/file_export.svg'); }
-.rmu-cse-icon.save        { -webkit-mask-image: url('../icons/file_save.svg'); mask-image: url('../icons/file_save.svg'); }
+.rmu-cse-icon.export {
+    -webkit-mask-image: url("../icons/file_export.svg");
+    mask-image: url("../icons/file_export.svg");
+}
+.rmu-cse-icon.save {
+    -webkit-mask-image: url("../icons/file_save.svg");
+    mask-image: url("../icons/file_save.svg");
+}
