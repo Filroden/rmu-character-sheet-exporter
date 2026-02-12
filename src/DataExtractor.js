@@ -143,7 +143,6 @@ export class DataExtractor {
         const mEnc = sys._injuryBlock._concentration._bonusWithRacial ?? 0;
 
         // --- MOVEMENT MODE TRANSLATION ---
-        // Lookup as a Skill (RMU.Skills.Running)
         let modeLabel = mode;
         const skillKey = `RMU.Skills.${mode}`;
 
@@ -363,10 +362,9 @@ export class DataExtractor {
                 chartName = game.i18n.localize(chartKey);
             }
 
-            // 3. Specialization Translation (e.g. "Blade" in "Blade 1H")
+            // 3. Specialization Translation
             let specialization = a.specialization || unknownTxt;
             if (a.specialization) {
-                // Look up in RMU.Specializations (e.g. RMU.Specializations.Blade)
                 const specKey = `RMU.Specializations.${a.specialization}`;
                 if (game.i18n.has(specKey)) {
                     specialization = game.i18n.localize(specKey);
@@ -483,28 +481,32 @@ export class DataExtractor {
             }
         });
 
-        return Object.keys(grouped)
-            .sort()
-            .map((rawKey) => {
-                let displayCat = rawKey;
-                if (rawKey === "General") {
-                    displayCat = generalTxt;
-                } else {
-                    const catKey = `RMU.SkillCategory.${rawKey}`;
-                    if (game.i18n.has(catKey)) {
-                        displayCat = game.i18n.localize(catKey);
+        return (
+            Object.keys(grouped)
+                // Fix: Filter out empty categories
+                .filter((key) => grouped[key].length > 0)
+                .sort()
+                .map((rawKey) => {
+                    let displayCat = rawKey;
+                    if (rawKey === "General") {
+                        displayCat = generalTxt;
+                    } else {
+                        const catKey = `RMU.SkillCategory.${rawKey}`;
+                        if (game.i18n.has(catKey)) {
+                            displayCat = game.i18n.localize(catKey);
+                        }
                     }
-                }
 
-                const sortedList = grouped[rawKey].sort((a, b) =>
-                    a.sortName.localeCompare(b.sortName),
-                );
+                    const sortedList = grouped[rawKey].sort((a, b) =>
+                        a.sortName.localeCompare(b.sortName),
+                    );
 
-                return {
-                    category: displayCat,
-                    list: sortedList,
-                };
-            });
+                    return {
+                        category: displayCat,
+                        list: sortedList,
+                    };
+                })
+        );
     }
 
     static _getSpells(actor) {

@@ -12,7 +12,7 @@
   ],
   "esmodules": [ "main.js" ],
   "languages": [
-        { "lang": "en", "name": "English", "path": "languages/en.json" },
+    { "lang": "en", "name": "English", "path": "languages/en.json" },
     { "lang": "en-GB", "name": "English (UK)", "path": "languages/en-gb.json" },
     { "lang": "es", "name": "Español (Spanish)", "path": "languages/es.json" },
     { "lang": "es-419", "name": "Español (Spanish - Latin America)", "path": "languages/es-419.json" },
