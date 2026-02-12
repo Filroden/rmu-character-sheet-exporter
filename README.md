@@ -9,22 +9,30 @@
 ![Last Commit](https://img.shields.io/github/last-commit/Filroden/rmu-character-sheet-exporter)
 ![Issues](https://img.shields.io/github/issues/Filroden/rmu-character-sheet-exporter)
 
-This is a simple module to create a printable version of the character sheet. Use the "Export Sheet" button in the header of any character and select:
+This is a simple module to create a printable version of the character sheet.
+
+## How to use
+
+Click the "Export Sheet" button in the window header of any character actor sheet.
+
+![Window header of a character actor sheet showing the Export Sheet button](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/sheet_header.png)
+
+Select:
 
 * If you want only ranked or favourite skills to be shown, or all skills
 * If you want to include the list of spells available within any known spell lists
 
-The module currently only offers one printable export format, HTML. Open the file in your browser and use your browser's "Print" function. Sheets are set up to (hopefully) not add page breaks in the middle of sections/lists.
+The module currently only offers one printable export format, HTML.
 
-## Important Notes
-
-* This is a Beta version. The code should be bug free but if you find any of the data in the exported sheet does not match the data inside the character sheet inside FoundryVTT then let me know.
-* This only works on characters, not creatures (see roadmap).
+Open the file in your browser and use your browser's "Print" function (either to a printer or to create a PDF). Sheets are set up to (hopefully) avoid adding page breaks in the middle of sections/lists.
 
 ## Roadmap
 
-* Add compact template
+* Add internationalisation
+* Support creatures
+* Add compact template for NPC/creature stat blocks
+* Add tournament template for full tabletop gameplay
 * Embed export of actor.json into html for later recovery
-* Portrait
-* Add markdown output
-* Creatures
+* Add character or creature portraits
+* Add additional output options
+* Add an output preview window

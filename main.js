@@ -25,7 +25,7 @@ const addHeaderButton = (app, buttons) => {
     buttons.unshift({
         label: "Export Sheet",
         class: "rmu-export-btn",
-        icon: "fas fa-file-export",
+        icon: "rmu-cse-icon export",
         onclick: () => startExportProcess(actor),
     });
 };
@@ -57,22 +57,22 @@ async function startExportProcess(actor) {
         const { DialogV2 } = foundry.applications.api;
 
         const content = `
-            <div class="form-group">
+            <div class="rmu-cse form-group">
                 <label>Choose Format:</label>
                 <select name="format" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;">
                     <option value="html">HTML</option>
                     <option value="json">JSON (Data)</option>
                 </select>
             </div>
-            <div class="form-group">
+            <div class="rmu-cse form-group">
                 <label>Skill Filter:</label>
                 <select name="skillFilter" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;">
                     <option value="ranked">Ranked / Favorites Only</option>
                     <option value="all">Show All Skills</option>
                 </select>
             </div>
-            <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
-                <input type="checkbox" name="showSpells" id="rmu-show-spells" checked />
+            <div class="rmu-cse form-group" style="display: flex; align-items: center; gap: 10px;">
+                <input class="rmu-cse-checkbox" type="checkbox" name="showSpells" id="rmu-show-spells" checked />
                 <label for="rmu-show-spells">Include Spell Lists?</label>
             </div>
         `;
@@ -84,7 +84,7 @@ async function startExportProcess(actor) {
                 {
                     action: "export",
                     label: "Download",
-                    icon: "fas fa-file-download",
+                    icon: "rmu-cse-icon save",
                     // We pass the actor (or derivedActor) to our helper
                     callback: (event, button, dialog) =>
                         handleExportSubmit(button, derivedActor || actor),
