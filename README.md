@@ -30,6 +30,7 @@ Once exported, open HTML files in your browser and use your browser's "Print" fu
 
 - **Standard Template**: This shows all the information you are likely to need to play the character laid out in a spacious template. You can choose to include some or all skills, and whether to include lists of spells.
 - **Compact Template**: This does not show inventory or lists of spells and only shows ranked/favourite skills. It uses a more compact design so it can more easily be used as a stat block.
+- **Fun Template**: This contains the same information as the Compact Template but is best served with Bubble Tea.
 
 ## Localisation & Translation
 
