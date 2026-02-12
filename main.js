@@ -23,7 +23,7 @@ const addHeaderButton = (app, buttons) => {
     if (exist) return;
 
     buttons.unshift({
-        label: "Export Sheet",
+        label: game.i18n.localize("RMU_EXPORT.Button.ExportSheet"),
         class: "rmu-export-btn",
         icon: "rmu-cse-icon export",
         onclick: () => startExportProcess(actor),
@@ -42,7 +42,11 @@ async function startExportProcess(actor) {
     if (!actor) return;
 
     try {
-        ui.notifications.info(`Generating sheet for ${actor.name}...`);
+        ui.notifications.info(
+            game.i18n.format("RMU_EXPORT.Notify.Generating", {
+                name: actor.name,
+            }),
+        );
 
         // 1. Force the System to calculate derived data
         const derivedActor = await DataExtractor.ensureExtendedData(actor);
@@ -58,32 +62,36 @@ async function startExportProcess(actor) {
 
         const content = `
             <div class="rmu-cse form-group">
-                <label>Choose Format:</label>
+                <label>${game.i18n.localize("RMU_EXPORT.Dialog.ChooseFormat")}</label>
                 <select name="format" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;">
                     <option value="html">HTML</option>
-                    <option value="json">JSON (Data)</option>
+                    <option value="json">${game.i18n.localize("RMU_EXPORT.Dialog.FormatJSON")}</option>
                 </select>
             </div>
             <div class="rmu-cse form-group">
-                <label>Skill Filter:</label>
+                <label>${game.i18n.localize("RMU_EXPORT.Dialog.SkillFilter")}</label>
                 <select name="skillFilter" style="width: 100%; box-sizing: border-box; margin-bottom: 10px;">
-                    <option value="ranked">Ranked / Favorites Only</option>
-                    <option value="all">Show All Skills</option>
+                    <option value="ranked">${game.i18n.localize("RMU_EXPORT.Dialog.FilterRanked")}</option>
+                    <option value="all">${game.i18n.localize("RMU_EXPORT.Dialog.FilterAll")}</option>
                 </select>
             </div>
             <div class="rmu-cse form-group" style="display: flex; align-items: center; gap: 10px;">
                 <input class="rmu-cse-checkbox" type="checkbox" name="showSpells" id="rmu-show-spells" checked />
-                <label for="rmu-show-spells">Include Spell Lists?</label>
+                <label for="rmu-show-spells">${game.i18n.localize("RMU_EXPORT.Dialog.IncludeSpells")}</label>
             </div>
         `;
 
         await DialogV2.wait({
-            window: { title: `Export: ${actor.name}` },
+            window: {
+                title: game.i18n.format("RMU_EXPORT.Dialog.Title", {
+                    name: actor.name,
+                }),
+            },
             content: content,
             buttons: [
                 {
                     action: "export",
-                    label: "Download",
+                    label: game.i18n.localize("RMU_EXPORT.Dialog.Download"),
                     icon: "rmu-cse-icon save",
                     // We pass the actor (or derivedActor) to our helper
                     callback: (event, button, dialog) =>
@@ -94,7 +102,11 @@ async function startExportProcess(actor) {
         });
     } catch (error) {
         console.error(`${MODULE_ID} | Export Failed:`, error);
-        ui.notifications.error(`Export Failed: ${error.message}`);
+        ui.notifications.error(
+            game.i18n.format("RMU_EXPORT.Notify.Failed", {
+                msg: error.message,
+            }),
+        );
     }
 }
 
