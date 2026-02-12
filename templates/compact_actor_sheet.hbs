@@ -88,7 +88,12 @@
         font-size: 0.7em;
         color: var(--rmu-cse-tertiary);
         display: flex;
+        flex-direction: column;
+    }
+    .footer-row {
+        display: flex;
         justify-content: space-between;
+        margin-bottom: 5px;
     }
     .text-center {
         text-align: center;
@@ -117,6 +122,7 @@
         border-radius: 4px;
         margin-bottom: 5px;
         font-weight: bold;
+        font-size: 0.8rem;
         border: 1px solid var(--rmu-cse-border-light);
     }
     .stat-grid {
@@ -354,16 +360,20 @@
             }}:</strong>
         {{localize "RMU_EXPORT.Defenses.Head"}}
         {{defenses.armor.head.name}}
-        (AT{{defenses.armor.head.at}}),
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.head.at}}),
         {{localize "RMU_EXPORT.Defenses.Torso"}}
         {{defenses.armor.torso.name}}
-        (AT{{defenses.armor.torso.at}}),
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.torso.at}}),
         {{localize "RMU_EXPORT.Defenses.Arms"}}
         {{defenses.armor.arms.name}}
-        (AT{{defenses.armor.arms.at}}),
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.arms.at}}),
         {{localize "RMU_EXPORT.Defenses.Legs"}}
         {{defenses.armor.legs.name}}
-        (AT{{defenses.armor.legs.at}})
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.legs.at}})
     </div>
 
     <div class="compact-row">
@@ -445,13 +455,18 @@
     </div>
 
     <div class="footer">
-        <span>{{localize "RMU_EXPORT.Footer.Generated"}}:
-            {{meta.timestamp}}</span>
-        <span>{{localize
-                "RMU_EXPORT.Footer.SystemVersion"
-            }}{{meta.systemVersion}}</span>
-        <span>{{localize
-                "RMU_EXPORT.Footer.ModuleVersion"
-            }}{{meta.moduleVersion}}</span>
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Generated"}}:
+                {{meta.timestamp}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.SystemVersion"
+                }}{{meta.systemVersion}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.ModuleVersion"
+                }}{{meta.moduleVersion}}</span>
+        </div>
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Copyright"}}</span>
+        </div>
     </div>
 </div>

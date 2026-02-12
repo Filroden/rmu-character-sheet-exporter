@@ -26,6 +26,17 @@ const AVAILABLE_TEMPLATES = {
             forcedShowSpells: false, // Used in submission logic
         },
     },
+    fun: {
+        id: "fun",
+        label: "RMU_EXPORT.Templates.Fun",
+        path: "modules/rmu-character-sheet-exporter/templates/fun_actor_sheet.hbs",
+        config: {
+            showSkillFilter: false,
+            forcedSkillFilter: "ranked", // Used in submission logic
+            showSpellFilter: false,
+            forcedShowSpells: false, // Used in submission logic
+        },
+    },
 };
 
 Hooks.once("init", () => {

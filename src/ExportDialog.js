@@ -98,8 +98,7 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             "[data-id='group-spells']",
         );
 
-        if (skillGroup)
-            skillGroup.style.display = showSkills ? "block" : "none";
+        if (skillGroup) skillGroup.style.display = showSkills ? "flex" : "none";
         if (spellGroup) spellGroup.style.display = showSpells ? "flex" : "none";
     }
 

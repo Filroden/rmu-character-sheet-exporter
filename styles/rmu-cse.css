@@ -30,7 +30,8 @@ form:has(.rmu-cse) .window-header .window-icon {
     margin-inline-end: 0;
 }
 
-form:has(.rmu-cse) .window-content {
+form:has(.rmu-cse) .window-content,
+form:has(.rmu-cse) .rmu-export-wrapper {
     background: var(--filroden-color-bg-darkest) !important;
     color: var(--filroden-color-text-main-solid);
     border: none;
@@ -38,6 +39,7 @@ form:has(.rmu-cse) .window-content {
     flex-direction: column;
     overflow: hidden;
     padding: var(--filroden-space-l);
+    gap: var(--filroden-space-m);
 }
 
 .rmu-cse label {
