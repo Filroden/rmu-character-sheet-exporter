@@ -1,47 +1,99 @@
-dialog:has(.rmu-cse) {
+.rmu-cse {
     font-family: var(--filroden-font-family) !important;
     font-size: var(--filroden-font-size-s);
+    background: var(--filroden-color-bg-darkest) !important;
 }
 
-dialog:has(.rmu-cse) .window-header {
+.rmu-cse .window-content {
     background: var(--filroden-color-bg-darkest) !important;
-    border: none !important;
     color: var(--filroden-color-text-main-solid);
-    flex: 0 0 auto !important; 
-    min-height: 34px; 
-    height: auto !important;
+    padding: 0;
+    overflow: hidden;
+}
+
+.rmu-export-wrapper {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: 1fr;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.settings-sidebar {
+    padding: var(--filroden-space-l);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: var(--filroden-space-m);
+    overflow-y: auto;
+    border-right: var(--filroden-border-main);
+    background: var(--filroden-color-bg-darkest);
+}
+
+.rmu-cse-divider {
+    margin-top: var(--filroden-space-m); 
+    margin-bottom: var(--filroden-space-s); 
+    border-bottom: 1px solid var(--filroden-color-border);
+}
+
+.rmu-cse .form-group.options {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-dialog:has(.rmu-cse) .window-header .window-title {
-    font-size: var(--filroden-font-size-s);
-    line-height: 1.2;
-    text-align: start; 
-    padding-inline-start: var(--filroden-space-s);
-    padding-inline-end: 0;
-    flex: 1;
+.rmu-cse .form-group.options label {
+    margin:0;
+    cursor:pointer;
 }
 
-dialog:has(.rmu-cse) .window-header .window-icon {
-    margin-inline-start: var(--filroden-space-xxs);
-    margin-inline-end: 0;
+.rmu-cse-divider label {
+    font-weight: bold; 
+    text-transform: uppercase; 
+    font-size: 0.85em; 
+    opacity: 0.8;
+    margin-bottom: 2px;
 }
 
-dialog:has(.rmu-cse) .window-content {
-    background: var(--filroden-color-bg-darkest) !important;
-    color: var(--filroden-color-text-main-solid);
-    border: none;
+.form-footer {
+    margin-top: auto;
+    padding-top: var(--filroden-space-m);
+}
+
+.preview-panel {
+    background-color: var(--filroden-color-bg-light-solid);
+    padding: var(--filroden-font-size-xl);
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     overflow: hidden;
-    padding: var(--filroden-space-l);
+}
+
+.preview-header {
+    width: 100%;
+    color: #ddd;
+    font-size: var(--filroden-font-size-xs);
+    text-transform: uppercase;
+    margin-bottom: var(--filroden-space-m);
+    display: flex;
+    justify-content: space-between;
+}
+
+iframe.preview-frame {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border: none;
+    box-shadow: var(--filroden-shadow-popout);
+    border-radius: var(--filroden-radius-small);
 }
 
 .rmu-cse label {
     color: var(--filroden-color-text-main-solid);
     line-height: normal;
+    display: block;
+    margin-bottom: var(--filroden-space-xs);
 }
 
 .rmu-cse select {
@@ -51,11 +103,12 @@ dialog:has(.rmu-cse) .window-content {
     border-radius: var(--filroden-radius-small);
     min-height: 1.6rem;
     padding-inline: var(--filroden-space-xs);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .rmu-cse select option {
-    background-color: var(--visage-color-bg-darkest) !important; 
+    background-color: var(--visage-color-bg-darkest) !important;
     color: var(--visage-color-text-main-solid) !important;
 }
 
@@ -63,42 +116,42 @@ dialog:has(.rmu-cse) .window-content {
     appearance: auto;
     accent-color: var(--filroden-color-text-accent);
     color-scheme: dark;
-    width: var(--filroden-font-size-m) !important;
+    width: var(--filroden-font-size-m); 
     height: var(--filroden-font-size-m);
-    margin: var(--filroden-space-xs);
+    margin-right: var(--filroden-space-s);
     cursor: pointer;
-    display: inline-block;
-    align-content: center;
-    text-align: center;
+    vertical-align: middle;
 }
 
 .rmu-cse-checkbox::before,
 .rmu-cse-checkbox::after {
     content: none;
+    vertical-align: middle;
 }
 
-dialog:has(.rmu-cse) button {
+.rmu-cse button {
+    width: 100%;
     background: var(--filroden-color-bg-light-solid);
     border: 1px solid var(--filroden-color-border);
     color: var(--filroden-color-text-main-solid);
     border-radius: var(--filroden-radius-small);
-    transition: background-color 0.1s, border-color 0.1s, color 0.1s ease;
+    padding: var(--filroden-space-xs);
+    cursor: pointer;
 }
 
-dialog:has(.rmu-cse) button:hover {
+.rmu-cse button:hover {
     background: var(--filroden-color-bg-hover-solid);
     border-color: var(--filroden-color-text-accent);
-    box-shadow: none;
 }
 
 .rmu-cse-icon {
     display: inline-block;
-    width: var(--filroden-font-size-l); 
+    width: var(--filroden-font-size-l);
     height: var(--filroden-font-size-l);
     min-width: var(--filroden-font-size-l);
     background-color: currentColor;
     background-image: none !important;
-    vertical-align: -0.125em; 
+    vertical-align: -0.125em;
     content: "";
     transform: scaleX(var(--filroden-dir-flip));
     -webkit-mask-size: 100% 100%;
@@ -111,9 +164,15 @@ dialog:has(.rmu-cse) button:hover {
 }
 
 .window-header i.rmu-cse-icon {
-    width: 14px; 
+    width: 14px;
     height: 14px;
 }
 
-.rmu-cse-icon.export        { -webkit-mask-image: url('../icons/file_export.svg'); mask-image: url('../icons/file_export.svg'); }
-.rmu-cse-icon.save        { -webkit-mask-image: url('../icons/file_save.svg'); mask-image: url('../icons/file_save.svg'); }
+.rmu-cse-icon.export {
+    -webkit-mask-image: url("../icons/file_export.svg");
+    mask-image: url("../icons/file_export.svg");
+}
+.rmu-cse-icon.save {
+    -webkit-mask-image: url("../icons/file_save.svg");
+    mask-image: url("../icons/file_save.svg");
+}

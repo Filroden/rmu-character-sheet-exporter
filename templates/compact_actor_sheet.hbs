@@ -1,0 +1,472 @@
+<style>
+    :root {
+        --rmu-cse-primary: #333;
+        --rmu-cse-secondary: #666;
+        --rmu-cse-tertiary: #888;
+        --rmu-cse-alert: #c00;
+        --rmu-cse-text-main: #333;
+        --rmu-cse-text-light: #555;
+        --rmu-cse-text-inverse: #fff;
+        --rmu-cse-bg-sheet: #f4f4f4;
+        --rmu-cse-bg-card: #fff;
+        --rmu-cse-bg-panel: #fafafa;
+        --rmu-cse-bg-header: #e8e8e8;
+        --rmu-cse-bg-table-head: #eee;
+        --rmu-cse-border-heavy: #333;
+        --rmu-cse-border-main: #ccc;
+        --rmu-cse-border-light: #ddd;
+        --rmu-cse-border-subtle: #eee;
+        --rmu-cse-border-dashed: #999;
+    }
+    .rmu-sheet {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        color: var(--rmu-cse-text-main);
+        line-height: 1.4;
+        font-size: 14px;
+        background-color: var(--rmu-cse-bg-sheet);
+        padding: 10px;
+    }
+    .section-title {
+        background: var(--rmu-cse-primary);
+        color: var(--rmu-cse-text-inverse);
+        padding: 4px 8px;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-bottom: 8px;
+        border-radius: 3px;
+        font-size: 1.1em;
+    }
+    .header {
+        font-weight: bold;
+        margin-bottom: 5px;
+        border-bottom: 1px solid var(--rmu-cse-border-main);
+    }
+    .list-container {
+        columns: 3;
+        column-gap: 20px;
+    }
+    .block {
+        break-inside: avoid;
+        margin-bottom: 12px;
+    }
+    .compact-list-flow {
+        font-size: 0.95em;
+        line-height: 1.5;
+    }
+    .group-label {
+        color: var(--rmu-cse-secondary);
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.85em;
+    }
+    .separator {
+        color: var(--rmu-cse-tertiary);
+        margin: 0 6px;
+        font-weight: normal;
+    }
+    .cat-header {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.85em;
+        background: var(--rmu-cse-bg-header);
+        padding: 2px 5px;
+        border-left: 3px solid var(--rmu-cse-secondary);
+        margin-bottom: 4px;
+    }
+    .row {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px dotted var(--rmu-cse-border-main);
+        padding: 1px 0;
+        font-size: 0.95em;
+    }
+    .footer {
+        margin-top: 40px;
+        padding-top: 10px;
+        border-top: 1px solid var(--rmu-cse-border-main);
+        font-size: 0.7em;
+        color: var(--rmu-cse-tertiary);
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .header-block {
+        border-bottom: 2px solid var(--rmu-cse-border-heavy);
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+    .header-title {
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 0;
+    }
+    .header-sub {
+        font-style: italic;
+        color: var(--rmu-cse-text-light);
+        font-size: 1.1em;
+    }
+    .quick-info-grid {
+        display: flex;
+        justify-content: space-between;
+        background: var(--rmu-cse-bg-panel);
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 0.8rem;
+        border: 1px solid var(--rmu-cse-border-light);
+    }
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+    .stat-box {
+        border: 1px solid var(--rmu-cse-border-light);
+        padding: 4px;
+        text-align: center;
+        background: var(--rmu-cse-bg-card);
+    }
+    .stat-label {
+        font-weight: bold;
+        font-size: 11px;
+        display: block;
+        color: var(--rmu-cse-secondary);
+        text-transform: uppercase;
+    }
+    .stat-value {
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .res-grid {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid var(--rmu-cse-border-main);
+        border-bottom: 1px solid var(--rmu-cse-border-main);
+        padding: 5px 0;
+        margin-bottom: 10px;
+        background-color: var(--rmu-cse-bg-panel);
+    }
+    .res-item {
+        text-align: center;
+        flex: 1;
+        border-right: 1px solid var(--rmu-cse-border-subtle);
+    }
+    .res-item:last-child {
+        border-right: none;
+    }
+    .tactical-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9em;
+        text-align: center;
+    }
+    .tactical-table th {
+        background: var(--rmu-cse-bg-table-head);
+        padding: 4px;
+        border: 1px solid var(--rmu-cse-border-main);
+    }
+    .tactical-table td {
+        border: 1px solid var(--rmu-cse-border-main);
+        padding: 4px;
+    }
+    .armor-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+        margin-top: 5px;
+    }
+    .armor-box {
+        border: 1px dashed var(--rmu-cse-border-dashed);
+        padding: 5px;
+        font-size: 0.85em;
+        background: var(--rmu-cse-bg-card);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .armor-loc {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.8em;
+        color: var(--rmu-cse-secondary);
+        margin-right: 5px;
+    }
+    .attack-table {
+        text-align: left;
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+    }
+    .attack-table th.text-center,
+    .attack-table td.text-center {
+        text-align: center;
+    }
+    .attack-table th {
+        text-align: left;
+        border-bottom: 2px solid var(--rmu-cse-border-heavy);
+        font-size: 0.9em;
+        padding: 4px;
+        background-color: var(--rmu-cse-bg-table-head);
+    }
+    .attack-table td {
+        border-bottom: 1px solid var(--rmu-cse-border-subtle);
+        padding: 0 4px;
+    }
+    .attack-ob {
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    .inv-stats {
+        display: flex;
+        justify-content: space-between;
+        background: var(--rmu-cse-bg-panel);
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid var(--rmu-cse-border-main);
+        font-size: 0.9em;
+        margin-bottom: 5px;
+    }
+    .inv-row {
+        break-inside: avoid;
+        align-items: center;
+    }
+    .inv-meta {
+        display: flex;
+        justify-content: flex-end;
+        min-width: 110px;
+        font-size: 0.85em;
+        color: var(--rmu-cse-text-light);
+    }
+    .inv-qty {
+        width: 35px;
+        text-align: center;
+        border-right: 1px solid var(--rmu-cse-border-light);
+        margin-right: 5px;
+    }
+    .inv-wgt {
+        width: 60px;
+        text-align: right;
+    }
+    .skill-bonus {
+        font-weight: bold;
+    }
+    .spell-list-type {
+        font-size: 0.8em;
+        font-weight: normal;
+        color: var(--rmu-cse-secondary);
+    }
+    .spell-row {
+        display: flex;
+        font-size: 0.95em;
+    }
+    @media print {
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .rmu-sheet {
+            max-width: 100%;
+            border: none;
+        }
+        .section-title,
+        .header-block,
+        .quick-info-grid,
+        .stat-grid,
+        .res-grid,
+        .block {
+            break-inside: avoid;
+        }
+        .section-title,
+        .cat-header,
+        .attack-table th,
+        .quick-info-grid,
+        .inv-stats,
+        .stat-box {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+    }
+</style>
+
+<div class="rmu-sheet">
+    <div class="header-block">
+        <div class="header-title">{{header.name}}</div>
+        <div class="header-sub">
+            {{localize "RMU_EXPORT.Header.Level"}}
+            {{header.level}}
+            •
+            {{header.culture}}
+            •
+            {{header.race}}
+            •
+            {{header.profession}}
+            •
+            {{header.realm}}
+            •
+            {{header.size}}
+        </div>
+    </div>
+
+    <div class="quick-info-grid">
+        <span>{{localize "RMU_EXPORT.Stats.BMR"}}:
+            {{quick_info.bmr_value}}
+            ({{quick_info.bmr_mode}})</span>
+        <span>{{localize "RMU_EXPORT.Stats.Initiative"}}:
+            {{quick_info.initiative}}</span>
+        <span>{{localize "RMU_EXPORT.Stats.HP"}}:
+            {{quick_info.hits.current}}
+            /
+            {{quick_info.hits.max}}</span>
+        <span>{{localize "RMU_EXPORT.Stats.PhysicalEnd"}}:
+            {{quick_info.endurance_physical}}</span>
+        <span>{{localize "RMU_EXPORT.Stats.MentalEnd"}}:
+            {{quick_info.endurance_mental}}</span>
+        <span>{{localize "RMU_EXPORT.Stats.Power"}}:
+            {{quick_info.power.current}}
+            /
+            {{quick_info.power.max}}</span>
+    </div>
+
+    <div class="stat-grid">
+        {{#each stats}}
+            <div class="stat-box">
+                <span class="stat-label">{{label}}: {{bonus}}</span>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="res-grid">
+        {{#each resistances}}
+            <div class="res-item">
+                <div class="stat-label">{{label}}: {{bonus}}</div>
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="section-title">{{localize "RMU_EXPORT.Section.Defenses"}}</div>
+    <div class="compact-row">
+        <strong class="group-label">{{localize
+                "RMU_EXPORT.Defenses.ArmorCoverage"
+            }}:</strong>
+        {{localize "RMU_EXPORT.Defenses.Head"}}
+        {{defenses.armor.head.name}}
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.head.at}}),
+        {{localize "RMU_EXPORT.Defenses.Torso"}}
+        {{defenses.armor.torso.name}}
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.torso.at}}),
+        {{localize "RMU_EXPORT.Defenses.Arms"}}
+        {{defenses.armor.arms.name}}
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.arms.at}}),
+        {{localize "RMU_EXPORT.Defenses.Legs"}}
+        {{defenses.armor.legs.name}}
+        ({{localize "RMU_EXPORT.Defenses.AT"}}
+        {{defenses.armor.legs.at}})
+    </div>
+
+    <div class="compact-row">
+        <strong class="group-label">{{localize
+                "RMU_EXPORT.Defenses.TotalDB"
+            }}:</strong>
+        {{localize "RMU_EXPORT.Defenses.DodgeDB"}}
+        ({{#each defenses.tactical}}{{mode}}
+            {{dodge}}{{#unless @last}}, {{/unless}}{{/each}}),
+        {{localize "RMU_EXPORT.Defenses.BlockDB"}}
+        ({{#each defenses.tactical}}{{mode}}
+            {{block}}{{#unless @last}}, {{/unless}}{{/each}})
+    </div>
+
+    <div class="section-title">{{localize "RMU_EXPORT.Section.Attacks"}}</div>
+    <table class="attack-table">
+        <thead>
+            <tr>
+                <th width="30%">{{localize "RMU_EXPORT.Attacks.Weapon"}}</th>
+                <th width="10%" class="text-center">{{localize
+                        "RMU_EXPORT.Attacks.OB"
+                    }}</th>
+                <th width="10%" class="text-center">{{localize
+                        "RMU_EXPORT.Attacks.Fumble"
+                    }}</th>
+                <th width="20%">{{localize "RMU_EXPORT.Attacks.Chart"}}</th>
+                <th width="15%" class="text-center">{{localize
+                        "RMU_EXPORT.Attacks.Reach"
+                    }}</th>
+                <th width="15%" class="text-center">{{localize
+                        "RMU_EXPORT.Attacks.Range"
+                    }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each attacks}}
+                <tr>
+                    <td>{{name}} ({{specialization}} {{handed}})</td>
+                    <td class="attack-ob text-center">{{ob}}</td>
+                    <td
+                        class="text-center"
+                        style="color: var(--rmu-cse-alert);"
+                    >{{fumble}}</td>
+                    <td>{{damageType}}</td>
+                    <td class="text-center">{{reach}}</td>
+                    <td class="text-center">{{range}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="section-title">{{localize "RMU_EXPORT.Section.Skills"}}</div>
+    <div class="list-container">
+        {{#each skill_groups}}
+            <div class="block">
+                <div class="header">{{category}}</div>
+                {{#each list}}
+                    <div class="row">
+                        <span>{{name}}{{#if specialisation}}:
+                                {{specialisation}}{{/if}}</span>
+                        <span class="skill-bonus">{{bonus}} ({{ranks}})</span>
+                    </div>
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+
+    <div class="section-title">{{localize "RMU_EXPORT.Section.Talents"}}</div>
+    <div class="compact-list-flow">
+        {{#each talents}}
+            <span class="group-wrapper">
+                <span class="group-label">{{group}}:</span>
+                {{#each entries}}
+                    <span>{{name}} {{tier}}</span>{{#unless @last}}, {{/unless}}
+                {{/each}}
+            </span>
+            {{#unless @last}}<span class="separator"> | </span>{{/unless}}
+        {{/each}}
+    </div>
+
+    <div class="footer">
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Generated"}}:
+                {{meta.timestamp}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.SystemVersion"
+                }}{{meta.systemVersion}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.ModuleVersion"
+                }}{{meta.moduleVersion}}</span>
+        </div>
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Copyright"}}</span>
+        </div>
+    </div>
+</div>
