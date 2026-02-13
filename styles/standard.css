@@ -208,7 +208,7 @@
 }
 .attack-table td {
     border-bottom: 1px solid var(--rmu-cse-border-subtle);
-    padding: 0 4px;
+    padding: 2px 4px;
 }
 
 .attack-ob { font-weight: bold; font-size: 1.1em; }
@@ -218,7 +218,7 @@
 /* --- INVENTORY --- */
 .inv-stats {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     background: var(--rmu-cse-bg-panel);
     padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--rmu-cse-border-main);

@@ -145,6 +145,14 @@ export class DataExtractor {
             return val;
         };
 
+        let realmLabel = sys.realm || noneTxt;
+        if (sys.realm) {
+            const realmKey = `RMU.RealmsOfMagic.${sys.realm}`;
+            if (game.i18n.has(realmKey)) {
+                realmLabel = game.i18n.localize(realmKey);
+            }
+        }
+
         return {
             name: actor.name,
             race: getSystemLabel("RMU.Race", sys._header?._raceName),
@@ -154,7 +162,7 @@ export class DataExtractor {
                 sys._header?._professionName,
             ),
             level: sys.experience?.level ?? 1,
-            realm: sys.realm || noneTxt,
+            realm: realmLabel,
             size: getSystemLabel("RMU.Size", sys.appearance?.size),
         };
     }
@@ -327,8 +335,21 @@ export class DataExtractor {
         const getArmorInfo = (loc) => {
             const part = armorData[loc];
             if (!part) return { name: noneTxt, at: 1 };
+
+            let matName = part.piece?._base?.material || noneTxt;
+
+            if (part.piece?._base?.material) {
+                const rawMat = part.piece._base.material;
+                const cleanMat = rawMat.replace(/\s+/g, "");
+
+                const armorKey = `RMU.ArmorTypes.${cleanMat}`;
+                if (game.i18n.has(armorKey)) {
+                    matName = game.i18n.localize(armorKey);
+                }
+            }
+
             return {
-                name: part.piece?._base?.material || noneTxt,
+                name: matName,
                 at: part.AT ?? 1,
             };
         };
@@ -604,9 +625,15 @@ export class DataExtractor {
             maxPace = actor.system.encumbrance.pace;
         }
 
+        const allowance = actor.system._loadAllowed?.weight ?? 0;
+        const carried = actor.system._carriedWeight?.weight ?? 0;
+
+        const cleanAllowance = Math.round(Number(allowance) * 100) / 100;
+        const cleanCarried = Math.round(Number(carried) * 100) / 100;
+
         return {
-            weight_allowance: `${actor.system._loadAllowed?.weight ?? 0} lbs`,
-            weight_carried: `${actor.system._carriedWeight?.weight ?? 0} lbs`,
+            weight_allowance: `${cleanAllowance} lbs`,
+            weight_carried: `${cleanCarried} lbs`,
             enc_penalty: enc_penalty || 0,
             max_pace: maxPace,
             items: itemList,
