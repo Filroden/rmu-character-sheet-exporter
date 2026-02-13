@@ -149,7 +149,6 @@ export class DataExtractor {
         const pEnc = sys._injuryBlock._endurance._bonusWithRacial ?? 0;
         const mEnc = sys._injuryBlock._concentration._bonusWithRacial ?? 0;
 
-        // --- MOVEMENT MODE TRANSLATION ---
         let modeLabel = mode;
         const skillKey = `RMU.Skills.${mode}`;
 
@@ -351,7 +350,6 @@ export class DataExtractor {
                 }
             }
 
-            // 1. Attack Name Translation
             let attackName = a.attackName || unknownWpn;
             const tableKey = `RMU.AttackTables.${a.attackName}`;
             const attackKey = `RMU.Attacks.${a.attackName}`;
@@ -362,14 +360,12 @@ export class DataExtractor {
                 attackName = game.i18n.localize(attackKey);
             }
 
-            // 2. Chart Name (Damage Type) Translation
             let chartName = a.chart.name || unknownTxt;
             const chartKey = `RMU.AttackTables.${a.chart.name}`;
             if (game.i18n.has(chartKey)) {
                 chartName = game.i18n.localize(chartKey);
             }
 
-            // 3. Specialization Translation
             let specialization = a.specialization || unknownTxt;
             if (a.specialization) {
                 const specKey = `RMU.Specializations.${a.specialization}`;
@@ -488,32 +484,29 @@ export class DataExtractor {
             }
         });
 
-        return (
-            Object.keys(grouped)
-                // Fix: Filter out empty categories
-                .filter((key) => grouped[key].length > 0)
-                .sort()
-                .map((rawKey) => {
-                    let displayCat = rawKey;
-                    if (rawKey === "General") {
-                        displayCat = generalTxt;
-                    } else {
-                        const catKey = `RMU.SkillCategory.${rawKey}`;
-                        if (game.i18n.has(catKey)) {
-                            displayCat = game.i18n.localize(catKey);
-                        }
+        return Object.keys(grouped)
+            .filter((key) => grouped[key].length > 0)
+            .sort()
+            .map((rawKey) => {
+                let displayCat = rawKey;
+                if (rawKey === "General") {
+                    displayCat = generalTxt;
+                } else {
+                    const catKey = `RMU.SkillCategory.${rawKey}`;
+                    if (game.i18n.has(catKey)) {
+                        displayCat = game.i18n.localize(catKey);
                     }
+                }
 
-                    const sortedList = grouped[rawKey].sort((a, b) =>
-                        a.sortName.localeCompare(b.sortName),
-                    );
+                const sortedList = grouped[rawKey].sort((a, b) =>
+                    a.sortName.localeCompare(b.sortName),
+                );
 
-                    return {
-                        category: displayCat,
-                        list: sortedList,
-                    };
-                })
-        );
+                return {
+                    category: displayCat,
+                    list: sortedList,
+                };
+            });
     }
 
     static _getSpells(actor) {

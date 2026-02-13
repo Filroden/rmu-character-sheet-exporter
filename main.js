@@ -4,7 +4,6 @@ import { ExportDialog } from "./src/ExportDialog.js";
 
 const MODULE_ID = "rmu-character-sheet-exporter";
 
-// 1. Define templates configuration
 const AVAILABLE_TEMPLATES = {
     standard: {
         id: "standard",
@@ -73,7 +72,6 @@ async function startExportProcess(actor) {
             );
         }
 
-        // 2. Use the Custom ApplicationV2 Class
         const result = await ExportDialog.wait(
             derivedActor || actor,
             AVAILABLE_TEMPLATES,
@@ -96,12 +94,9 @@ async function handleExportSubmit(formData, actor) {
     const templatePath = formData.templatePath;
     const format = formData.format;
 
-    // Default values from form
     let skillFilter = formData.skillFilter;
     let showSpells = formData.showSpells;
 
-    // 3. Apply Forced Overrides
-    // We look up the config again to apply security overrides (in case hidden fields were manipulated or missing)
     const templateKey = Object.keys(AVAILABLE_TEMPLATES).find(
         (k) => AVAILABLE_TEMPLATES[k].path === templatePath,
     );
