@@ -77,19 +77,46 @@ export class DataExtractor {
         if (!targetActor) return {};
 
         const sys = targetActor.system;
-        const { showAllSkills = false, showSpells = true } = options;
+        const {
+            showAllSkills = false,
+            header = true,
+            quick_info = true,
+            stats = true,
+            defenses = true,
+            attacks = true,
+            skills = true,
+            spells = true,
+            inventory = true,
+            talents = true,
+        } = options;
 
         return {
-            header: this._getHeader(targetActor),
-            quick_info: this._getQuickInfo(sys),
-            stats: this._getStats(sys),
-            resistances: this._getResistances(sys),
-            defenses: this._getDefenses(sys, targetActor),
-            attacks: this._getAttacks(targetActor),
-            talents: this._getTalents(targetActor),
-            skill_groups: this._getSkills(targetActor, { showAllSkills }),
-            spells: showSpells ? this._getSpells(targetActor) : [],
-            inventory: this._getInventory(targetActor),
+            options: {
+                header,
+                quick_info,
+                stats,
+                defenses,
+                attacks,
+                skills,
+                spells,
+                inventory,
+                talents,
+            },
+            header_data: header ? this._getHeader(targetActor) : null,
+            quick_info_data: quick_info ? this._getQuickInfo(sys) : null,
+            stats_data: stats ? this._getStats(sys) : null,
+            resistances_data: stats ? this._getResistances(sys) : null,
+            defenses_data: defenses
+                ? this._getDefenses(sys, targetActor)
+                : null,
+            attacks_data: attacks ? this._getAttacks(targetActor) : null,
+            talents_data: talents ? this._getTalents(targetActor) : null,
+            skill_groups_data: skills
+                ? this._getSkills(targetActor, { showAllSkills })
+                : [],
+            spells_data: spells ? this._getSpells(targetActor) : [],
+            inventory_data: inventory ? this._getInventory(targetActor) : null,
+
             meta: {
                 timestamp: new Date().toLocaleString(),
                 systemVersion: game.system.version,

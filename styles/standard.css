@@ -1,0 +1,303 @@
+/* ========================================= */
+/* RMU EXPORT: STANDARD THEME (Unified)     */
+/* Base style for both Standard & Compact   */
+/* ========================================= */
+
+:root {
+    --rmu-cse-primary: #333;
+    --rmu-cse-secondary: #666;
+    --rmu-cse-tertiary: #888;
+    --rmu-cse-alert: #c00;
+    --rmu-cse-text-main: #333;
+    --rmu-cse-text-light: #555;
+    --rmu-cse-text-inverse: #fff;
+    --rmu-cse-bg-sheet: #f4f4f4;
+    --rmu-cse-bg-card: #fff;
+    --rmu-cse-bg-panel: #fafafa;
+    --rmu-cse-bg-header: #e8e8e8;
+    --rmu-cse-bg-table-head: #eee;
+    --rmu-cse-border-heavy: #333;
+    --rmu-cse-border-main: #ccc;
+    --rmu-cse-border-light: #ddd;
+    --rmu-cse-border-subtle: #eee;
+    --rmu-cse-border-dashed: #999;
+}
+
+/* --- GENERAL SHEET LAYOUT --- */
+.rmu-sheet {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    color: var(--rmu-cse-text-main);
+    line-height: 1.4;
+    font-size: 14px;
+    background-color: var(--rmu-cse-bg-sheet);
+    padding: 10px;
+}
+
+/* --- HEADERS --- */
+.header-block {
+    border-bottom: 2px solid var(--rmu-cse-border-heavy);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+}
+.header-sub {
+    font-style: italic;
+    color: var(--rmu-cse-text-light);
+    font-size: 1.1em;
+}
+
+.section-title {
+    background: var(--rmu-cse-primary);
+    color: var(--rmu-cse-text-inverse);
+    padding: 4px 8px;
+    font-weight: bold;
+    margin-top: 10px; /* Compact spacing */
+    margin-bottom: 8px;
+    border-radius: 3px;
+    font-size: 1.1em;
+}
+
+.header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--rmu-cse-border-main);
+}
+.cat-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    background: var(--rmu-cse-bg-header);
+    padding: 2px 5px;
+    border-left: 3px solid var(--rmu-cse-secondary);
+    margin-bottom: 4px;
+}
+
+/* --- GRIDS & BLOCKS --- */
+.list-container {
+    columns: 3;
+    column-gap: 20px;
+}
+.block {
+    break-inside: avoid;
+    margin-bottom: 12px;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted var(--rmu-cse-border-main);
+    padding: 1px 0;
+    font-size: 0.95em;
+}
+
+/* --- QUICK INFO (Compact Style) --- */
+.quick-info-grid {
+    display: flex;
+    justify-content: space-between;
+    background: var(--rmu-cse-bg-panel);
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.8rem; /* Compact font size */
+    border: 1px solid var(--rmu-cse-border-light);
+}
+
+/* --- STATS & RESISTANCE --- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.stat-box {
+    border: 1px solid var(--rmu-cse-border-light);
+    padding: 4px;
+    text-align: center;
+    background: var(--rmu-cse-bg-card);
+}
+.stat-label {
+    font-weight: bold;
+    font-size: 11px;
+    display: block;
+    color: var(--rmu-cse-secondary);
+    text-transform: uppercase;
+}
+.stat-value {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.res-grid {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--rmu-cse-border-main);
+    border-bottom: 1px solid var(--rmu-cse-border-main);
+    padding: 5px 0;
+    margin-bottom: 10px;
+    background-color: var(--rmu-cse-bg-panel);
+}
+.res-item {
+    text-align: center;
+    flex: 1;
+    border-right: 1px solid var(--rmu-cse-border-subtle);
+}
+.res-item:last-child {
+    border-right: none;
+}
+
+/* --- DEFENSES & ARMOR --- */
+.defense-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+.defense-left, .defense-right {
+    flex: 1;
+}
+
+.armor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    margin-top: 5px;
+}
+.armor-box {
+    border: 1px dashed var(--rmu-cse-border-dashed);
+    padding: 5px;
+    font-size: 0.85em;
+    background: var(--rmu-cse-bg-card);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.armor-loc {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: var(--rmu-cse-secondary);
+    margin-right: 5px;
+}
+
+/* --- TABLES (Attacks & Tactical) --- */
+.tactical-table, .attack-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+.tactical-table { text-align: center; }
+.attack-table { text-align: left; margin-bottom: 15px; }
+
+.tactical-table th, .attack-table th {
+    background: var(--rmu-cse-bg-table-head);
+    padding: 4px;
+    border: 1px solid var(--rmu-cse-border-main);
+}
+.attack-table th {
+    border-bottom: 2px solid var(--rmu-cse-border-heavy);
+}
+
+.tactical-table td {
+    border: 1px solid var(--rmu-cse-border-main);
+    padding: 4px;
+}
+.attack-table td {
+    border-bottom: 1px solid var(--rmu-cse-border-subtle);
+    padding: 0 4px; /* Compact padding */
+}
+
+.attack-ob { font-weight: bold; font-size: 1.1em; }
+.text-center { text-align: center; }
+.alert-text { color: var(--rmu-cse-alert); }
+
+/* --- INVENTORY --- */
+.inv-stats {
+    display: flex;
+    justify-content: space-between;
+    background: var(--rmu-cse-bg-panel);
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--rmu-cse-border-main);
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+.inv-row { align-items: center; break-inside: avoid; }
+.inv-meta {
+    display: flex; 
+    justify-content: flex-end; 
+    min-width: 110px; 
+    font-size: 0.85em; 
+    color: var(--rmu-cse-text-light);
+}
+.inv-qty {
+    width: 35px; text-align: center; 
+    border-right: 1px solid var(--rmu-cse-border-light); 
+    margin-right: 5px;
+}
+.inv-wgt { width: 60px; text-align: right; }
+
+/* --- COMPACT FLOW LISTS (Used in Compact Layout) --- */
+.compact-list-flow {
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.compact-row {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.group-label {
+    color: var(--rmu-cse-secondary);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+.separator {
+    color: var(--rmu-cse-tertiary);
+    margin: 0 6px;
+    font-weight: normal;
+}
+.group-wrapper { display: inline-block; }
+
+/* --- MISC --- */
+.skill-bonus { font-weight: bold; }
+.spell-list-type { font-size: 0.8em; font-weight: normal; color: var(--rmu-cse-secondary); }
+.spell-row { display: flex; font-size: 0.95em; }
+.talent-item {
+    display: flex; justify-content: space-between;
+    border-bottom: 1px dotted var(--rmu-cse-border-main);
+    padding: 1px 0; font-size: 0.95em;
+}
+
+/* --- FOOTER --- */
+.footer {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rmu-cse-border-main);
+    font-size: 0.7em;
+    color: var(--rmu-cse-tertiary);
+    display: flex; flex-direction: column;
+}
+.footer-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+
+/* --- PRINT MEDIA QUERY --- */
+@media print {
+    .rmu-sheet { 
+        max-width: 100%; 
+        border: none; 
+    }
+
+    .section-title, 
+    .header-block, 
+    .quick-info-grid, 
+    .stat-grid, 
+    .res-grid, 
+    .block, 
+    .inv-stats { 
+        break-inside: avoid; 
+    }
+}

@@ -1,0 +1,355 @@
+:root {
+    /* BOBA SHOP PALETTE */
+    --pop-pink: #ff9ff3;
+    --pop-purple: #9b59b6; /* Taro */
+    --pop-blue: #48dbfb;
+    --pop-yellow: #feca57;
+    --pop-dark: #2c3e50;
+    --pop-milk: #f7f1e3;
+    --pop-text: #2d3436;
+
+    /* MAPPING TO SHEET VARS */
+    --rmu-cse-primary: var(--pop-purple);
+    --rmu-cse-secondary: var(--pop-dark);
+    --rmu-cse-tertiary: #636e72;
+    --rmu-cse-alert: #ff6b6b;
+
+    --rmu-cse-text-main: var(--pop-text);
+    --rmu-cse-text-light: #555;
+    --rmu-cse-text-inverse: #fff;
+
+    --rmu-cse-bg-sheet: #ffeaa7; /* Manila folder / Milk tea background */
+    --rmu-cse-bg-card: #ffffff;
+    --rmu-cse-bg-panel: rgba(255, 255, 255, 0.6);
+    --rmu-cse-bg-header: var(--pop-pink);
+    --rmu-cse-bg-table-head: var(--pop-blue);
+
+    --rmu-cse-border-heavy: var(--pop-dark);
+    --rmu-cse-border-main: var(--pop-purple);
+    --rmu-cse-border-light: #fab1a0;
+    --rmu-cse-border-subtle: #dfe6e9;
+    --rmu-cse-border-dashed: #b2bec3;
+}
+
+/* BACKGROUND PATTERN - POLKA DOTS (TAPIOCA) */
+.rmu-sheet {
+    font-family: "Verdana", "Segoe UI", sans-serif; /* Rounder font */
+    max-width: 800px;
+    color: var(--rmu-cse-text-main);
+    line-height: 1.4;
+    font-size: 14px;
+    background-color: var(--rmu-cse-bg-sheet);
+    background-image:
+        radial-gradient(var(--pop-yellow) 20%, transparent 20%),
+        radial-gradient(var(--pop-pink) 20%, transparent 20%);
+    background-size: 20px 20px;
+    background-position:
+        0 0,
+        10px 10px;
+    padding: 15px;
+    border: 4px solid var(--pop-dark);
+    border-radius: 20px;
+    box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.section-title {
+    background: var(--rmu-cse-primary);
+    color: var(--rmu-cse-text-inverse);
+    padding: 6px 15px;
+    font-weight: 900;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    border: 2px solid var(--pop-dark);
+    box-shadow: 3px 3px 0px var(--pop-dark);
+    text-shadow: 1px 1px 0 #000;
+    letter-spacing: 1px;
+}
+
+/* SUB-HEADERS */
+.header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    border-bottom: 2px dashed var(--rmu-cse-border-main);
+    color: var(--pop-purple);
+}
+
+/* COLUMNS & BLOCKS */
+.list-container {
+    columns: 3;
+    column-gap: 10px;
+}
+.block {
+    break-inside: avoid;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--pop-purple);
+}
+.compact-list-flow {
+    font-size: 0.95em;
+    line-height: 1.5;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid var(--pop-dark);
+}
+.group-label {
+    color: var(--rmu-cse-primary);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    background: var(--pop-milk);
+    padding: 0 4px;
+    border-radius: 4px;
+}
+.separator {
+    color: var(--pop-pink);
+    margin: 0 6px;
+    font-weight: bold;
+}
+.cat-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    background: var(--rmu-cse-bg-header);
+    padding: 2px 5px;
+    border-left: 3px solid var(--rmu-cse-secondary);
+    margin-bottom: 4px;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted var(--rmu-cse-border-main);
+    padding: 2px 0;
+    font-size: 0.8em;
+}
+.footer {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 2px solid var(--rmu-cse-border-heavy);
+    font-size: 0.7em;
+    color: var(--rmu-cse-text-main);
+    display: flex;
+    flex-direction: column;
+    background: var(--pop-dark);
+    color: white;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+}
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+.text-center {
+    text-align: center;
+}
+
+/* HEADER BLOCK - PLAYER CARD STYLE */
+.header-block {
+    background: linear-gradient(135deg, var(--pop-purple), var(--pop-blue));
+    border: 3px solid var(--pop-dark);
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.1);
+}
+.header-title {
+    font-size: 32px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+    text-shadow: 3px 3px 0px var(--pop-dark);
+    color: #fff;
+}
+.header-sub {
+    font-style: italic;
+    color: var(--pop-milk);
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* QUICK INFO - BUBBLE TEA ORDERS */
+.quick-info-grid {
+    display: flex;
+    justify-content: space-between;
+    background: var(--pop-dark);
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 2px solid var(--pop-milk);
+    color: white;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.quick-info-grid span {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+/* STATS - STICKER BADGES */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.stat-box {
+    border: 2px solid var(--pop-dark);
+    padding: 6px 2px;
+    text-align: center;
+    background: var(--rmu-cse-bg-card);
+    border-radius: 10px;
+    box-shadow: 2px 2px 0px var(--pop-purple);
+    transition: transform 0.1s;
+}
+.stat-label {
+    font-weight: 800;
+    font-size: 10px;
+    display: block;
+    color: var(--pop-purple);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+.stat-value {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* RESISTANCES */
+.res-grid {
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid var(--pop-dark);
+    padding: 5px;
+    margin-bottom: 10px;
+    background-color: var(--pop-milk);
+    border-radius: 12px;
+}
+.res-item {
+    text-align: center;
+    flex: 1;
+    border-right: 1px dashed var(--pop-purple);
+}
+.res-item:last-child {
+    border-right: none;
+}
+
+/* TABLES (ATTACKS & TACTICAL) */
+.tactical-table,
+.attack-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 4px; /* Row spacing */
+    font-size: 0.9em;
+    text-align: center;
+}
+
+/* Table Headers */
+.tactical-table th,
+.attack-table th {
+    background: var(--pop-blue);
+    padding: 8px;
+    border: 2px solid var(--pop-dark);
+    color: var(--pop-dark);
+    text-transform: uppercase;
+    font-weight: 900;
+}
+/* First header rounded corners */
+.tactical-table th:first-child,
+.attack-table th:first-child {
+    border-radius: 10px 0 0 10px;
+    border-right: none;
+}
+.tactical-table th:last-child,
+.attack-table th:last-child {
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+}
+
+/* Table Cells - Card Style */
+.tactical-table td,
+.attack-table td {
+    border-top: 2px solid var(--pop-dark);
+    border-bottom: 2px solid var(--pop-dark);
+    background: white;
+    padding: 6px;
+}
+.tactical-table td:first-child,
+.attack-table td:first-child {
+    border-left: 2px solid var(--pop-dark);
+    border-radius: 10px 0 0 10px;
+}
+.tactical-table td:last-child,
+.attack-table td:last-child {
+    border-right: 2px solid var(--pop-dark);
+    border-radius: 0 10px 10px 0;
+}
+
+.armor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 5px;
+}
+.armor-box {
+    border: 2px solid var(--pop-dark);
+    padding: 8px;
+    font-size: 0.85em;
+    background: var(--pop-milk);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.armor-loc {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    color: var(--rmu-cse-primary);
+    margin-right: 5px;
+    background: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    border: 1px solid var(--pop-dark);
+}
+
+.attack-ob {
+    font-weight: 900;
+    font-size: 1.2em;
+    color: var(--pop-dark);
+    text-shadow: 2px 2px 0px var(--pop-yellow);
+}
+
+/* INVENTORY */
+.inv-stats {
+    display: flex;
+    justify-content: space-between;
+    background: var(--pop-milk);
+    padding: 0.5rem 1rem;
+    border: 2px solid var(--pop-dark);
+    border-radius: 10px;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.skill-bonus {
+    font-weight: bold;
+    background: var(--pop-pink);
+    color: white;
+    padding: 0 5px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
