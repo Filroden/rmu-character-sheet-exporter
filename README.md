@@ -1,6 +1,6 @@
 # RMU Character Sheet Exporter
 
-![Latest Version](https://img.shields.io/badge/Version-1.1.0-blue)
+![Latest Version](https://img.shields.io/badge/Version-1.2.0-blue)
 ![Foundry Version](https://img.shields.io/badge/Foundry-v13-orange)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![System](https://img.shields.io/badge/System-RMU-blue)
@@ -23,18 +23,13 @@ This will open a preview window, showing options on the left and a preview of th
 
 Depending on the template you select, you will be offered additional options:
 
-- **Template**: The sheet template you would like to use.
+- **Layout**: The sheet layout design you would like to use.
+- **Theme**: The style of the sheet.
 - **Output format**: The output format: the module currently only offers one printable export format, HTML.
 - **Skill filters**: If you want only ranked or favourite skills to be shown, or all skills
-- **Spell filters**: If you want to include the list of spells available within any known spell lists
+- **Section toggles**: Toggle on or off each section in the sheet.
 
 Once exported, open HTML files in your browser and use your browser's "Print" function (either to a printer or to create a PDF). Sheets are set up to (hopefully) avoid adding page breaks in the middle of sections/lists.
-
-## Templates
-
-- **Standard Template**: This shows all the information you are likely to need to play the character laid out in a spacious template. You can choose to include some or all skills, and whether to include lists of spells.
-- **Compact Template**: This does not show inventory or lists of spells and only shows ranked/favourite skills. It uses a more compact design so it can more easily be used as a stat block.
-- **Fun Template**: This contains the same information as the Compact Template but is best served with Bubble Tea.
 
 ## Localisation & Translation
 
