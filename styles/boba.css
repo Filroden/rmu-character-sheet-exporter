@@ -1,3 +1,8 @@
+/* ========================================= */
+/* RMU EXPORT: BOBA SHOP THEME              */
+/* Fun, high-contrast, bubble-tea aesthetic */
+/* ========================================= */
+
 :root {
     /* BOBA SHOP PALETTE */
     --pop-pink: #ff9ff3;
@@ -31,21 +36,20 @@
     --rmu-cse-border-dashed: #b2bec3;
 }
 
-/* BACKGROUND PATTERN - POLKA DOTS (TAPIOCA) */
+/* --- GENERAL SHEET LAYOUT --- */
 .rmu-sheet {
-    font-family: "Verdana", "Segoe UI", sans-serif; /* Rounder font */
+    font-family: "Verdana", "Segoe UI", sans-serif;
     max-width: 800px;
     color: var(--rmu-cse-text-main);
     line-height: 1.4;
     font-size: 14px;
     background-color: var(--rmu-cse-bg-sheet);
+    /* Polka Dot (Tapioca) Pattern */
     background-image:
         radial-gradient(var(--pop-yellow) 20%, transparent 20%),
         radial-gradient(var(--pop-pink) 20%, transparent 20%);
     background-size: 20px 20px;
-    background-position:
-        0 0,
-        10px 10px;
+    background-position: 0 0, 10px 10px;
     padding: 15px;
     border: 4px solid var(--pop-dark);
     border-radius: 20px;
@@ -68,88 +72,7 @@
     letter-spacing: 1px;
 }
 
-/* SUB-HEADERS */
-.header {
-    font-weight: bold;
-    margin-bottom: 5px;
-    border-bottom: 2px dashed var(--rmu-cse-border-main);
-    color: var(--pop-purple);
-}
-
-/* COLUMNS & BLOCKS */
-.list-container {
-    columns: 3;
-    column-gap: 10px;
-}
-.block {
-    break-inside: avoid;
-    margin-bottom: 12px;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid var(--pop-purple);
-}
-.compact-list-flow {
-    font-size: 0.95em;
-    line-height: 1.5;
-    background: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid var(--pop-dark);
-}
-.group-label {
-    color: var(--rmu-cse-primary);
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: 0.9em;
-    background: var(--pop-milk);
-    padding: 0 4px;
-    border-radius: 4px;
-}
-.separator {
-    color: var(--pop-pink);
-    margin: 0 6px;
-    font-weight: bold;
-}
-.cat-header {
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.85em;
-    background: var(--rmu-cse-bg-header);
-    padding: 2px 5px;
-    border-left: 3px solid var(--rmu-cse-secondary);
-    margin-bottom: 4px;
-}
-.row {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px dotted var(--rmu-cse-border-main);
-    padding: 2px 0;
-    font-size: 0.8em;
-}
-.footer {
-    margin-top: 40px;
-    padding-top: 10px;
-    border-top: 2px solid var(--rmu-cse-border-heavy);
-    font-size: 0.7em;
-    color: var(--rmu-cse-text-main);
-    display: flex;
-    flex-direction: column;
-    background: var(--pop-dark);
-    color: white;
-    padding: 10px;
-    border-radius: 0 0 10px 10px;
-}
-.footer-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-}
-.text-center {
-    text-align: center;
-}
-
-/* HEADER BLOCK - PLAYER CARD STYLE */
+/* --- HEADERS --- */
 .header-block {
     background: linear-gradient(135deg, var(--pop-purple), var(--pop-blue));
     border: 3px solid var(--pop-dark);
@@ -175,7 +98,62 @@
     margin-top: 5px;
 }
 
-/* QUICK INFO - BUBBLE TEA ORDERS */
+/* Sub-Headers (General) */
+.header {
+    font-weight: bold;
+    margin-bottom: 5px;
+    border-bottom: 2px dashed var(--rmu-cse-border-main);
+    color: var(--pop-purple);
+}
+
+/* Specialized Headers for Defense Section (Sticker Style) */
+.defense-left .header,
+.defense-right .header {
+    background: var(--pop-blue);
+    color: var(--pop-dark);
+    padding: 4px 8px;
+    border: 2px solid var(--pop-dark);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 900;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.cat-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    background: var(--rmu-cse-bg-header);
+    padding: 2px 5px;
+    border-left: 3px solid var(--rmu-cse-secondary);
+    margin-bottom: 4px;
+}
+
+/* --- COLUMNS & BLOCKS --- */
+.list-container {
+    columns: 3;
+    column-gap: 10px;
+}
+.block {
+    break-inside: avoid;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--pop-purple);
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted var(--rmu-cse-border-main);
+    padding: 2px 0;
+    font-size: 0.8em;
+}
+
+/* --- QUICK INFO --- */
 .quick-info-grid {
     display: flex;
     justify-content: space-between;
@@ -190,7 +168,6 @@
     flex-wrap: wrap;
     gap: 5px;
 }
-
 .quick-info-grid span {
     background: rgba(255, 255, 255, 0.1);
     padding: 4px 8px;
@@ -198,7 +175,7 @@
     font-size: 0.9em;
 }
 
-/* STATS - STICKER BADGES */
+/* --- STATS & RESISTANCES --- */
 .stat-grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -227,7 +204,6 @@
     font-weight: bold;
 }
 
-/* RESISTANCES */
 .res-grid {
     display: flex;
     justify-content: space-between;
@@ -246,55 +222,14 @@
     border-right: none;
 }
 
-/* TABLES (ATTACKS & TACTICAL) */
-.tactical-table,
-.attack-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 4px; /* Row spacing */
-    font-size: 0.9em;
-    text-align: center;
+/* --- DEFENSES & ARMOR --- */
+.defense-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
 }
-
-/* Table Headers */
-.tactical-table th,
-.attack-table th {
-    background: var(--pop-blue);
-    padding: 8px;
-    border: 2px solid var(--pop-dark);
-    color: var(--pop-dark);
-    text-transform: uppercase;
-    font-weight: 900;
-}
-/* First header rounded corners */
-.tactical-table th:first-child,
-.attack-table th:first-child {
-    border-radius: 10px 0 0 10px;
-    border-right: none;
-}
-.tactical-table th:last-child,
-.attack-table th:last-child {
-    border-radius: 0 10px 10px 0;
-    border-left: none;
-}
-
-/* Table Cells - Card Style */
-.tactical-table td,
-.attack-table td {
-    border-top: 2px solid var(--pop-dark);
-    border-bottom: 2px solid var(--pop-dark);
-    background: white;
-    padding: 6px;
-}
-.tactical-table td:first-child,
-.attack-table td:first-child {
-    border-left: 2px solid var(--pop-dark);
-    border-radius: 10px 0 0 10px;
-}
-.tactical-table td:last-child,
-.attack-table td:last-child {
-    border-right: 2px solid var(--pop-dark);
-    border-radius: 0 10px 10px 0;
+.defense-left, .defense-right {
+    flex: 1;
 }
 
 .armor-grid {
@@ -326,14 +261,70 @@
     border: 1px solid var(--pop-dark);
 }
 
+/* --- TABLES --- */
+.tactical-table, .attack-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.tactical-table th, .attack-table th {
+    background: var(--pop-blue);
+    padding: 8px;
+    border: 2px solid var(--pop-dark);
+    color: var(--pop-dark);
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+/* Rounded Header Corners */
+.tactical-table th:first-child, .attack-table th:first-child {
+    border-radius: 10px 0 0 10px; border-right: none;
+}
+.tactical-table th:last-child, .attack-table th:last-child {
+    border-radius: 0 10px 10px 0; border-left: none;
+}
+
+.tactical-table td, .attack-table td {
+    border-top: 2px solid var(--pop-dark);
+    border-bottom: 2px solid var(--pop-dark);
+    background: white;
+    padding: 6px;
+}
+
+/* Rounded Cell Corners */
+.tactical-table td:first-child, .attack-table td:first-child {
+    border-left: 2px solid var(--pop-dark);
+    border-radius: 10px 0 0 10px;
+}
+.tactical-table td:last-child, .attack-table td:last-child {
+    border-right: 2px solid var(--pop-dark);
+    border-radius: 0 10px 10px 0;
+}
+
 .attack-ob {
     font-weight: 900;
     font-size: 1.2em;
     color: var(--pop-dark);
     text-shadow: 2px 2px 0px var(--pop-yellow);
 }
+.text-center { text-align: center; }
 
-/* INVENTORY */
+/* --- INVENTORY (Refactored) --- */
+/* Matches the "Card" style of .block but for a larger container */
+.inventory-list {
+    columns: 2;
+    column-gap: 20px;
+    
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid var(--pop-purple);
+    margin-bottom: 12px;
+}
+
 .inv-stats {
     display: flex;
     justify-content: space-between;
@@ -344,7 +335,45 @@
     font-size: 0.9em;
     margin-bottom: 5px;
 }
+.inv-row {
+    align-items: center; 
+    break-inside: avoid;
+    /* Ensure row border doesn't look weird on the transparent background */
+    border-bottom: 1px dashed var(--pop-purple); 
+}
 
+/* --- COMPATIBILITY: COMPACT LAYOUT SUPPORT --- */
+.compact-list-flow {
+    font-size: 0.95em;
+    line-height: 1.5;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid var(--pop-dark);
+    margin-bottom: 10px;
+}
+
+.compact-row {
+    margin-bottom: 8px;
+    line-height: 1.4;
+    background: rgba(255,255,255,0.6);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.group-label {
+    color: var(--rmu-cse-primary);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    background: var(--pop-milk);
+    padding: 0 4px;
+    border-radius: 4px;
+}
+.separator { color: var(--pop-pink); margin: 0 6px; font-weight: bold; }
+.group-wrapper { display: inline-block; }
+
+/* --- MISC --- */
 .skill-bonus {
     font-weight: bold;
     background: var(--pop-pink);
@@ -352,4 +381,46 @@
     padding: 0 5px;
     border-radius: 5px;
     font-size: 0.9em;
+}
+
+/* --- FOOTER --- */
+.footer {
+    margin-top: 40px;
+    padding-top: 10px;
+    border-top: 2px solid var(--rmu-cse-border-heavy);
+    font-size: 0.7em;
+    display: flex;
+    flex-direction: column;
+    background: var(--pop-dark);
+    color: white;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+}
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+/* --- PRINT MEDIA QUERY --- */
+@media print {
+    /* No Body rules (handled globally) */
+    .rmu-sheet {
+        max-width: 100%;
+        border: none;
+        background: white; /* Print friendly */
+        box-shadow: none;
+    }
+    
+    .section-title, .header-block, .stat-box, 
+    .quick-info-grid, .inv-stats, .inventory-list {
+        break-inside: avoid;
+    }
+    
+    .header-block, .section-title, .stat-box {
+        /* Ensure colors print even if background graphics are off */
+        border: 2px solid #000;
+        color: #000;
+        text-shadow: none;
+    }
 }
