@@ -20,7 +20,7 @@
     overflow: hidden;
 }
 
-.settings-sidebar {
+.rmu-cse .settings-sidebar {
     padding: var(--filroden-space-l);
     display: flex;
     flex-direction: column;
@@ -55,12 +55,12 @@
     margin-bottom: 2px;
 }
 
-.form-footer {
+.rmu-cse .form-footer {
     margin-top: auto;
     padding-top: var(--filroden-space-m);
 }
 
-.preview-panel {
+.rmu-cse .preview-panel {
     background-color: var(--filroden-color-bg-light-solid);
     padding: var(--filroden-font-size-xl);
     display: flex;
@@ -70,7 +70,7 @@
     overflow: hidden;
 }
 
-.preview-header {
+.rmu-cse .preview-header {
     width: 100%;
     color: #ddd;
     font-size: var(--filroden-font-size-xs);
@@ -80,7 +80,7 @@
     justify-content: space-between;
 }
 
-iframe.preview-frame {
+.rmu-cse iframe.preview-frame {
     width: 100%;
     height: 100%;
     background-color: white;
