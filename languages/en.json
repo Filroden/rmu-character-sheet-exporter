@@ -45,7 +45,7 @@
     "RMU_EXPORT.Dialog.SkillFilter": "Skill Filter:",
     "RMU_EXPORT.Dialog.FilterRanked": "Ranked / Favorites Only",
     "RMU_EXPORT.Dialog.FilterAll": "Show All Skills",
-    "RMU_EXPORT.Dialog.IncludeSpells": "Include Spell Lists?",
+    "RMU_EXPORT.Dialog.IncludeSpells": "Spell Lists",
     "RMU_EXPORT.Dialog.Download": "Download",
     "RMU_EXPORT.Common.Unknown": "Unknown",
     "RMU_EXPORT.Common.None": "None",
@@ -86,5 +86,8 @@
     "RMU_EXPORT.Stats.END_P": "END(P)",
     "RMU_EXPORT.Stats.END_M": "END(M)",
     "RMU_EXPORT.Defenses.AT": "AT",
-    "RMU_EXPORT.Footer.Copyright": "The data used in this template may contain copyright material from Iron Crown Enterprises and may require their permission for anything other than personal use."
+    "RMU_EXPORT.Footer.Copyright": "The data used in this template may contain copyright material from Iron Crown Enterprises and may require their permission for anything other than personal use.",
+
+    "RMU_EXPORT.Dialog.IncludeLabel": "Include:",
+    "RMU_EXPORT.Dialog.Preview": "Preview"
 }

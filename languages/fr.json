@@ -45,7 +45,7 @@
     "RMU_EXPORT.Dialog.SkillFilter": "Filtre de compétences:",
     "RMU_EXPORT.Dialog.FilterRanked": "Classé / Favoris seulement",
     "RMU_EXPORT.Dialog.FilterAll": "Afficher tout",
-    "RMU_EXPORT.Dialog.IncludeSpells": "Inclure les sorts ?",
+    "RMU_EXPORT.Dialog.IncludeSpells": "Liste de sorts",
     "RMU_EXPORT.Dialog.Download": "Télécharger",
     "RMU_EXPORT.Common.Unknown": "Inconnu",
     "RMU_EXPORT.Common.None": "Aucun",
@@ -86,5 +86,8 @@
     "RMU_EXPORT.Stats.END_P": "END(P)",
     "RMU_EXPORT.Stats.END_M": "END(M)",
     "RMU_EXPORT.Defenses.AT": "TA",
-    "RMU_EXPORT.Footer.Copyright": "Les données utilisées dans ce modèle peuvent contenir du matériel protégé par Iron Crown Enterprises et peuvent nécessiter leur autorisation pour tout usage autre que personnel."
+    "RMU_EXPORT.Footer.Copyright": "Les données utilisées dans ce modèle peuvent contenir du matériel protégé par Iron Crown Enterprises et peuvent nécessiter leur autorisation pour tout usage autre que personnel.",
+
+    "RMU_EXPORT.Dialog.IncludeLabel": "Inclure :",
+    "RMU_EXPORT.Dialog.Preview": "Aperçu"
 }

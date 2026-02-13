@@ -45,7 +45,7 @@
     "RMU_EXPORT.Dialog.SkillFilter": "Filtro de Habilidades:",
     "RMU_EXPORT.Dialog.FilterRanked": "Con Rangos / Favoritas",
     "RMU_EXPORT.Dialog.FilterAll": "Todas las Habilidades",
-    "RMU_EXPORT.Dialog.IncludeSpells": "¿Incluir Listas de Sortilegios?",
+    "RMU_EXPORT.Dialog.IncludeSpells": "Listas de Sortilegios",
     "RMU_EXPORT.Dialog.Download": "Descargar",
     "RMU_EXPORT.Common.Unknown": "Desconocido",
     "RMU_EXPORT.Common.None": "Ninguno",
@@ -86,5 +86,8 @@
     "RMU_EXPORT.Stats.END_P": "AGU(F)",
     "RMU_EXPORT.Stats.END_M": "AGU(M)",
     "RMU_EXPORT.Defenses.AT": "TA",
-    "RMU_EXPORT.Footer.Copyright": "Los datos utilizados en esta plantilla pueden contener material protegido por derechos de autor de Iron Crown Enterprises y podrían requerir su permiso para cualquier uso que no sea personal."
+    "RMU_EXPORT.Footer.Copyright": "Los datos utilizados en esta plantilla pueden contener material protegido por derechos de autor de Iron Crown Enterprises y podrían requerir su permiso para cualquier uso que no sea personal.",
+
+    "RMU_EXPORT.Dialog.IncludeLabel": "Incluir:",
+    "RMU_EXPORT.Dialog.Preview": "Vista Previa"
 }

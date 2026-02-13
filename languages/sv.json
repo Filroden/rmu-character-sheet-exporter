@@ -45,7 +45,7 @@
     "RMU_EXPORT.Dialog.SkillFilter": "Färdighetsfilter:",
     "RMU_EXPORT.Dialog.FilterRanked": "Endast Rankade / Favoriter",
     "RMU_EXPORT.Dialog.FilterAll": "Visa Alla Färdigheter",
-    "RMU_EXPORT.Dialog.IncludeSpells": "Inkludera Besvärjelselistor?",
+    "RMU_EXPORT.Dialog.IncludeSpells": "Besvärjelselistor",
     "RMU_EXPORT.Dialog.Download": "Ladda Ner",
     "RMU_EXPORT.Common.Unknown": "Okänd",
     "RMU_EXPORT.Common.None": "Ingen",
@@ -86,5 +86,8 @@
     "RMU_EXPORT.Stats.END_P": "UT(F)",
     "RMU_EXPORT.Stats.END_M": "UT(P)",
     "RMU_EXPORT.Defenses.AT": "RT",
-    "RMU_EXPORT.Footer.Copyright": "Data som används i denna mall kan innehålla upphovsrättsskyddat material från Iron Crown Enterprises och kan kräva deras tillstånd för annat än personligt bruk."
+    "RMU_EXPORT.Footer.Copyright": "Data som används i denna mall kan innehålla upphovsrättsskyddat material från Iron Crown Enterprises och kan kräva deras tillstånd för annat än personligt bruk.",
+
+    "RMU_EXPORT.Dialog.IncludeLabel": "Inkludera:",
+    "RMU_EXPORT.Dialog.Preview": "Förhandsgranskning"
 }

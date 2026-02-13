@@ -17,6 +17,10 @@ Click the "Export Sheet" button in the window header of any character or creatur
 
 ![Window header of an actor sheet showing the Export Sheet button](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/sheet_header.png)
 
+This will open a preview window, showing options on the left and a preview of the character sheet on the right.
+
+![Character Sheet Preview Window](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/sheet_preview.png)
+
 Depending on the template you select, you will be offered additional options:
 
 - **Template**: The sheet template you would like to use.
@@ -46,4 +50,3 @@ The exported sheet combines text from three different sources. If you see Englis
 - Embed export of actor.json into html for later recovery
 - Add character or creature portraits
 - Add additional output options
-- Add an output preview window

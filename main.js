@@ -65,12 +65,6 @@ async function startExportProcess(actor) {
     if (!actor) return;
 
     try {
-        ui.notifications.info(
-            game.i18n.format("RMU_EXPORT.Notify.Generating", {
-                name: actor.name,
-            }),
-        );
-
         const derivedActor = await DataExtractor.ensureExtendedData(actor);
 
         if (!derivedActor) {
