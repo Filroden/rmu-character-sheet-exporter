@@ -176,3 +176,51 @@
     -webkit-mask-image: url("../icons/file_save.svg");
     mask-image: url("../icons/file_save.svg");
 }
+
+.rmu-cse .toggles-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--filroden-space-xs);
+    margin-top: var(--filroden-space-s);
+    padding-right: var(--filroden-space-xs);
+    overflow-y: auto;
+}
+
+.rmu-cse .form-group.options {
+    background: rgba(0, 0, 0, 0.1);
+    padding: var(--filroden-space-xs) var(--filroden-space-s);
+    border-radius: var(--filroden-radius-medium);
+}
+
+.rmu-cse .form-group.options:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.rmu-cse * {
+    scrollbar-width: auto !important;
+    scrollbar-color: auto !important;
+}
+
+.rmu-cse .rmu-cse-scrollable::-webkit-scrollbar {
+    width: 8px !important;
+    height: 8px !important;
+}
+
+.rmu-cse .rmu-cse-scrollable::-webkit-scrollbar-track {
+    background: var(--filroden-color-bg-hover-solid) !important;
+    border-radius: var(--filroden-radius-large) !important;
+}
+
+.rmu-cse .rmu-cse-scrollable::-webkit-scrollbar-thumb {
+    background-color: var(--filroden-color-text-accent) !important;
+    border-radius: var(--filroden-radius-large) !important;
+    border: 1px solid rgba(0, 0, 0, 0.6) !important;
+}
+
+.rmu-cse .rmu-cse-scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: var(--filroden-color-text-accent-hover) !important;
+}
+
+.rmu-cse .rmu-cse-scrollable::-webkit-scrollbar-button {
+    display: none;
+}

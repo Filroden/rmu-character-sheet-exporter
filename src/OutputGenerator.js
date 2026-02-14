@@ -1,21 +1,39 @@
 export class OutputGenerator {
     /**
      * Generates the full HTML string for the character sheet.
-     * This can be used for both downloading and previewing.
-     * * @param {Object} data - The prepared actor data object
-     * @param {string} templatePath - Path to the HBS template to render
+     * Combines the structural Handlebars layout with the visual CSS theme.
+     * * @param {Object} data - The prepared actor data object (including options)
+     * @param {string} layoutPath - Path to the HBS layout template
+     * @param {string} themePath - Path to the CSS theme file
      * @returns {Promise<string>} The complete HTML document string
      */
-    static async generateHTML(data, templatePath) {
-        // Render the body content using Foundry's Handlebars helper
+    static async generateHTML(data, layoutPath, themePath) {
+        // 1. Render the HTML Layout
         const htmlContent =
             await foundry.applications.handlebars.renderTemplate(
-                templatePath,
+                layoutPath,
                 data,
             );
 
-        // Wrap it in a standard HTML5 skeleton
-        // We add some basic print styles here to ensure the preview looks right
+        // 2. Fetch the CSS Theme
+        let cssContent = "";
+        try {
+            const response = await fetch(themePath);
+            if (response.ok) {
+                cssContent = await response.text();
+            } else {
+                console.warn(
+                    `RMU Export | Failed to load theme CSS: ${themePath} (${response.status})`,
+                );
+                cssContent =
+                    "/* Failed to load theme CSS. Check console for details. */";
+            }
+        } catch (error) {
+            console.error("RMU Export | CSS Fetch Error:", error);
+            cssContent = `/* Error loading theme: ${error.message} */`;
+        }
+
+        // 3. Assemble the Final Document
         return `
             <!DOCTYPE html>
             <html>
@@ -23,16 +41,30 @@ export class OutputGenerator {
                 <meta charset="utf-8">
                 <title>${data.header?.name || "Character Sheet"}</title>
                 <style>
+                    /* --- BASE RESET & UTILITIES --- */
                     body { 
-                        background: white; 
-                        padding: 20px;
                         margin: 0;
+                        padding: 0;
+                        background-color: #525252;
                         font-family: 'Segoe UI', sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        min-height: 100vh;
                     }
-                    /* Ensure print media queries work in preview if possible */
+
+                    /* --- PRINT RESET --- */
                     @media print {
-                        body { padding: 0; }
+                        body { 
+                            background: none; 
+                            display: block; 
+                            height: auto;
+                            -webkit-print-color-adjust: exact;
+                            print-color-adjust: exact;
+                        }
                     }
+
+                    /* --- INJECTED THEME CSS --- */
+                    ${cssContent}
                 </style>
             </head>
             <body>
@@ -44,15 +76,23 @@ export class OutputGenerator {
 
     /**
      * Download the data in the requested format
+     * @param {Object} data - The prepared actor data
+     * @param {string} format - "json" or "html"
+     * @param {string} filenameBase - The actor's name for the filename
+     * @param {string} layoutPath - Path to the HBS file
+     * @param {string} themePath - Path to the CSS file
      */
-    static async download(data, format, filenameBase, templatePath) {
-        // 1. Create a timestamp string
+    static async download(data, format, filenameBase, layoutPath, themePath) {
+        // 1. Create a timestamp string for unique filenames
         const now = new Date();
         const dateString = now.toISOString().split("T")[0];
         const timeString = now.toTimeString().split(" ")[0].replace(/:/g, "-");
         const timestamp = `${dateString}_${timeString}`;
 
-        const cleanName = filenameBase.replace(/\s+/g, "_");
+        // Clean filename of unsafe characters
+        const cleanName = filenameBase
+            .replace(/[^\w\s-]/g, "")
+            .replace(/\s+/g, "_");
         const filename = `${cleanName}_Sheet_${timestamp}`;
 
         if (format === "json") {
@@ -62,8 +102,12 @@ export class OutputGenerator {
                 `${filename}.json`,
             );
         } else if (format === "html") {
-            // 2. Generate the HTML using our new helper
-            const fullHtml = await this.generateHTML(data, templatePath);
+            // 2. Generate the HTML using our new method that combines Layout + CSS
+            const fullHtml = await this.generateHTML(
+                data,
+                layoutPath,
+                themePath,
+            );
 
             // 3. Save as file
             const blob = new Blob([fullHtml], { type: "text/html" });

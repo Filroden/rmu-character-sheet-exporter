@@ -77,19 +77,46 @@ export class DataExtractor {
         if (!targetActor) return {};
 
         const sys = targetActor.system;
-        const { showAllSkills = false, showSpells = true } = options;
+        const {
+            showAllSkills = false,
+            header = true,
+            quick_info = true,
+            stats = true,
+            defenses = true,
+            attacks = true,
+            skills = true,
+            spells = true,
+            inventory = true,
+            talents = true,
+        } = options;
 
         return {
-            header: this._getHeader(targetActor),
-            quick_info: this._getQuickInfo(sys),
-            stats: this._getStats(sys),
-            resistances: this._getResistances(sys),
-            defenses: this._getDefenses(sys, targetActor),
-            attacks: this._getAttacks(targetActor),
-            talents: this._getTalents(targetActor),
-            skill_groups: this._getSkills(targetActor, { showAllSkills }),
-            spells: showSpells ? this._getSpells(targetActor) : [],
-            inventory: this._getInventory(targetActor),
+            options: {
+                header,
+                quick_info,
+                stats,
+                defenses,
+                attacks,
+                skills,
+                spells,
+                inventory,
+                talents,
+            },
+            header_data: header ? this._getHeader(targetActor) : null,
+            quick_info_data: quick_info ? this._getQuickInfo(sys) : null,
+            stats_data: stats ? this._getStats(sys) : null,
+            resistances_data: stats ? this._getResistances(sys) : null,
+            defenses_data: defenses
+                ? this._getDefenses(sys, targetActor)
+                : null,
+            attacks_data: attacks ? this._getAttacks(targetActor) : null,
+            talents_data: talents ? this._getTalents(targetActor) : null,
+            skill_groups_data: skills
+                ? this._getSkills(targetActor, { showAllSkills })
+                : [],
+            spells_data: spells ? this._getSpells(targetActor) : [],
+            inventory_data: inventory ? this._getInventory(targetActor) : null,
+
             meta: {
                 timestamp: new Date().toLocaleString(),
                 systemVersion: game.system.version,
@@ -118,6 +145,14 @@ export class DataExtractor {
             return val;
         };
 
+        let realmLabel = sys.realm || noneTxt;
+        if (sys.realm) {
+            const realmKey = `RMU.RealmsOfMagic.${sys.realm}`;
+            if (game.i18n.has(realmKey)) {
+                realmLabel = game.i18n.localize(realmKey);
+            }
+        }
+
         return {
             name: actor.name,
             race: getSystemLabel("RMU.Race", sys._header?._raceName),
@@ -127,7 +162,7 @@ export class DataExtractor {
                 sys._header?._professionName,
             ),
             level: sys.experience?.level ?? 1,
-            realm: sys.realm || noneTxt,
+            realm: realmLabel,
             size: getSystemLabel("RMU.Size", sys.appearance?.size),
         };
     }
@@ -300,8 +335,21 @@ export class DataExtractor {
         const getArmorInfo = (loc) => {
             const part = armorData[loc];
             if (!part) return { name: noneTxt, at: 1 };
+
+            let matName = part.piece?._base?.material || noneTxt;
+
+            if (part.piece?._base?.material) {
+                const rawMat = part.piece._base.material;
+                const cleanMat = rawMat.replace(/\s+/g, "");
+
+                const armorKey = `RMU.ArmorTypes.${cleanMat}`;
+                if (game.i18n.has(armorKey)) {
+                    matName = game.i18n.localize(armorKey);
+                }
+            }
+
             return {
-                name: part.piece?._base?.material || noneTxt,
+                name: matName,
                 at: part.AT ?? 1,
             };
         };
@@ -577,9 +625,15 @@ export class DataExtractor {
             maxPace = actor.system.encumbrance.pace;
         }
 
+        const allowance = actor.system._loadAllowed?.weight ?? 0;
+        const carried = actor.system._carriedWeight?.weight ?? 0;
+
+        const cleanAllowance = Math.round(Number(allowance) * 100) / 100;
+        const cleanCarried = Math.round(Number(carried) * 100) / 100;
+
         return {
-            weight_allowance: `${actor.system._loadAllowed?.weight ?? 0} lbs`,
-            weight_carried: `${actor.system._carriedWeight?.weight ?? 0} lbs`,
+            weight_allowance: `${cleanAllowance} lbs`,
+            weight_carried: `${cleanCarried} lbs`,
             enc_penalty: enc_penalty || 0,
             max_pace: maxPace,
             items: itemList,

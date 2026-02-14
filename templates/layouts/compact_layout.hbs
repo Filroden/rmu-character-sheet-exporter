@@ -1,0 +1,250 @@
+<div class="rmu-sheet compact-layout">
+
+    {{! --- HEADER --- }}
+    {{#if options.header}}
+        <div class="header-block">
+            <div class="header-title">{{header_data.name}}</div>
+            <div class="header-sub">
+                {{localize "RMU_EXPORT.Header.Level"}}
+                {{header_data.level}}
+                •
+                {{header_data.culture}}
+                •
+                {{header_data.race}}
+                •
+                {{header_data.profession}}
+                •
+                {{header_data.realm}}
+                •
+                {{header_data.size}}
+            </div>
+        </div>
+    {{/if}}
+
+    {{! --- QUICK INFO --- }}
+    {{#if options.quick_info}}
+        <div class="quick-info-grid">
+            <span>{{localize "RMU_EXPORT.Stats.BMR"}}:
+                {{quick_info_data.bmr_value}}
+                ({{quick_info_data.bmr_mode}})</span>
+            <span>{{localize "RMU_EXPORT.Stats.Initiative"}}:
+                {{quick_info_data.initiative}}</span>
+            <span>{{localize "RMU_EXPORT.Stats.HP"}}:
+                {{quick_info_data.hits.current}}/{{quick_info_data.hits.max}}</span>
+            <span>{{localize "RMU_EXPORT.Stats.PP"}}:
+                {{quick_info_data.power.current}}/{{quick_info_data.power.max}}</span>
+            <span>{{localize "RMU_EXPORT.Stats.PhysicalEnd"}}:
+                {{quick_info_data.endurance_physical}}</span>
+            <span>{{localize "RMU_EXPORT.Stats.MentalEnd"}}:
+                {{quick_info_data.endurance_mental}}</span>
+        </div>
+    {{/if}}
+
+    {{! --- STATS --- }}
+    {{#if options.stats}}
+        <div class="stat-grid">
+            {{#each stats_data}}
+                <div class="stat-box">
+                    <span class="stat-label">{{label}}: {{bonus}}</span>
+                </div>
+            {{/each}}
+        </div>
+
+        <div class="res-grid">
+            {{#each resistances_data}}
+                <div class="res-item">
+                    <div class="stat-label">{{label}}: {{bonus}}</div>
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{! --- DEFENSES (Flow Layout) --- }}
+    {{#if options.defenses}}
+        <div class="section-title">{{localize
+                "RMU_EXPORT.Section.Defenses"
+            }}</div>
+
+        <div class="compact-row">
+            <strong class="group-label">{{localize
+                    "RMU_EXPORT.Defenses.ArmorCoverage"
+                }}:</strong>
+            {{localize "RMU_EXPORT.Defenses.Head"}}
+            {{defenses_data.armor.head.name}},
+            {{localize "RMU_EXPORT.Defenses.Torso"}}
+            {{defenses_data.armor.torso.name}},
+            {{localize "RMU_EXPORT.Defenses.Arms"}}
+            {{defenses_data.armor.arms.name}},
+            {{localize "RMU_EXPORT.Defenses.Legs"}}
+            {{defenses_data.armor.legs.name}}
+        </div>
+
+        <div class="compact-row">
+            <strong class="group-label">{{localize
+                    "RMU_EXPORT.Defenses.TotalDB"
+                }}:</strong>
+            {{localize "RMU_EXPORT.Defenses.DodgeDB"}}
+            ({{#each defenses_data.tactical}}{{mode}}
+                {{dodge}}{{#unless @last}}, {{/unless}}{{/each}}),
+            {{localize "RMU_EXPORT.Defenses.BlockDB"}}
+            ({{#each defenses_data.tactical}}{{mode}}
+                {{block}}{{#unless @last}}, {{/unless}}{{/each}})
+        </div>
+    {{/if}}
+
+    {{! --- ATTACKS --- }}
+    {{#if options.attacks}}
+        <div class="section-title">{{localize
+                "RMU_EXPORT.Section.Attacks"
+            }}</div>
+        <table class="attack-table">
+            <thead>
+                <tr>
+                    <th width="30%">{{localize
+                            "RMU_EXPORT.Attacks.Weapon"
+                        }}</th>
+                    <th width="10%" class="text-center">{{localize
+                            "RMU_EXPORT.Attacks.OB"
+                        }}</th>
+                    <th width="10%" class="text-center">{{localize
+                            "RMU_EXPORT.Attacks.Fumble"
+                        }}</th>
+                    <th width="20%">{{localize "RMU_EXPORT.Attacks.Chart"}}</th>
+                    <th width="15%" class="text-center">{{localize
+                            "RMU_EXPORT.Attacks.Reach"
+                        }}</th>
+                    <th width="15%" class="text-center">{{localize
+                            "RMU_EXPORT.Attacks.Range"
+                        }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each attacks_data}}
+                    <tr>
+                        <td>{{name}} ({{specialization}} {{handed}})</td>
+                        <td class="attack-ob text-center">{{ob}}</td>
+                        <td class="text-center alert-text">{{fumble}}</td>
+                        <td>{{damageType}}</td>
+                        <td class="text-center">{{reach}}</td>
+                        <td class="text-center">{{range}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+
+    {{! --- SKILLS --- }}
+    {{#if options.skills}}
+        <div class="section-title">{{localize
+                "RMU_EXPORT.Section.Skills"
+            }}</div>
+        <div class="list-container">
+            {{#each skill_groups_data}}
+                <div class="block">
+                    <div class="header">{{category}}</div>
+                    {{#each list}}
+                        <div class="row">
+                            <span>{{name}}{{#if specialisation}}:
+                                    {{specialisation}}{{/if}}</span>
+                            <span class="skill-bonus">{{bonus}}
+                                ({{ranks}})</span>
+                        </div>
+                    {{/each}}
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{! --- SPELLS --- }}
+    {{#if options.spells}}
+        {{#if spells_data.length}}
+            <div class="section-title">{{localize
+                    "RMU_EXPORT.Section.SpellLists"
+                }}</div>
+            <div class="compact-list-flow">
+                {{#each spells_data}}
+                    <span class="group-wrapper">
+                        <span class="group-label">{{listName}}
+                            ({{type}})</span>
+                    </span>
+                    {{#unless @last}}<span class="separator">
+                            |
+                        </span>{{/unless}}
+                {{/each}}
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{! --- INVENTORY (Added) --- }}
+    {{#if options.inventory}}
+        <div class="section-title">{{localize
+                "RMU_EXPORT.Section.Inventory"
+            }}</div>
+
+        {{! Stats Row }}
+        <div class="compact-row">
+            <strong class="group-label">{{localize
+                    "RMU_EXPORT.Inventory.EncPenalty"
+                }}:</strong>
+            {{inventory_data.enc_penalty}}
+            <span class="separator">|</span>
+            <strong class="group-label">{{localize
+                    "RMU_EXPORT.Inventory.MaxPace"
+                }}:</strong>
+            {{inventory_data.max_pace}}
+            <span class="separator">|</span>
+            <strong class="group-label">{{localize
+                    "RMU_EXPORT.Inventory.Carried"
+                }}:</strong>
+            {{inventory_data.weight_carried}}
+            /
+            {{inventory_data.weight_allowance}}
+        </div>
+
+        {{! Items List (Flow) }}
+        <div class="compact-list-flow">
+            {{#each inventory_data.items}}
+                <span>{{name}}
+                    <span
+                        style="opacity: 0.7;"
+                    >(x{{qty}})</span></span>{{#unless @last}}, {{/unless}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{! --- TALENTS --- }}
+    {{#if options.talents}}
+        <div class="section-title">{{localize
+                "RMU_EXPORT.Section.Talents"
+            }}</div>
+        <div class="compact-list-flow">
+            {{#each talents_data}}
+                <span class="group-wrapper">
+                    <span class="group-label">{{group}}:</span>
+                    {{#each entries}}
+                        <span>{{name}} {{tier}}</span>{{#unless @last}},
+                        {{/unless}}
+                    {{/each}}
+                </span>
+                {{#unless @last}}<span class="separator"> | </span>{{/unless}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    {{! --- FOOTER --- }}
+    <div class="footer">
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Generated"}}:
+                {{meta.timestamp}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.SystemVersion"
+                }}{{meta.systemVersion}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.ModuleVersion"
+                }}{{meta.moduleVersion}}</span>
+        </div>
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Copyright"}}</span>
+        </div>
+    </div>
+</div>

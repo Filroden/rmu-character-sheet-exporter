@@ -4,37 +4,53 @@ import { ExportDialog } from "./src/ExportDialog.js";
 
 const MODULE_ID = "rmu-character-sheet-exporter";
 
-const AVAILABLE_TEMPLATES = {
-    standard: {
-        id: "standard",
-        label: "RMU_EXPORT.Templates.Standard",
-        path: "modules/rmu-character-sheet-exporter/templates/standard_actor_sheet.hbs",
-        config: {
-            showSkillFilter: true,
-            showSpellFilter: true,
+const RMU_EXPORT_CONFIG = {
+    layouts: {
+        standard: {
+            id: "standard",
+            label: "RMU_EXPORT.Layouts.Standard",
+            path: "modules/rmu-character-sheet-exporter/templates/layouts/standard_layout.hbs",
+        },
+        compact: {
+            id: "compact",
+            label: "RMU_EXPORT.Layouts.Compact",
+            path: "modules/rmu-character-sheet-exporter/templates/layouts/compact_layout.hbs",
         },
     },
-    compact: {
-        id: "compact",
-        label: "RMU_EXPORT.Templates.Compact",
-        path: "modules/rmu-character-sheet-exporter/templates/compact_actor_sheet.hbs",
-        config: {
-            showSkillFilter: false,
-            forcedSkillFilter: "ranked", // Used in submission logic
-            showSpellFilter: false,
-            forcedShowSpells: false, // Used in submission logic
+
+    themes: {
+        standard: {
+            id: "standard",
+            label: "RMU_EXPORT.Themes.Standard",
+            path: "modules/rmu-character-sheet-exporter/styles/standard.css",
+        },
+        dark: {
+            id: "dark",
+            label: "RMU_EXPORT.Themes.DarkMode",
+            path: "modules/rmu-character-sheet-exporter/styles/dark.css",
+        },
+        boba: {
+            id: "boba",
+            label: "RMU_EXPORT.Themes.Boba",
+            path: "modules/rmu-character-sheet-exporter/styles/boba.css",
+        },
+        print: {
+            id: "print",
+            label: "RMU_EXPORT.Themes.PrintHighContrast",
+            path: "modules/rmu-character-sheet-exporter/styles/print.css",
         },
     },
-    fun: {
-        id: "fun",
-        label: "RMU_EXPORT.Templates.Fun",
-        path: "modules/rmu-character-sheet-exporter/templates/fun_actor_sheet.hbs",
-        config: {
-            showSkillFilter: false,
-            forcedSkillFilter: "ranked", // Used in submission logic
-            showSpellFilter: false,
-            forcedShowSpells: false, // Used in submission logic
-        },
+
+    sections: {
+        header: { label: "RMU_EXPORT.Section.Header", default: true },
+        quick_info: { label: "RMU_EXPORT.Section.QuickInfo", default: true },
+        stats: { label: "RMU_EXPORT.Section.Stats", default: true },
+        defenses: { label: "RMU_EXPORT.Section.Defenses", default: true },
+        attacks: { label: "RMU_EXPORT.Section.Attacks", default: true },
+        skills: { label: "RMU_EXPORT.Section.Skills", default: true },
+        spells: { label: "RMU_EXPORT.Section.SpellLists", default: true },
+        inventory: { label: "RMU_EXPORT.Section.Inventory", default: true },
+        talents: { label: "RMU_EXPORT.Section.Talents", default: true },
     },
 };
 
@@ -74,7 +90,7 @@ async function startExportProcess(actor) {
 
         const result = await ExportDialog.wait(
             derivedActor || actor,
-            AVAILABLE_TEMPLATES,
+            RMU_EXPORT_CONFIG,
         );
 
         if (result) {
@@ -91,31 +107,34 @@ async function startExportProcess(actor) {
 }
 
 async function handleExportSubmit(formData, actor) {
-    const templatePath = formData.templatePath;
-    const format = formData.format;
+    // 1. Extract selections
+    const layoutId = formData.layout;
+    const themeId = formData.theme;
 
-    let skillFilter = formData.skillFilter;
-    let showSpells = formData.showSpells;
+    // 2. Build the 'options' object from the form checkboxes
+    // We iterate over the config sections to find their matching values in formData
+    const sectionOptions = {};
+    Object.keys(RMU_EXPORT_CONFIG.sections).forEach((key) => {
+        sectionOptions[key] = formData[key];
+    });
 
-    const templateKey = Object.keys(AVAILABLE_TEMPLATES).find(
-        (k) => AVAILABLE_TEMPLATES[k].path === templatePath,
+    // Special handling for Skill Filters (keep existing logic)
+    const skillFilter = formData.skillFilter || "ranked";
+    sectionOptions.showAllSkills = skillFilter === "all";
+
+    // 3. Get Clean Data
+    const cleanData = DataExtractor.getCleanData(actor, sectionOptions);
+
+    // 4. Resolve Paths
+    const layoutPath = RMU_EXPORT_CONFIG.layouts[layoutId].path;
+    const themePath = RMU_EXPORT_CONFIG.themes[themeId].path;
+
+    // 5. Generate with BOTH paths
+    await OutputGenerator.download(
+        cleanData,
+        formData.format,
+        actor.name,
+        layoutPath,
+        themePath,
     );
-    const config = AVAILABLE_TEMPLATES[templateKey]?.config || {};
-
-    if (config.forcedSkillFilter !== undefined) {
-        skillFilter = config.forcedSkillFilter;
-    }
-    if (config.forcedShowSpells !== undefined) {
-        showSpells = config.forcedShowSpells;
-    }
-
-    const exportOptions = {
-        showAllSkills: skillFilter === "all",
-        showSpells: showSpells,
-    };
-
-    console.log("RMU Export | Options:", exportOptions);
-    const cleanData = DataExtractor.getCleanData(actor, exportOptions);
-
-    await OutputGenerator.download(cleanData, format, actor.name, templatePath);
 }
