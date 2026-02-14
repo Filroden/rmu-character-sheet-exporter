@@ -15,6 +15,87 @@ export class DataExtractor {
     }
 
     /**
+     * Checks if the system is set to Metric mode.
+     * @returns {boolean}
+     */
+    static get isMetric() {
+        return game.settings.get("rmu", "measurementSystem") === "Metric";
+    }
+
+    /**
+     * -----------------------------------------------------------
+     * METRIC CONVERSION HELPERS
+     * -----------------------------------------------------------
+     */
+
+    static _toMetricWeight(pounds) {
+        const kg = pounds * 0.5;
+        let rd = 10;
+        let digits = 1;
+        let roundedKilograms;
+
+        if (kg >= 0.1 && kg <= 0.5) {
+            roundedKilograms = (Math.floor((kg * 1000) / 50) * 50) / 1000;
+            digits = 2;
+        } else if (kg < 0.1) {
+            roundedKilograms = (Math.floor((kg * 1000) / 10) * 10) / 1000;
+            digits = 2;
+        } else {
+            roundedKilograms = Math.floor(kg * rd) / rd;
+        }
+
+        const options = {
+            style: "decimal",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: digits,
+            useGrouping: false,
+        };
+
+        return roundedKilograms.toLocaleString(undefined, options) + " kg";
+    }
+
+    static _toMetricMovement(feet) {
+        const metersExact = feet * 0.3048;
+        const rd = metersExact < 4 ? 100 : 2;
+
+        if (rd > 2) {
+            const meters = Math.floor(metersExact * 25) / 25;
+            const options = {
+                style: "decimal",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
+                useGrouping: false,
+            };
+            return meters.toLocaleString(undefined, options) + " m";
+        }
+
+        const meters = Math.floor(metersExact * rd) / rd;
+        const options = {
+            style: "decimal",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 1,
+            useGrouping: false,
+        };
+        return meters.toLocaleString(undefined, options) + " m";
+    }
+
+    static _toMetricReach(feet) {
+        const meters = feet * 0.3048;
+        const options = {
+            style: "decimal",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 1,
+            useGrouping: false,
+        };
+        return meters.toLocaleString(undefined, options) + " m";
+    }
+
+    static _toMetricRange(feet) {
+        const meters = Math.round(feet * 0.3048);
+        return meters + " m";
+    }
+
+    /**
      * -----------------------------------------------------------
      * DATA PREPARATION
      * -----------------------------------------------------------
@@ -193,8 +274,13 @@ export class DataExtractor {
             modeLabel = game.i18n.localize(mode);
         }
 
+        let bmrDisplay = `${bmr}'/rd`;
+        if (this.isMetric) {
+            bmrDisplay = `${this._toMetricMovement(bmr)}/rd`;
+        }
+
         return {
-            bmr_value: `${bmr}'/rd`,
+            bmr_value: bmrDisplay,
             bmr_mode: modeLabel,
             initiative: this._formatBonus(init),
             hits: {
@@ -382,19 +468,48 @@ export class DataExtractor {
         const unknownTxt = this._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
 
         return attacks.map((a) => {
-            let reachDisplay = "";
-            if (a.meleeRange) reachDisplay = `${a.meleeRange}'`;
-
             let rangeDisplay = "";
             if (a.isRanged) {
-                let rawRange = a.usage?.range?._shortRange;
-                if (!rawRange) rawRange = a.usage?.range?.short;
-                if (rawRange) {
-                    const cleanRange = String(rawRange).replace(
-                        /['"a-zA-Z\s]/g,
-                        "",
-                    );
-                    rangeDisplay = `<${cleanRange}>`;
+                let rawRangeVal = a.usage?.range?.short;
+
+                if (rawRangeVal !== undefined && rawRangeVal !== null) {
+                    if (this.isMetric) {
+                        rangeDisplay = `<${this._toMetricRange(rawRangeVal)}>`;
+                    } else {
+                        rangeDisplay = `<${rawRangeVal}'>`;
+                    }
+                } else {
+                    let rawRangeStr = a.usage?.range?._shortRange;
+                    if (rawRangeStr) {
+                        const cleanRange = String(rawRangeStr).replace(
+                            /['"a-zA-Z\s]/g,
+                            "",
+                        );
+
+                        if (this.isMetric) {
+                            if (String(rawRangeStr).includes("m")) {
+                                rangeDisplay = `<${cleanRange} m>`;
+                            } else {
+                                const numeric = parseFloat(cleanRange);
+                                if (!isNaN(numeric)) {
+                                    rangeDisplay = `<${this._toMetricRange(numeric)}>`;
+                                } else {
+                                    rangeDisplay = `<${cleanRange}>`;
+                                }
+                            }
+                        } else {
+                            rangeDisplay = `<${cleanRange}>`;
+                        }
+                    }
+                }
+            }
+
+            let reachDisplay = "";
+            if (!rangeDisplay && a.meleeRange) {
+                if (this.isMetric) {
+                    reachDisplay = this._toMetricReach(a.meleeRange);
+                } else {
+                    reachDisplay = `${a.meleeRange}'`;
                 }
             }
 
@@ -609,10 +724,15 @@ export class DataExtractor {
             let itemName = i.item.name || i.system.name || unknownTxt;
             itemName = game.i18n.localize(itemName);
 
+            let weightDisplay = `${weight} lbs`;
+            if (this.isMetric) {
+                weightDisplay = this._toMetricWeight(weight);
+            }
+
             return {
                 name: itemName,
                 qty: qty,
-                weight: `${weight} lbs`,
+                weight: weightDisplay,
             };
         });
 
@@ -631,9 +751,17 @@ export class DataExtractor {
         const cleanAllowance = Math.round(Number(allowance) * 100) / 100;
         const cleanCarried = Math.round(Number(carried) * 100) / 100;
 
+        let allowanceDisplay = `${cleanAllowance} lbs`;
+        let carriedDisplay = `${cleanCarried} lbs`;
+
+        if (this.isMetric) {
+            allowanceDisplay = this._toMetricWeight(cleanAllowance);
+            carriedDisplay = this._toMetricWeight(cleanCarried);
+        }
+
         return {
-            weight_allowance: `${cleanAllowance} lbs`,
-            weight_carried: `${cleanCarried} lbs`,
+            weight_allowance: allowanceDisplay,
+            weight_carried: carriedDisplay,
             enc_penalty: enc_penalty || 0,
             max_pace: maxPace,
             items: itemList,
