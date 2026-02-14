@@ -26,7 +26,7 @@ Depending on the template you select, you will be offered additional options:
 - **Layout**: The sheet layout design you would like to use.
 - **Theme**: The style of the sheet.
 - **Output format**: The output format: the module currently only offers one printable export format, HTML.
-- **Skill filters**: If you want only ranked or favourite skills to be shown, or all skills
+- **Skill filters**: Choose if you want to show only ranked or favourite skills, or all skills
 - **Section toggles**: Toggle on or off each section in the sheet.
 
 Once exported, open HTML files in your browser and use your browser's "Print" function (either to a printer or to create a PDF). Sheets are set up to (hopefully) avoid adding page breaks in the middle of sections/lists.
@@ -41,7 +41,7 @@ The exported sheet combines text from three different sources. If you see Englis
 
 ## Roadmap
 
-- Add tournament template for full tabletop gameplay
+- Add tournament template for tabletop gameplay at conventions
 - Embed export of actor.json into html for later recovery
 - Add character or creature portraits
 - Add movement block

@@ -24,6 +24,11 @@ const RMU_EXPORT_CONFIG = {
             label: "RMU_EXPORT.Themes.Standard",
             path: "modules/rmu-character-sheet-exporter/styles/standard.css",
         },
+        dark: {
+            id: "dark",
+            label: "RMU_EXPORT.Themes.DarkMode",
+            path: "modules/rmu-character-sheet-exporter/styles/dark.css",
+        },
         boba: {
             id: "boba",
             label: "RMU_EXPORT.Themes.Boba",

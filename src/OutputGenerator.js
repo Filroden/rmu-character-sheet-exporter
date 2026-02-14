@@ -8,17 +8,14 @@ export class OutputGenerator {
      * @returns {Promise<string>} The complete HTML document string
      */
     static async generateHTML(data, layoutPath, themePath) {
-        // 1. Render the HTML Layout (Structure)
-        // We use Foundry's helper to render the handlebars template with our data
+        // 1. Render the HTML Layout
         const htmlContent =
             await foundry.applications.handlebars.renderTemplate(
                 layoutPath,
                 data,
             );
 
-        // 2. Fetch the CSS Theme (Aesthetics)
-        // We fetch this as text so we can embed it directly into the HTML file.
-        // This makes the export "portable" (works offline).
+        // 2. Fetch the CSS Theme
         let cssContent = "";
         try {
             const response = await fetch(themePath);
@@ -37,7 +34,6 @@ export class OutputGenerator {
         }
 
         // 3. Assemble the Final Document
-        // We wrap the layout in a standard HTML5 skeleton and inject the CSS.
         return `
             <!DOCTYPE html>
             <html>
@@ -62,7 +58,6 @@ export class OutputGenerator {
                             background: none; 
                             display: block; 
                             height: auto;
-                            /* Force browsers to print background colors/images */
                             -webkit-print-color-adjust: exact;
                             print-color-adjust: exact;
                         }
