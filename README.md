@@ -1,6 +1,6 @@
 # RMU Character Sheet Exporter
 
-![Latest Version](https://img.shields.io/badge/Version-1.2.1-blue)
+![Latest Version](https://img.shields.io/badge/Version-1.3.0-blue)
 ![Foundry Version](https://img.shields.io/badge/Foundry-v13-orange)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![System](https://img.shields.io/badge/System-RMU-blue)
@@ -43,6 +43,5 @@ The exported sheet combines text from three different sources. If you see Englis
 
 - Add tournament template for tabletop gameplay at conventions
 - Embed export of actor.json into html for later recovery
-- Add character or creature portraits
+- Add character or creature portraits / biography / appearance block
 - Add movement block
-- Add metric support
