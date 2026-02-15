@@ -402,4 +402,8 @@
     .compact-row { 
         break-inside: avoid; 
     }
+
+    .no-print {
+        display: none !important;
+    }
 }

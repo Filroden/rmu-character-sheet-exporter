@@ -23,7 +23,6 @@ export class DataExtractor {
      * METRIC CONVERSION HELPERS
      * -----------------------------------------------------------
      */
-    // ... [Metric Helpers remain unchanged: _toMetricWeight, _toMetricMovement, etc.] ...
     static _toMetricWeight(pounds) {
         const kg = pounds * 0.5;
         let rd = 10;
@@ -142,11 +141,30 @@ export class DataExtractor {
 
     /**
      * -----------------------------------------------------------
+     * CLEANING HELPERS
+     * -----------------------------------------------------------
+     */
+    static _cleanObject(obj) {
+        if (typeof obj !== "object" || obj === null) return obj;
+
+        if (Array.isArray(obj)) {
+            return obj.map((item) => this._cleanObject(item));
+        }
+
+        const cleaned = {};
+        for (const key in obj) {
+            if (key.startsWith("_")) continue;
+            cleaned[key] = this._cleanObject(obj[key]);
+        }
+        return cleaned;
+    }
+
+    /**
+     * -----------------------------------------------------------
      * DATA PREPARATION
      * -----------------------------------------------------------
      */
     static async ensureExtendedData(actor) {
-        // ... [Same logic as before] ...
         if (actor.system?._hudInitialized) return actor;
         let targetDoc = null;
         if (actor.token) {
@@ -203,8 +221,8 @@ export class DataExtractor {
             showAllSkills = false,
             header = true,
             portrait = true,
-            details = true, // Replaces the old "biography" boolean
-            biography = true, // Now refers only to the text blob
+            details = true,
+            biography = true,
             quick_info = true,
             stats = true,
             defenses = true,
@@ -227,9 +245,10 @@ export class DataExtractor {
             ? this._getBiographyText(targetActor)
             : null;
 
-        // 3. Raw Foundry Data (for JSON backup)
-        // Ensure we get a clean object without circular references
-        const rawFoundryData = JSON.stringify(targetActor.toObject(), null, 2);
+        // 3. Raw Foundry Data (CLEANED & COMPACTED)
+        const rawObj = targetActor.toObject();
+        const cleanObj = this._cleanObject(rawObj);
+        const rawFoundryData = JSON.stringify(cleanObj);
 
         return {
             options: {
@@ -249,11 +268,10 @@ export class DataExtractor {
             header_data: header ? this._getHeader(targetActor) : null,
             portrait_data: portraitData,
 
-            // New Split Data Structure
             details_data: detailsData,
             biography_data: bioTextData,
 
-            raw_foundry_data: rawFoundryData, // Embedded Backup
+            raw_foundry_data: rawFoundryData,
 
             quick_info_data: quick_info ? this._getQuickInfo(sys) : null,
             stats_data: stats ? this._getStats(sys) : null,
@@ -284,7 +302,6 @@ export class DataExtractor {
      * SUB-SECTIONS
      * -----------------------------------------------------------
      */
-    // ... [_getHeader remains the same] ...
     static _getHeader(actor) {
         const sys = actor.system;
         const unknownTxt = this._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
@@ -315,18 +332,13 @@ export class DataExtractor {
         };
     }
 
-    /**
-     * Extracts "Technical" personal details (Height, Weight, Outlook, etc.)
-     * Used for both Characters and Creatures.
-     */
     static _getDetails(actor) {
         const sys = actor.system;
         const app = sys.appearance || {};
         const id = sys.identity || {};
         const player = sys.player || {};
-        const encounter = sys.encounter || {}; // Creature specific
+        const encounter = sys.encounter || {};
 
-        // Process Height & Weight
         let heightDisplay = app._height || "";
         let weightDisplay = app._weight || "";
 
@@ -338,7 +350,6 @@ export class DataExtractor {
             if (lbs > 0) weightDisplay = this._toMetricWeight(lbs);
         }
 
-        // Clean Lists (for Compact Layout)
         const compactPlayer = [];
         if (player.name) compactPlayer.push(player.name);
         if (player.campaign) compactPlayer.push(player.campaign);
@@ -355,7 +366,6 @@ export class DataExtractor {
         pushApp("RMU_EXPORT.Bio.Hair", app.hair);
 
         return {
-            // -- Character Fields --
             player_name: player.name || "",
             campaign: player.campaign || "",
             power_level: sys.powerLevel || "",
@@ -371,7 +381,6 @@ export class DataExtractor {
             faith: id.faith || "",
             gender: id.gender || "",
 
-            // -- Creature Fields (New) --
             outlook: sys.creatureOutlook || "",
             encounter_number: encounter.number || "",
             encounter_frequency: encounter.frequency || "",
@@ -380,15 +389,11 @@ export class DataExtractor {
             size_description: app.sizeDescription || "",
             armor_description: app.armorDescription || "",
 
-            // -- Compact Lists --
             compact_player: compactPlayer,
             compact_appearance: compactApp,
         };
     }
 
-    /**
-     * Extracts ONLY the long-form text biography/description
-     */
     static _getBiographyText(actor) {
         const sys = actor.system;
         const id = sys.identity || {};
@@ -398,7 +403,6 @@ export class DataExtractor {
         };
     }
 
-    // ... [The rest of the file (_getQuickInfo, _getStats, etc.) remains unchanged] ...
     static _getQuickInfo(sys) {
         let bmr = 0;
         const mode = sys.activeMovementName || "Running";

@@ -437,4 +437,8 @@
     .inv-stats { 
         break-inside: avoid; 
     }
+
+    .no-print {
+        display: none !important;
+    }
 }

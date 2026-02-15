@@ -2,7 +2,7 @@ export class OutputGenerator {
     /**
      * Generates the full HTML string for the character sheet.
      * Combines the structural Handlebars layout with the visual CSS theme.
-     * * @param {Object} data - The prepared actor data object (including options)
+     * @param {Object} data - The prepared actor data object (including options)
      * @param {string} layoutPath - Path to the HBS layout template
      * @param {string} themePath - Path to the CSS theme file
      * @returns {Promise<string>} The complete HTML document string
@@ -33,51 +33,36 @@ export class OutputGenerator {
             cssContent = `/* Error loading theme: ${error.message} */`;
         }
 
-        // 3. Assemble the Final Document
+        // 3. Construct the Passive Backup Data
+        const backupData = `
+            <script id="foundry-actor-data" type="application/json">
+                ${data.raw_foundry_data || "{}"}
+            </script>
+        `;
+
+        // 4. Assemble the Final Document
         return `
             <!DOCTYPE html>
             <html>
             <head>
                 <meta charset="utf-8">
-                <title>${data.header?.name || "Character Sheet"}</title>
+                <title>${data.header_data?.name || "Character Sheet"}</title>
                 <style>
-                    /* --- BASE RESET & UTILITIES --- */
-                    body { 
-                        margin: 0;
-                        padding: 0;
-                        background-color: #525252;
-                        font-family: 'Segoe UI', sans-serif;
-                        display: flex;
-                        justify-content: center;
-                        min-height: 100vh;
-                    }
-
-                    /* --- PRINT RESET --- */
-                    @media print {
-                        body { 
-                            background: none; 
-                            display: block; 
-                            height: auto;
-                            -webkit-print-color-adjust: exact;
-                            print-color-adjust: exact;
-                        }
-                    }
-
-                    /* --- INJECTED THEME CSS --- */
                     ${cssContent}
                 </style>
             </head>
             <body>
                 ${htmlContent}
+                ${backupData}
             </body>
             </html>
-        `;
+            `;
     }
 
     /**
-     * Download the data in the requested format
-     * @param {Object} data - The prepared actor data
-     * @param {string} format - "json" or "html"
+     * Triggers a browser download for the generated file using Foundry's native helper.
+     * @param {Object} data - The prepared data object
+     * @param {string} format - "html" or "json"
      * @param {string} filenameBase - The actor's name for the filename
      * @param {string} layoutPath - Path to the HBS file
      * @param {string} themePath - Path to the CSS file
@@ -96,22 +81,26 @@ export class OutputGenerator {
         const filename = `${cleanName}_Sheet_${timestamp}`;
 
         if (format === "json") {
+            // Save JSON directly
             foundry.utils.saveDataToFile(
                 JSON.stringify(data, null, 2),
                 "text/json",
                 `${filename}.json`,
             );
         } else if (format === "html") {
-            // 2. Generate the HTML using our new method that combines Layout + CSS
+            // 2. Generate the HTML String
             const fullHtml = await this.generateHTML(
                 data,
                 layoutPath,
                 themePath,
             );
 
-            // 3. Save as file
-            const blob = new Blob([fullHtml], { type: "text/html" });
-            foundry.utils.saveDataToFile(blob, "text/html", `${filename}.html`);
+            // 3. Save HTML using Foundry's helper (Fixes Blob/OS warning)
+            foundry.utils.saveDataToFile(
+                fullHtml,
+                "text/html",
+                `${filename}.html`,
+            );
         }
     }
 }
