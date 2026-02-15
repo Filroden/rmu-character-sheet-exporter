@@ -27,7 +27,7 @@ const RMU_EXPORT_CONFIG = {
         dark: {
             id: "dark",
             label: "RMU_EXPORT.Themes.DarkMode",
-            path: "modules/rmu-character-sheet-exporter/styles/themes/themes/dark.css",
+            path: "modules/rmu-character-sheet-exporter/styles/themes/dark.css",
         },
         boba: {
             id: "boba",
@@ -46,7 +46,8 @@ const RMU_EXPORT_CONFIG = {
         quick_info: { label: "RMU_EXPORT.Section.QuickInfo", default: true },
         stats: { label: "RMU_EXPORT.Section.Stats", default: true },
         portrait: { label: "RMU_EXPORT.Section.Portrait", default: true },
-        biography: { label: "RMU_EXPORT.Section.Biography", default: true },
+        details: { label: "RMU_EXPORT.Section.Details", default: true },
+        biography: { label: "RMU_EXPORT.Section.Biography", default: false },
         defenses: { label: "RMU_EXPORT.Section.Defenses", default: true },
         attacks: { label: "RMU_EXPORT.Section.Attacks", default: true },
         skills: { label: "RMU_EXPORT.Section.Skills", default: true },
@@ -124,25 +125,34 @@ async function handleExportSubmit(formData, actor) {
     const layoutId = formData.layout;
     const themeId = formData.theme;
 
-    // Build the 'options' object from the form checkboxes
-    // Iterate over the config sections to find their matching values in formData
     const sectionOptions = {};
     Object.keys(RMU_EXPORT_CONFIG.sections).forEach((key) => {
         sectionOptions[key] = formData[key];
     });
 
-    // Special handling for Skill Filters
     const skillFilter = formData.skillFilter || "ranked";
     sectionOptions.showAllSkills = skillFilter === "all";
 
     // Get Clean Data
     const cleanData = await DataExtractor.getCleanData(actor, sectionOptions);
 
-    // Resolve Paths
-    const layoutPath = RMU_EXPORT_CONFIG.layouts[layoutId].path;
+    // Resolve Theme Path
     const themePath = RMU_EXPORT_CONFIG.themes[themeId].path;
 
-    // Generate with BOTH paths
+    // Resolve Layout Path (Dynamic Switching)
+    let rawLayoutPath = RMU_EXPORT_CONFIG.layouts[layoutId].path;
+
+    // Determine suffix based on actor type (character vs npc/creature)
+    // Adjust this check if RMU uses different type keys
+    const typeSuffix = actor.type === "Character" ? "character" : "creature";
+
+    // Converts "standard_layout.hbs" -> "standard_character_layout.hbs"
+    const layoutPath = rawLayoutPath.replace(
+        "_layout.hbs",
+        `_${typeSuffix}_layout.hbs`,
+    );
+
+    // Generate
     await OutputGenerator.download(
         cleanData,
         formData.format,

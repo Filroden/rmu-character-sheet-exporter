@@ -59,11 +59,11 @@
         </div>
     {{/if}}
 
-    {{! --- PORTRAIT & BIOGRAPHY (Compact) --- }}
-    {{#if (or options.portrait options.biography)}}
-        <div class="section-title">
-            {{localize "RMU_EXPORT.Section.Biography"}}
-        </div>
+    {{! --- PORTRAIT & DETAILS (Compact) --- }}
+    {{#if (or options.portrait options.details)}}
+        <div class="section-title">{{localize
+                "RMU_EXPORT.Section.Details"
+            }}</div>
 
         <div class="compact-bio-row">
             {{#if options.portrait}}
@@ -74,29 +74,29 @@
                 {{/if}}
             {{/if}}
 
-            {{#if options.biography}}
+            {{#if options.details}}
                 <div class="compact-bio-text">
 
-                    {{! Group 1: Player Info (Value separated by Pipes) }}
-                    {{#if biography_data.compact_player.length}}
+                    {{! Group 1: Player Info }}
+                    {{#if details_data.compact_player.length}}
                         <div class="compact-row">
                             <strong class="group-label">{{localize
                                     "RMU_EXPORT.Bio.PlayerInfo"
                                 }}:</strong>
-                            {{#each biography_data.compact_player}}
+                            {{#each details_data.compact_player}}
                                 <span>{{this}}</span>
                                 {{#unless @last}} | {{/unless}}
                             {{/each}}
                         </div>
                     {{/if}}
 
-                    {{! Group 2: Appearance (Label: Value separated by Commas) }}
-                    {{#if biography_data.compact_appearance.length}}
+                    {{! Group 2: Appearance }}
+                    {{#if details_data.compact_appearance.length}}
                         <div class="compact-row">
                             <strong class="group-label">{{localize
                                     "RMU_EXPORT.Bio.Appearance"
                                 }}:</strong>
-                            {{#each biography_data.compact_appearance}}
+                            {{#each details_data.compact_appearance}}
                                 <span>{{this}}</span>
                                 {{#unless @last}}, {{/unless}}
                             {{/each}}
@@ -106,6 +106,21 @@
                 </div>
             {{/if}}
         </div>
+    {{/if}}
+
+    {{! --- BIOGRAPHY TEXT --- }}
+    {{#if options.biography}}
+        {{#if biography_data.text}}
+            <div class="section-title">{{localize
+                    "RMU_EXPORT.Bio.Biography"
+                }}</div>
+            <div
+                class="compact-row"
+                style="margin-top:5px; font-size: 0.9em; font-style:italic;"
+            >
+                {{{biography_data.text}}}
+            </div>
+        {{/if}}
     {{/if}}
 
     {{! --- DEFENSES (Flow Layout) --- }}
@@ -213,8 +228,7 @@
             <div class="compact-list-flow">
                 {{#each spells_data}}
                     <span class="group-wrapper">
-                        <span class="group-label">{{listName}}
-                            ({{type}})</span>
+                        <span class="group-label">{{listName}} ({{type}})</span>
                     </span>
                     {{#unless @last}}<span class="separator">
                             |
@@ -224,13 +238,12 @@
         {{/if}}
     {{/if}}
 
-    {{! --- INVENTORY (Added) --- }}
+    {{! --- INVENTORY --- }}
     {{#if options.inventory}}
         <div class="section-title">{{localize
                 "RMU_EXPORT.Section.Inventory"
             }}</div>
 
-        {{! Stats Row }}
         <div class="compact-row">
             <strong class="group-label">{{localize
                     "RMU_EXPORT.Inventory.EncPenalty"
@@ -250,7 +263,6 @@
             {{inventory_data.weight_allowance}}
         </div>
 
-        {{! Items List (Flow) }}
         <div class="compact-list-flow">
             {{#each inventory_data.items}}
                 <span>{{name}}
@@ -280,7 +292,6 @@
         </div>
     {{/if}}
 
-    {{! --- FOOTER --- }}
     <div class="footer">
         <div class="footer-row">
             <span>{{localize "RMU_EXPORT.Footer.Generated"}}:
@@ -294,6 +305,17 @@
         </div>
         <div class="footer-row">
             <span>{{localize "RMU_EXPORT.Footer.Copyright"}}</span>
+        </div>
+        <div
+            class="footer-row"
+            style="margin-top: 10px; justify-content: center;"
+        >
+            <button
+                onclick="downloadFoundryJson()"
+                style="cursor: pointer; padding: 5px 10px; font-size: 0.8em;"
+            >
+                Download Foundry VTT Backup (JSON)
+            </button>
         </div>
     </div>
 </div>

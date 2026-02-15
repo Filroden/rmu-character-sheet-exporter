@@ -23,14 +23,12 @@ export class DataExtractor {
      * METRIC CONVERSION HELPERS
      * -----------------------------------------------------------
      */
-
+    // ... [Metric Helpers remain unchanged: _toMetricWeight, _toMetricMovement, etc.] ...
     static _toMetricWeight(pounds) {
-        // Logic ported from metric.js
         const kg = pounds * 0.5;
         let rd = 10;
         let digits = 1;
         let roundedKilograms;
-
         if (kg >= 0.1 && kg <= 0.5) {
             roundedKilograms = (Math.floor((kg * 1000) / 50) * 50) / 1000;
             digits = 2;
@@ -40,51 +38,50 @@ export class DataExtractor {
         } else {
             roundedKilograms = Math.floor(kg * rd) / rd;
         }
-
         const options = {
             style: "decimal",
             minimumFractionDigits: 0,
             maximumFractionDigits: digits,
             useGrouping: false,
         };
-
         return roundedKilograms.toLocaleString(undefined, options) + " kg";
     }
 
     static _toMetricMovement(feet) {
         const metersExact = feet * 0.3048;
         const rd = metersExact < 4 ? 100 : 2;
-
         if (rd > 2) {
             const meters = Math.floor(metersExact * 25) / 25;
-            const options = {
+            return (
+                meters.toLocaleString(undefined, {
+                    style: "decimal",
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 1,
+                    useGrouping: false,
+                }) + " m"
+            );
+        }
+        const meters = Math.floor(metersExact * rd) / rd;
+        return (
+            meters.toLocaleString(undefined, {
                 style: "decimal",
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 1,
                 useGrouping: false,
-            };
-            return meters.toLocaleString(undefined, options) + " m";
-        }
-
-        const meters = Math.floor(metersExact * rd) / rd;
-        const options = {
-            style: "decimal",
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 1,
-            useGrouping: false,
-        };
-        return meters.toLocaleString(undefined, options) + " m";
+            }) + " m"
+        );
     }
 
     static _toMetricReach(feet) {
         const meters = feet * 0.3048;
-        const options = {
-            style: "decimal",
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 1,
-            useGrouping: false,
-        };
-        return meters.toLocaleString(undefined, options) + " m";
+        return (
+            meters.toLocaleString(undefined, {
+                style: "decimal",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
+                useGrouping: false,
+            }) + " m"
+        );
     }
 
     static _toMetricRange(feet) {
@@ -93,46 +90,41 @@ export class DataExtractor {
     }
 
     static _toMetricHeight(feet) {
-        // Logic ported from metric.js toMetricHeight (2 decimals)
         const meters = feet * 0.3048;
-        const options = {
-            style: "decimal",
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-            useGrouping: false,
-        };
-        return meters.toLocaleString(undefined, options) + " m";
+        return (
+            meters.toLocaleString(undefined, {
+                style: "decimal",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                useGrouping: false,
+            }) + " m"
+        );
     }
 
     /**
      * -----------------------------------------------------------
-     * PARSING HELPERS (New)
+     * PARSING HELPERS
      * -----------------------------------------------------------
      */
-
     static _parseHeightString(str) {
         if (!str) return 0;
-        // Check for Format: 6'2"
         const match = str.match(/(\d+)'\s*(?:(\d+)")?/);
         if (match) {
             const feet = parseInt(match[1]) || 0;
             const inches = parseInt(match[2]) || 0;
             return feet + inches / 12;
         }
-        // Fallback: try parsing as raw number (assuming feet)
         return parseFloat(str) || 0;
     }
 
     static _parseWeightString(str) {
         if (!str) return 0;
-        // Extract numbers and decimals only
         const clean = str.replace(/[^\d.]/g, "");
         return parseFloat(clean) || 0;
     }
 
     static async _imageToBase64(url) {
         if (!url || url === "icons/svg/mystery-man.svg") return null;
-
         try {
             const response = await fetch(url);
             const blob = await response.blob();
@@ -154,8 +146,8 @@ export class DataExtractor {
      * -----------------------------------------------------------
      */
     static async ensureExtendedData(actor) {
+        // ... [Same logic as before] ...
         if (actor.system?._hudInitialized) return actor;
-
         let targetDoc = null;
         if (actor.token) {
             targetDoc = actor.token;
@@ -163,7 +155,6 @@ export class DataExtractor {
             const tokens = actor.getActiveTokens();
             if (tokens.length > 0) targetDoc = tokens[0].document;
         }
-
         if (!targetDoc) {
             try {
                 const tokenData = actor.prototypeToken.toObject();
@@ -177,7 +168,6 @@ export class DataExtractor {
                 console.warn("RMU Export | Failed to create dummy token:", e);
             }
         }
-
         if (
             targetDoc &&
             typeof targetDoc.hudDeriveExtendedData === "function"
@@ -192,7 +182,6 @@ export class DataExtractor {
                 console.warn("RMU Export | HUD derivation crashed:", e);
             }
         }
-
         try {
             if (actor.prepareData) actor.prepareData();
             return actor;
@@ -203,7 +192,7 @@ export class DataExtractor {
 
     /**
      * -----------------------------------------------------------
-     * MAIN EXTRACTOR (Converted to Async)
+     * MAIN EXTRACTOR (Async)
      * -----------------------------------------------------------
      */
     static async getCleanData(targetActor, options = {}) {
@@ -214,7 +203,8 @@ export class DataExtractor {
             showAllSkills = false,
             header = true,
             portrait = true,
-            biography = true,
+            details = true, // Replaces the old "biography" boolean
+            biography = true, // Now refers only to the text blob
             quick_info = true,
             stats = true,
             defenses = true,
@@ -225,19 +215,27 @@ export class DataExtractor {
             talents = true,
         } = options;
 
-        // 1. Fetch Portrait (Async operation)
+        // 1. Fetch Portrait (Async)
         let portraitData = null;
         if (portrait) {
             portraitData = await this._imageToBase64(targetActor.img);
         }
 
-        // 2. Fetch Biography (Synchronous)
-        const bioData = biography ? this._getBiography(targetActor) : null;
+        // 2. Fetch Split Bio Data
+        const detailsData = details ? this._getDetails(targetActor) : null;
+        const bioTextData = biography
+            ? this._getBiographyText(targetActor)
+            : null;
+
+        // 3. Raw Foundry Data (for JSON backup)
+        // Ensure we get a clean object without circular references
+        const rawFoundryData = JSON.stringify(targetActor.toObject(), null, 2);
 
         return {
             options: {
                 header,
                 portrait,
+                details,
                 biography,
                 quick_info,
                 stats,
@@ -249,8 +247,14 @@ export class DataExtractor {
                 talents,
             },
             header_data: header ? this._getHeader(targetActor) : null,
-            portrait_data: portraitData, // String (Base64) or null
-            biography_data: bioData,
+            portrait_data: portraitData,
+
+            // New Split Data Structure
+            details_data: detailsData,
+            biography_data: bioTextData,
+
+            raw_foundry_data: rawFoundryData, // Embedded Backup
+
             quick_info_data: quick_info ? this._getQuickInfo(sys) : null,
             stats_data: stats ? this._getStats(sys) : null,
             resistances_data: stats ? this._getResistances(sys) : null,
@@ -280,27 +284,23 @@ export class DataExtractor {
      * SUB-SECTIONS
      * -----------------------------------------------------------
      */
-
+    // ... [_getHeader remains the same] ...
     static _getHeader(actor) {
         const sys = actor.system;
         const unknownTxt = this._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
         const noneTxt = this._i18n("RMU_EXPORT.Common.None", "None");
-
         const getSystemLabel = (prefix, val) => {
             if (!val) return unknownTxt;
             const key = `${prefix}.${val}`;
             if (game.i18n.has(key)) return game.i18n.localize(key);
             return val;
         };
-
         let realmLabel = sys.realm || noneTxt;
         if (sys.realm) {
             const realmKey = `RMU.RealmsOfMagic.${sys.realm}`;
-            if (game.i18n.has(realmKey)) {
+            if (game.i18n.has(realmKey))
                 realmLabel = game.i18n.localize(realmKey);
-            }
         }
-
         return {
             name: actor.name,
             race: getSystemLabel("RMU.Race", sys._header?._raceName),
@@ -315,11 +315,16 @@ export class DataExtractor {
         };
     }
 
-    static _getBiography(actor) {
+    /**
+     * Extracts "Technical" personal details (Height, Weight, Outlook, etc.)
+     * Used for both Characters and Creatures.
+     */
+    static _getDetails(actor) {
         const sys = actor.system;
         const app = sys.appearance || {};
         const id = sys.identity || {};
         const player = sys.player || {};
+        const encounter = sys.encounter || {}; // Creature specific
 
         // Process Height & Weight
         let heightDisplay = app._height || "";
@@ -333,15 +338,12 @@ export class DataExtractor {
             if (lbs > 0) weightDisplay = this._toMetricWeight(lbs);
         }
 
-        // --- Generate Clean Lists for Compact Layout ---
-
-        // 1. Player Info List (Value only)
+        // Clean Lists (for Compact Layout)
         const compactPlayer = [];
         if (player.name) compactPlayer.push(player.name);
         if (player.campaign) compactPlayer.push(player.campaign);
         if (sys.powerLevel) compactPlayer.push(sys.powerLevel);
 
-        // 2. Appearance List (Label + Value string)
         const compactApp = [];
         const pushApp = (key, val) => {
             if (val) compactApp.push(`${this._i18n(key)}: ${val}`);
@@ -353,7 +355,7 @@ export class DataExtractor {
         pushApp("RMU_EXPORT.Bio.Hair", app.hair);
 
         return {
-            // Standard Fields
+            // -- Character Fields --
             player_name: player.name || "",
             campaign: player.campaign || "",
             power_level: sys.powerLevel || "",
@@ -369,15 +371,34 @@ export class DataExtractor {
             faith: id.faith || "",
             gender: id.gender || "",
 
-            // Fallback Logic: Identity Bio -> System Description -> Empty
-            biography: id.bio || sys.description || "",
+            // -- Creature Fields (New) --
+            outlook: sys.creatureOutlook || "",
+            encounter_number: encounter.number || "",
+            encounter_frequency: encounter.frequency || "",
+            treasure: sys.treasure || "",
+            biome: sys.biome || "",
+            size_description: app.sizeDescription || "",
+            armor_description: app.armorDescription || "",
 
-            // Compact Lists
+            // -- Compact Lists --
             compact_player: compactPlayer,
             compact_appearance: compactApp,
         };
     }
 
+    /**
+     * Extracts ONLY the long-form text biography/description
+     */
+    static _getBiographyText(actor) {
+        const sys = actor.system;
+        const id = sys.identity || {};
+
+        return {
+            text: id.bio || sys.description || "",
+        };
+    }
+
+    // ... [The rest of the file (_getQuickInfo, _getStats, etc.) remains unchanged] ...
     static _getQuickInfo(sys) {
         let bmr = 0;
         const mode = sys.activeMovementName || "Running";
