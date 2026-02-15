@@ -2,6 +2,7 @@
 
 | Version | Changes |
 | :--- | :--- |
+| **Version 1.4.0** | **BUG FIXES**<br>- Fixed a missing css style bug.|
 | **Version 1.3.0** | **IMPROVEMENTS**<br>- **Metric Support:** Supports display of metric distances and weights.|
 | **Version 1.2.0** | **NEW FEATURES**<br>- **Fully customisable exports:** You can now select your preferred layout and style separately, and turn each section on or off.<br><br>**NEW TEMPLATES/STYLES:**<br>- A **printer-friendly** style that uses less ink.<br>- A **dark mode** style.<br><br>**BUG FIXES**<br>- Fixed some missing localisation text in the templates.|
 | **Version 1.1.1** | **BUG FIXES**<br>- Fixed leaking css that was forcing the Foundry settings to always show in the sidebar.|
