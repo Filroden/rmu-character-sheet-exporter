@@ -45,6 +45,8 @@ const RMU_EXPORT_CONFIG = {
         header: { label: "RMU_EXPORT.Section.Header", default: true },
         quick_info: { label: "RMU_EXPORT.Section.QuickInfo", default: true },
         stats: { label: "RMU_EXPORT.Section.Stats", default: true },
+        portrait: { label: "RMU_EXPORT.Section.Portrait", default: true },
+        biography: { label: "RMU_EXPORT.Section.Biography", default: true },
         defenses: { label: "RMU_EXPORT.Section.Defenses", default: true },
         attacks: { label: "RMU_EXPORT.Section.Attacks", default: true },
         skills: { label: "RMU_EXPORT.Section.Skills", default: true },
@@ -123,7 +125,7 @@ async function handleExportSubmit(formData, actor) {
     sectionOptions.showAllSkills = skillFilter === "all";
 
     // 3. Get Clean Data
-    const cleanData = DataExtractor.getCleanData(actor, sectionOptions);
+    const cleanData = await DataExtractor.getCleanData(actor, sectionOptions);
 
     // 4. Resolve Paths
     const layoutPath = RMU_EXPORT_CONFIG.layouts[layoutId].path;

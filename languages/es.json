@@ -4,6 +4,8 @@
     "RMU_EXPORT.Section.Header": "En-tête",
     "RMU_EXPORT.Section.QuickInfo": "Infos Rapides (BMR/Init/PV/PP)",
     "RMU_EXPORT.Section.Stats": "Caractéristiques",
+    "RMU_EXPORT.Section.Portrait": "Retrato del Personaje",
+    "RMU_EXPORT.Section.Biography": "Información del Personaje",
     "RMU_EXPORT.Section.Defenses": "Défenses & Armure",
     "RMU_EXPORT.Section.Attacks": "Attaques",
     "RMU_EXPORT.Section.Skills": "Compétences",
@@ -33,6 +35,26 @@
     "RMU_EXPORT.Resistances.Mentalism": "Mentalisme",
     "RMU_EXPORT.Resistances.Physical": "Physique",
     "RMU_EXPORT.Resistances.Fear": "Peur",
+
+    "RMU_EXPORT.Bio.PlayerInfo": "Información del Jugador",
+    "RMU_EXPORT.Bio.Appearance": "Apariencia",
+    "RMU_EXPORT.Bio.Identity": "Identidad",
+    "RMU_EXPORT.Bio.Biography": "Biografía / Descripción",
+
+    "RMU_EXPORT.Bio.Player": "Jugador",
+    "RMU_EXPORT.Bio.Campaign": "Campaña",
+    "RMU_EXPORT.Bio.PowerLevel": "Nivel de Poder",
+
+    "RMU_EXPORT.Bio.Age": "Edad",
+    "RMU_EXPORT.Bio.Eyes": "Ojos",
+    "RMU_EXPORT.Bio.Hair": "Cabello",
+    "RMU_EXPORT.Bio.Height": "Altura",
+    "RMU_EXPORT.Bio.Weight": "Peso",
+    "RMU_EXPORT.Bio.Sex": "Sexo",
+    "RMU_EXPORT.Bio.Skin": "Piel",
+
+    "RMU_EXPORT.Bio.Faith": "Fe",
+    "RMU_EXPORT.Bio.Gender": "Género",
 
     "RMU_EXPORT.Defenses.TotalDB": "BD Total",
     "RMU_EXPORT.Defenses.DodgeDB": "BD Esquive",

@@ -4,6 +4,8 @@
     "RMU_EXPORT.Section.Header": "Header Info",
     "RMU_EXPORT.Section.QuickInfo": "Quick Info (BMR/Init/HP/PP)",
     "RMU_EXPORT.Section.Stats": "Stats",
+    "RMU_EXPORT.Section.Portrait": "Character Portrait",
+    "RMU_EXPORT.Section.Biography": "Character Information",
     "RMU_EXPORT.Section.Defenses": "Defenses & Armor",
     "RMU_EXPORT.Section.Attacks": "Attacks",
     "RMU_EXPORT.Section.Skills": "Skills",
@@ -33,6 +35,26 @@
     "RMU_EXPORT.Resistances.Mentalism": "Mentalism",
     "RMU_EXPORT.Resistances.Physical": "Physical",
     "RMU_EXPORT.Resistances.Fear": "Fear",
+
+    "RMU_EXPORT.Bio.PlayerInfo": "Player Info",
+    "RMU_EXPORT.Bio.Appearance": "Appearance",
+    "RMU_EXPORT.Bio.Identity": "Identity",
+    "RMU_EXPORT.Bio.Biography": "Biography / Description",
+
+    "RMU_EXPORT.Bio.Player": "Player",
+    "RMU_EXPORT.Bio.Campaign": "Campaign",
+    "RMU_EXPORT.Bio.PowerLevel": "Power Level",
+
+    "RMU_EXPORT.Bio.Age": "Age",
+    "RMU_EXPORT.Bio.Eyes": "Eyes",
+    "RMU_EXPORT.Bio.Hair": "Hair",
+    "RMU_EXPORT.Bio.Height": "Height",
+    "RMU_EXPORT.Bio.Weight": "Weight",
+    "RMU_EXPORT.Bio.Sex": "Sex",
+    "RMU_EXPORT.Bio.Skin": "Skin",
+
+    "RMU_EXPORT.Bio.Faith": "Faith",
+    "RMU_EXPORT.Bio.Gender": "Gender",
 
     "RMU_EXPORT.Defenses.TotalDB": "Total DB",
     "RMU_EXPORT.Defenses.DodgeDB": "Dodge DB",

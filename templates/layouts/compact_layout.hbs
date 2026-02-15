@@ -59,6 +59,55 @@
         </div>
     {{/if}}
 
+    {{! --- PORTRAIT & BIOGRAPHY (Compact) --- }}
+    {{#if (or options.portrait options.biography)}}
+        <div class="section-title">
+            {{localize "RMU_EXPORT.Section.Biography"}}
+        </div>
+
+        <div class="compact-bio-row">
+            {{#if options.portrait}}
+                {{#if portrait_data}}
+                    <div class="compact-portrait">
+                        <img src="{{portrait_data}}" alt="Portrait" />
+                    </div>
+                {{/if}}
+            {{/if}}
+
+            {{#if options.biography}}
+                <div class="compact-bio-text">
+
+                    {{! Group 1: Player Info (Value separated by Pipes) }}
+                    {{#if biography_data.compact_player.length}}
+                        <div class="compact-row">
+                            <strong class="group-label">{{localize
+                                    "RMU_EXPORT.Bio.PlayerInfo"
+                                }}:</strong>
+                            {{#each biography_data.compact_player}}
+                                <span>{{this}}</span>
+                                {{#unless @last}} | {{/unless}}
+                            {{/each}}
+                        </div>
+                    {{/if}}
+
+                    {{! Group 2: Appearance (Label: Value separated by Commas) }}
+                    {{#if biography_data.compact_appearance.length}}
+                        <div class="compact-row">
+                            <strong class="group-label">{{localize
+                                    "RMU_EXPORT.Bio.Appearance"
+                                }}:</strong>
+                            {{#each biography_data.compact_appearance}}
+                                <span>{{this}}</span>
+                                {{#unless @last}}, {{/unless}}
+                            {{/each}}
+                        </div>
+                    {{/if}}
+
+                </div>
+            {{/if}}
+        </div>
+    {{/if}}
+
     {{! --- DEFENSES (Flow Layout) --- }}
     {{#if options.defenses}}
         <div class="section-title">{{localize

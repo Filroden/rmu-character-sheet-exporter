@@ -14,10 +14,6 @@ export class DataExtractor {
         return game.i18n.localize(key) || fallback;
     }
 
-    /**
-     * Checks if the system is set to Metric mode.
-     * @returns {boolean}
-     */
     static get isMetric() {
         return game.settings.get("rmu", "measurementSystem") === "Metric";
     }
@@ -29,6 +25,7 @@ export class DataExtractor {
      */
 
     static _toMetricWeight(pounds) {
+        // Logic ported from metric.js
         const kg = pounds * 0.5;
         let rd = 10;
         let digits = 1;
@@ -95,6 +92,62 @@ export class DataExtractor {
         return meters + " m";
     }
 
+    static _toMetricHeight(feet) {
+        // Logic ported from metric.js toMetricHeight (2 decimals)
+        const meters = feet * 0.3048;
+        const options = {
+            style: "decimal",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            useGrouping: false,
+        };
+        return meters.toLocaleString(undefined, options) + " m";
+    }
+
+    /**
+     * -----------------------------------------------------------
+     * PARSING HELPERS (New)
+     * -----------------------------------------------------------
+     */
+
+    static _parseHeightString(str) {
+        if (!str) return 0;
+        // Check for Format: 6'2"
+        const match = str.match(/(\d+)'\s*(?:(\d+)")?/);
+        if (match) {
+            const feet = parseInt(match[1]) || 0;
+            const inches = parseInt(match[2]) || 0;
+            return feet + inches / 12;
+        }
+        // Fallback: try parsing as raw number (assuming feet)
+        return parseFloat(str) || 0;
+    }
+
+    static _parseWeightString(str) {
+        if (!str) return 0;
+        // Extract numbers and decimals only
+        const clean = str.replace(/[^\d.]/g, "");
+        return parseFloat(clean) || 0;
+    }
+
+    static async _imageToBase64(url) {
+        if (!url || url === "icons/svg/mystery-man.svg") return null;
+
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (e) {
+            console.warn("RMU Export | Failed to load image:", url, e);
+            return null;
+        }
+    }
+
     /**
      * -----------------------------------------------------------
      * DATA PREPARATION
@@ -104,7 +157,6 @@ export class DataExtractor {
         if (actor.system?._hudInitialized) return actor;
 
         let targetDoc = null;
-
         if (actor.token) {
             targetDoc = actor.token;
         } else if (actor.getActiveTokens) {
@@ -151,16 +203,18 @@ export class DataExtractor {
 
     /**
      * -----------------------------------------------------------
-     * MAIN EXTRACTOR
+     * MAIN EXTRACTOR (Converted to Async)
      * -----------------------------------------------------------
      */
-    static getCleanData(targetActor, options = {}) {
+    static async getCleanData(targetActor, options = {}) {
         if (!targetActor) return {};
 
         const sys = targetActor.system;
         const {
             showAllSkills = false,
             header = true,
+            portrait = true,
+            biography = true,
             quick_info = true,
             stats = true,
             defenses = true,
@@ -171,9 +225,20 @@ export class DataExtractor {
             talents = true,
         } = options;
 
+        // 1. Fetch Portrait (Async operation)
+        let portraitData = null;
+        if (portrait) {
+            portraitData = await this._imageToBase64(targetActor.img);
+        }
+
+        // 2. Fetch Biography (Synchronous)
+        const bioData = biography ? this._getBiography(targetActor) : null;
+
         return {
             options: {
                 header,
+                portrait,
+                biography,
                 quick_info,
                 stats,
                 defenses,
@@ -184,6 +249,8 @@ export class DataExtractor {
                 talents,
             },
             header_data: header ? this._getHeader(targetActor) : null,
+            portrait_data: portraitData, // String (Base64) or null
+            biography_data: bioData,
             quick_info_data: quick_info ? this._getQuickInfo(sys) : null,
             stats_data: stats ? this._getStats(sys) : null,
             resistances_data: stats ? this._getResistances(sys) : null,
@@ -245,6 +312,69 @@ export class DataExtractor {
             level: sys.experience?.level ?? 1,
             realm: realmLabel,
             size: getSystemLabel("RMU.Size", sys.appearance?.size),
+        };
+    }
+
+    static _getBiography(actor) {
+        const sys = actor.system;
+        const app = sys.appearance || {};
+        const id = sys.identity || {};
+        const player = sys.player || {};
+
+        // Process Height & Weight
+        let heightDisplay = app._height || "";
+        let weightDisplay = app._weight || "";
+
+        if (this.isMetric) {
+            const feet = this._parseHeightString(app._height);
+            if (feet > 0) heightDisplay = this._toMetricHeight(feet);
+
+            const lbs = this._parseWeightString(app._weight);
+            if (lbs > 0) weightDisplay = this._toMetricWeight(lbs);
+        }
+
+        // --- Generate Clean Lists for Compact Layout ---
+
+        // 1. Player Info List (Value only)
+        const compactPlayer = [];
+        if (player.name) compactPlayer.push(player.name);
+        if (player.campaign) compactPlayer.push(player.campaign);
+        if (sys.powerLevel) compactPlayer.push(sys.powerLevel);
+
+        // 2. Appearance List (Label + Value string)
+        const compactApp = [];
+        const pushApp = (key, val) => {
+            if (val) compactApp.push(`${this._i18n(key)}: ${val}`);
+        };
+        pushApp("RMU_EXPORT.Bio.Age", app.age);
+        pushApp("RMU_EXPORT.Bio.Height", heightDisplay);
+        pushApp("RMU_EXPORT.Bio.Weight", weightDisplay);
+        pushApp("RMU_EXPORT.Bio.Eyes", app.eyes);
+        pushApp("RMU_EXPORT.Bio.Hair", app.hair);
+
+        return {
+            // Standard Fields
+            player_name: player.name || "",
+            campaign: player.campaign || "",
+            power_level: sys.powerLevel || "",
+
+            age: app.age || "",
+            eyes: app.eyes || "",
+            hair: app.hair || "",
+            height: heightDisplay,
+            weight: weightDisplay,
+            sex: app.sex || "",
+            skin: app.skin || "",
+
+            faith: id.faith || "",
+            gender: id.gender || "",
+
+            // Fallback Logic: Identity Bio -> System Description -> Empty
+            biography: id.bio || sys.description || "",
+
+            // Compact Lists
+            compact_player: compactPlayer,
+            compact_appearance: compactApp,
         };
     }
 
@@ -471,7 +601,6 @@ export class DataExtractor {
             let rangeDisplay = "";
             if (a.isRanged) {
                 let rawRangeVal = a.usage?.range?.short;
-
                 if (rawRangeVal !== undefined && rawRangeVal !== null) {
                     if (this.isMetric) {
                         rangeDisplay = `<${this._toMetricRange(rawRangeVal)}>`;
@@ -485,7 +614,6 @@ export class DataExtractor {
                             /['"a-zA-Z\s]/g,
                             "",
                         );
-
                         if (this.isMetric) {
                             if (String(rawRangeStr).includes("m")) {
                                 rangeDisplay = `<${cleanRange} m>`;

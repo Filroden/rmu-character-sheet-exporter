@@ -117,7 +117,10 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             });
         }
 
-        const cleanData = DataExtractor.getCleanData(this.actor, exportOptions);
+        const cleanData = await DataExtractor.getCleanData(
+            this.actor,
+            exportOptions,
+        );
 
         const layoutPath = this.config?.layouts?.[layoutId]?.path;
         const themePath = this.config?.themes?.[themeId]?.path;

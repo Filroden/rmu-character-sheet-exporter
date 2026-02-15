@@ -65,6 +65,115 @@
         </div>
     {{/if}}
 
+    {{! --- PORTRAIT & BIOGRAPHY --- }}
+    {{#if (or options.portrait options.biography)}}
+        <div class="section-title">
+            {{localize "RMU_EXPORT.Section.Biography"}}
+        </div>
+
+        <div class="bio-section">
+            <div class="bio-top">
+                {{! Column 1: Portrait }}
+                {{#if options.portrait}}
+                    {{#if portrait_data}}
+                        <div class="bio-portrait">
+                            <img
+                                src="{{portrait_data}}"
+                                alt="Character Portrait"
+                            />
+                        </div>
+                    {{/if}}
+                {{/if}}
+
+                {{! Data Columns }}
+                {{#if options.biography}}
+                    {{! Column 2: Player Info }}
+                    <div class="bio-col">
+                        <div class="header">{{localize
+                                "RMU_EXPORT.Bio.PlayerInfo"
+                            }}</div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Player"
+                                }}:</span>
+                            <span>{{biography_data.player_name}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Campaign"
+                                }}:</span>
+                            <span>{{biography_data.campaign}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.PowerLevel"
+                                }}:</span>
+                            <span>{{biography_data.power_level}}</span></div>
+                    </div>
+
+                    {{! Column 3: Appearance }}
+                    <div class="bio-col">
+                        <div class="header">{{localize
+                                "RMU_EXPORT.Bio.Appearance"
+                            }}</div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Age"
+                                }}:</span>
+                            <span>{{biography_data.age}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Eyes"
+                                }}:</span>
+                            <span>{{biography_data.eyes}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Hair"
+                                }}:</span>
+                            <span>{{biography_data.hair}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Height"
+                                }}:</span>
+                            <span>{{biography_data.height}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Weight"
+                                }}:</span>
+                            <span>{{biography_data.weight}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Sex"
+                                }}:</span>
+                            <span>{{biography_data.sex}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Skin"
+                                }}:</span>
+                            <span>{{biography_data.skin}}</span></div>
+                    </div>
+
+                    {{! Column 4: Identity }}
+                    <div class="bio-col">
+                        <div class="header">{{localize
+                                "RMU_EXPORT.Bio.Identity"
+                            }}</div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Faith"
+                                }}:</span>
+                            <span>{{biography_data.faith}}</span></div>
+                        <div class="bio-row"><span>{{localize
+                                    "RMU_EXPORT.Bio.Gender"
+                                }}:</span>
+                            <span>{{biography_data.gender}}</span></div>
+                    </div>
+                {{/if}}
+            </div>
+
+            {{! Bottom: Biography Text }}
+            {{#if options.biography}}
+                {{#if biography_data.biography}}
+                    <div class="bio-text-block">
+                        <div class="header">{{localize
+                                "RMU_EXPORT.Bio.Biography"
+                            }}</div>
+                        <div class="bio-content">
+                            {{{biography_data.biography}}}
+                        </div>
+                    </div>
+                {{/if}}
+            {{/if}}
+        </div>
+    {{/if}}
+
     {{! --- DEFENSES --- }}
     {{#if options.defenses}}
         <div class="section-title">{{localize
