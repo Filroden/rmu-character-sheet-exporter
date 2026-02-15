@@ -161,6 +161,100 @@
 }
 .res-item:last-child { border-right: none; }
 
+/* --- BIOGRAPHY & PORTRAIT SECTION --- */
+.bio-section {
+    margin-bottom: 15px;
+    break-inside: avoid;
+}
+
+/* Grid for Portrait + 3 Info Columns */
+.bio-top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.bio-portrait {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.bio-portrait img {
+    max-width: 100%;
+    height: auto;
+    max-height: 180px;
+    border: 1px solid var(--rmu-cse-border-main);
+    padding: 3px;
+    background: var(--rmu-cse-bg-card);
+    border-radius: 4px;
+}
+
+.bio-col {
+    background: var(--rmu-cse-bg-panel);
+    border: 1px solid var(--rmu-cse-border-subtle);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.bio-col .header {
+    border-bottom: 1px solid var(--rmu-cse-border-main);
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+    color: var(--rmu-cse-primary);
+}
+
+.bio-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    border-bottom: 1px dotted var(--rmu-cse-border-subtle);
+}
+
+.bio-row span:first-child {
+    font-weight: bold;
+    color: var(--rmu-cse-secondary);
+    margin-right: 5px;
+}
+
+.bio-text-block {
+    background: var(--rmu-cse-bg-card);
+    border: 1px solid var(--rmu-cse-border-subtle);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.bio-content {
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* --- COMPACT PORTRAIT STYLES --- */
+.compact-bio-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+
+.compact-portrait img {
+    width: 80px;
+    height: auto;
+    border: 1px solid var(--rmu-cse-border-heavy);
+    padding: 2px;
+    background: var(--rmu-cse-bg-card);
+}
+
+.compact-bio-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
 /* --- DEFENSES & ARMOR --- */
 .defense-container {
     display: flex;
@@ -307,5 +401,9 @@
     .inv-stats,
     .compact-row { 
         break-inside: avoid; 
+    }
+
+    .no-print {
+        display: none !important;
     }
 }

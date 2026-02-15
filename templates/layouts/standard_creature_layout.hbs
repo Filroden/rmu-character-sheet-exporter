@@ -65,6 +65,102 @@
         </div>
     {{/if}}
 
+    {{! --- PORTRAIT & DETAILS (CREATURE VARIANT) --- }}
+    {{#if (or options.portrait options.details)}}
+        <div class="section-title">
+            {{localize "RMU_EXPORT.Section.Details"}}
+        </div>
+
+        <div class="bio-section">
+            <div class="bio-top">
+                {{! Column 1: Portrait }}
+                {{#if options.portrait}}
+                    {{#if portrait_data}}
+                        <div class="bio-portrait">
+                            <img
+                                src="{{portrait_data}}"
+                                alt="Creature Portrait"
+                            />
+                        </div>
+                    {{/if}}
+                {{/if}}
+
+                {{! Column 2: Creature Details (Single Wide Column) }}
+                {{#if options.details}}
+                    <div class="bio-col" style="grid-column: span 2;">
+                        <div class="header">{{localize
+                                "RMU_EXPORT.Section.Details"
+                            }}</div>
+
+                        <div class="bio-row">
+                            <span>{{localize
+                                    "RMU_EXPORT.Details.Outlook"
+                                }}:</span>
+                            <span>{{details_data.outlook}}</span>
+                        </div>
+                        <div class="bio-row">
+                            <span>{{localize
+                                    "RMU_EXPORT.Details.Encounter"
+                                }}:</span>
+                            <span>{{details_data.encounter_number}}
+                                ({{details_data.encounter_frequency}})</span>
+                        </div>
+                        <div class="bio-row">
+                            <span>{{localize
+                                    "RMU_EXPORT.Details.Treasure"
+                                }}:</span>
+                            <span>{{details_data.treasure}}</span>
+                        </div>
+                        <div class="bio-row">
+                            <span>{{localize
+                                    "RMU_EXPORT.Details.Biome"
+                                }}:</span>
+                            <span>{{details_data.biome}}</span>
+                        </div>
+
+                        {{#if details_data.size_description}}
+                            <div class="bio-row">
+                                <span>{{localize
+                                        "RMU_EXPORT.Details.SizeDesc"
+                                    }}:</span>
+                                <span
+                                    style="text-align: right;"
+                                >{{details_data.size_description}}</span>
+                            </div>
+                        {{/if}}
+
+                        {{#if details_data.armor_description}}
+                            <div class="bio-row">
+                                <span>{{localize
+                                        "RMU_EXPORT.Details.ArmorDesc"
+                                    }}:</span>
+                                <span
+                                    style="text-align: right;"
+                                >{{details_data.armor_description}}</span>
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+
+    {{! --- BIOGRAPHY TEXT --- }}
+    {{#if options.biography}}
+        {{#if biography_data.text}}
+            <div class="bio-section">
+                <div class="bio-text-block">
+                    <div class="header">{{localize
+                            "RMU_EXPORT.Bio.Biography"
+                        }}</div>
+                    <div class="bio-content">
+                        {{{biography_data.text}}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+    {{/if}}
+
     {{! --- DEFENSES --- }}
     {{#if options.defenses}}
         <div class="section-title">{{localize

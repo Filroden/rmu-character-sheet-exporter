@@ -23,7 +23,7 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             tag: "form",
             id: "rmu-export-dialog",
             classes: ["rmu-cse", "standard-form"],
-            position: { width: 1200, height: 800 }, // Wider window for side-by-side
+            position: { width: 1200, height: 800 },
             window: {
                 icon: "rmu-cse-icon export",
                 resizable: true,
@@ -117,15 +117,28 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             });
         }
 
-        const cleanData = DataExtractor.getCleanData(this.actor, exportOptions);
+        const cleanData = await DataExtractor.getCleanData(
+            this.actor,
+            exportOptions,
+        );
 
-        const layoutPath = this.config?.layouts?.[layoutId]?.path;
+        // Get the base path from config
+        let layoutPath = this.config?.layouts?.[layoutId]?.path;
         const themePath = this.config?.themes?.[themeId]?.path;
 
         if (!layoutPath || !themePath) {
             console.warn("RMU Export | Missing layout or theme path.");
             if (status) status.innerText = "Error: Invalid selection";
             return;
+        }
+
+        const typeSuffix =
+            this.actor.type === "Character" ? "character" : "creature";
+        if (layoutPath.includes("_layout.hbs")) {
+            layoutPath = layoutPath.replace(
+                "_layout.hbs",
+                `_${typeSuffix}_layout.hbs`,
+            );
         }
 
         const htmlContent = await OutputGenerator.generateHTML(

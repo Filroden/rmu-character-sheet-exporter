@@ -1,36 +1,26 @@
 /* ========================================= */
-/* RMU EXPORT: DARK MODE THEME              */
-/* Standard layout with dark aesthetics     */
+/* RMU EXPORT: STANDARD THEME (Unified)     */
+/* Base style for both Standard & Compact   */
 /* ========================================= */
 
 :root {
-    /* --- PALETTE: DARK MODE --- */
-    /* Primary is lighter gray to stand out against dark bg, but not blinding */
-    --rmu-cse-primary: #4a4a4a;     
-    --rmu-cse-secondary: #aaaaaa;   
-    --rmu-cse-tertiary: #888888;
-    
-    /* Alert is brightened/pastel to be visible on dark */
-    --rmu-cse-alert: #ff6b6b;       
-
-    /* Text is inverted to light colors */
-    --rmu-cse-text-main: #e0e0e0;   
-    --rmu-cse-text-light: #b0b0b0;  
-    --rmu-cse-text-inverse: #ffffff; 
-
-    /* Backgrounds: Dark grays */
-    --rmu-cse-bg-sheet: #121212;    /* Almost black background */
-    --rmu-cse-bg-card: #1e1e1e;     /* Dark card surface */
-    --rmu-cse-bg-panel: #181818;    /* Slightly darker panel */
-    --rmu-cse-bg-header: #252525;   /* Header background */
-    --rmu-cse-bg-table-head: #2a2a2a;
-
-    /* Borders: Lightened to be visible */
-    --rmu-cse-border-heavy: #777777;
-    --rmu-cse-border-main: #555555;
-    --rmu-cse-border-light: #444444;
-    --rmu-cse-border-subtle: #333333;
-    --rmu-cse-border-dashed: #666666;
+    --rmu-cse-primary: #333;
+    --rmu-cse-secondary: #666;
+    --rmu-cse-tertiary: #888;
+    --rmu-cse-alert: #c00;
+    --rmu-cse-text-main: #333;
+    --rmu-cse-text-light: #555;
+    --rmu-cse-text-inverse: #fff;
+    --rmu-cse-bg-sheet: #f4f4f4;
+    --rmu-cse-bg-card: #fff;
+    --rmu-cse-bg-panel: #fafafa;
+    --rmu-cse-bg-header: #e8e8e8;
+    --rmu-cse-bg-table-head: #eee;
+    --rmu-cse-border-heavy: #333;
+    --rmu-cse-border-main: #ccc;
+    --rmu-cse-border-light: #ddd;
+    --rmu-cse-border-subtle: #eee;
+    --rmu-cse-border-dashed: #999;
 }
 
 /* --- GENERAL SHEET LAYOUT --- */
@@ -159,6 +149,100 @@
 }
 .res-item:last-child {
     border-right: none;
+}
+
+/* --- BIOGRAPHY & PORTRAIT SECTION --- */
+.bio-section {
+    margin-bottom: 15px;
+    break-inside: avoid;
+}
+
+/* Grid for Portrait + 3 Info Columns */
+.bio-top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.bio-portrait {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.bio-portrait img {
+    max-width: 100%;
+    height: auto;
+    max-height: 180px;
+    border: 1px solid var(--rmu-cse-border-main);
+    padding: 3px;
+    background: var(--rmu-cse-bg-card);
+    border-radius: 4px;
+}
+
+.bio-col {
+    background: var(--rmu-cse-bg-panel);
+    border: 1px solid var(--rmu-cse-border-subtle);
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.bio-col .header {
+    border-bottom: 1px solid var(--rmu-cse-border-main);
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+    color: var(--rmu-cse-primary);
+}
+
+.bio-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    border-bottom: 1px dotted var(--rmu-cse-border-subtle);
+}
+
+.bio-row span:first-child {
+    font-weight: bold;
+    color: var(--rmu-cse-secondary);
+    margin-right: 5px;
+}
+
+.bio-text-block {
+    background: var(--rmu-cse-bg-card);
+    border: 1px solid var(--rmu-cse-border-subtle);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.bio-content {
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* --- COMPACT PORTRAIT STYLES --- */
+.compact-bio-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+
+.compact-portrait img {
+    width: 80px;
+    height: auto;
+    border: 1px solid var(--rmu-cse-border-heavy);
+    padding: 2px;
+    background: var(--rmu-cse-bg-card);
+}
+
+.compact-bio-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
 }
 
 /* --- DEFENSES & ARMOR --- */
@@ -299,39 +383,9 @@
 
 /* --- PRINT MEDIA QUERY --- */
 @media print {
-    /* Force white background for printing to save ink, regardless of dark mode preference */
-    body {
-        margin: 0;
-        padding: 0;
-    }
-    
     .rmu-sheet { 
         max-width: 100%; 
-        border: none;
-        background-color: white; /* Invert back for print */
-        color: #000;
-    }
-
-    /* Fix colors for print */
-    .section-title { 
-        background: #333; 
-        color: #fff;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-    
-    .header-sub, .group-label, .armor-loc, .stat-label {
-        color: #666;
-    }
-    
-    .stat-box, .armor-box, .quick-info-grid, .tactical-table th, .tactical-table td, .attack-table th, .attack-table td {
-        border-color: #ccc;
-        background: #fff;
-    }
-    
-    .inv-stats, .res-grid {
-        background: #fafafa;
-        border-color: #ccc;
+        border: none; 
     }
 
     .section-title, 
@@ -342,5 +396,9 @@
     .block, 
     .inv-stats { 
         break-inside: avoid; 
+    }
+
+    .no-print {
+        display: none !important;
     }
 }

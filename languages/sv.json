@@ -4,6 +4,9 @@
     "RMU_EXPORT.Section.Header": "Sidhuvud",
     "RMU_EXPORT.Section.QuickInfo": "Snabbinfo (BMR/Init/KP/PP)",
     "RMU_EXPORT.Section.Stats": "Grundegenskaper",
+    "RMU_EXPORT.Section.Portrait": "Porträtt",
+    "RMU_EXPORT.Section.Details": "Allmän information",
+    "RMU_EXPORT.Section.Biography": "Biografi / Beskrivning",
     "RMU_EXPORT.Section.Defenses": "Försvar & Rustning",
     "RMU_EXPORT.Section.Attacks": "Attacker",
     "RMU_EXPORT.Section.Skills": "Färdigheter",
@@ -33,6 +36,33 @@
     "RMU_EXPORT.Resistances.Mentalism": "Mentalism",
     "RMU_EXPORT.Resistances.Physical": "Fysisk",
     "RMU_EXPORT.Resistances.Fear": "Skräck",
+
+    "RMU_EXPORT.Details.Outlook": "Inställning",
+    "RMU_EXPORT.Details.Encounter": "Möte",
+    "RMU_EXPORT.Details.Treasure": "Skatt",
+    "RMU_EXPORT.Details.Biome": "Biom",
+    "RMU_EXPORT.Details.SizeDesc": "Storleksnotering",
+    "RMU_EXPORT.Details.ArmorDesc": "Rustningsnotering",
+
+    "RMU_EXPORT.Bio.PlayerInfo": "Spelarinformation",
+    "RMU_EXPORT.Bio.Appearance": "Utseende",
+    "RMU_EXPORT.Bio.Identity": "Identitet",
+    "RMU_EXPORT.Bio.Biography": "Biografi / Beskrivning",
+
+    "RMU_EXPORT.Bio.Player": "Spelare",
+    "RMU_EXPORT.Bio.Campaign": "Kampanj",
+    "RMU_EXPORT.Bio.PowerLevel": "Kraftnivå",
+
+    "RMU_EXPORT.Bio.Age": "Ålder",
+    "RMU_EXPORT.Bio.Eyes": "Ögon",
+    "RMU_EXPORT.Bio.Hair": "Hår",
+    "RMU_EXPORT.Bio.Height": "Längd",
+    "RMU_EXPORT.Bio.Weight": "Vikt",
+    "RMU_EXPORT.Bio.Sex": "Kön",
+    "RMU_EXPORT.Bio.Skin": "Hud",
+
+    "RMU_EXPORT.Bio.Faith": "Tro",
+    "RMU_EXPORT.Bio.Gender": "Genus",
 
     "RMU_EXPORT.Defenses.TotalDB": "Total DB",
     "RMU_EXPORT.Defenses.DodgeDB": "Undvika DB",
@@ -67,6 +97,7 @@
 
     "RMU_EXPORT.Notify.Generating": "Genererar formulär för {name}...",
     "RMU_EXPORT.Notify.Failed": "Export misslyckades: {msg}",
+    "RMU_EXPORT.Notify.TokenRequired": "Vänligen dra denna aktör till scenen innan export för att säkerställa att all data (attacker/trollformler) laddas korrekt.",
 
     "RMU_EXPORT.Dialog.Title": "Export: {name}",
     "RMU_EXPORT.Dialog.FormatJSON": "JSON (Data)",

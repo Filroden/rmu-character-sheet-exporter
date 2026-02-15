@@ -12,6 +12,7 @@
 }
 
 .rmu-export-wrapper {
+    background: var(--filroden-color-bg-darkest) !important;
     display: grid;
     grid-template-columns: 320px 1fr;
     grid-template-rows: 1fr;
@@ -27,7 +28,7 @@
     gap: var(--filroden-space-m);
     overflow-y: auto;
     border-right: var(--filroden-border-main);
-    background: var(--filroden-color-bg-darkest);
+    background: var(--filroden-color-bg-darkest) !important;
 }
 
 .rmu-cse-divider {
@@ -108,8 +109,8 @@
 }
 
 .rmu-cse select option {
-    background-color: var(--visage-color-bg-darkest) !important;
-    color: var(--visage-color-text-main-solid) !important;
+    background-color: var(--filroden-color-bg-darkest) !important;
+    color: var(--filroden-color-text-main-solid) !important;
 }
 
 .rmu-cse-checkbox {
