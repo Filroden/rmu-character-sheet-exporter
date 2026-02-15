@@ -89,6 +89,7 @@
 
     "RMU_EXPORT.Notify.Generating": "Génération de la fiche pour {name}...",
     "RMU_EXPORT.Notify.Failed": "Échec de l'export : {msg}",
+    "RMU_EXPORT.Notify.TokenRequired": "Por favor, arrastre este actor a la escena antes de exportar para asegurar que todos los datos (ataques/hechizos) se carguen correctamente.",
 
     "RMU_EXPORT.Dialog.Title": "Export : {name}",
     "RMU_EXPORT.Dialog.FormatJSON": "JSON (Données)",

@@ -22,22 +22,22 @@ const RMU_EXPORT_CONFIG = {
         standard: {
             id: "standard",
             label: "RMU_EXPORT.Themes.Standard",
-            path: "modules/rmu-character-sheet-exporter/styles/standard.css",
+            path: "modules/rmu-character-sheet-exporter/styles/themes/standard.css",
         },
         dark: {
             id: "dark",
             label: "RMU_EXPORT.Themes.DarkMode",
-            path: "modules/rmu-character-sheet-exporter/styles/dark.css",
+            path: "modules/rmu-character-sheet-exporter/styles/themes/themes/dark.css",
         },
         boba: {
             id: "boba",
             label: "RMU_EXPORT.Themes.Boba",
-            path: "modules/rmu-character-sheet-exporter/styles/boba.css",
+            path: "modules/rmu-character-sheet-exporter/styles/themes/boba.css",
         },
         print: {
             id: "print",
             label: "RMU_EXPORT.Themes.PrintHighContrast",
-            path: "modules/rmu-character-sheet-exporter/styles/print.css",
+            path: "modules/rmu-character-sheet-exporter/styles/themes/print.css",
         },
     },
 
@@ -81,6 +81,17 @@ Hooks.on("getApplicationHeaderButtons", addHeaderButton);
 async function startExportProcess(actor) {
     if (!actor) return;
 
+    const hasActiveToken =
+        actor.isToken ||
+        (actor.getActiveTokens && actor.getActiveTokens().length > 0);
+
+    if (!hasActiveToken) {
+        ui.notifications.warn(
+            game.i18n.localize("RMU_EXPORT.Notify.TokenRequired"),
+        );
+        return;
+    }
+
     try {
         const derivedActor = await DataExtractor.ensureExtendedData(actor);
 
@@ -109,29 +120,29 @@ async function startExportProcess(actor) {
 }
 
 async function handleExportSubmit(formData, actor) {
-    // 1. Extract selections
+    // Extract selections
     const layoutId = formData.layout;
     const themeId = formData.theme;
 
-    // 2. Build the 'options' object from the form checkboxes
-    // We iterate over the config sections to find their matching values in formData
+    // Build the 'options' object from the form checkboxes
+    // Iterate over the config sections to find their matching values in formData
     const sectionOptions = {};
     Object.keys(RMU_EXPORT_CONFIG.sections).forEach((key) => {
         sectionOptions[key] = formData[key];
     });
 
-    // Special handling for Skill Filters (keep existing logic)
+    // Special handling for Skill Filters
     const skillFilter = formData.skillFilter || "ranked";
     sectionOptions.showAllSkills = skillFilter === "all";
 
-    // 3. Get Clean Data
+    // Get Clean Data
     const cleanData = await DataExtractor.getCleanData(actor, sectionOptions);
 
-    // 4. Resolve Paths
+    // Resolve Paths
     const layoutPath = RMU_EXPORT_CONFIG.layouts[layoutId].path;
     const themePath = RMU_EXPORT_CONFIG.themes[themeId].path;
 
-    // 5. Generate with BOTH paths
+    // Generate with BOTH paths
     await OutputGenerator.download(
         cleanData,
         formData.format,

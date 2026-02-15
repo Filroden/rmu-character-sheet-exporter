@@ -89,6 +89,7 @@
 
     "RMU_EXPORT.Notify.Generating": "Genererar formulär för {name}...",
     "RMU_EXPORT.Notify.Failed": "Export misslyckades: {msg}",
+    "RMU_EXPORT.Notify.TokenRequired": "Vänligen dra denna aktör till scenen innan export för att säkerställa att all data (attacker/trollformler) laddas korrekt.",
 
     "RMU_EXPORT.Dialog.Title": "Export: {name}",
     "RMU_EXPORT.Dialog.FormatJSON": "JSON (Data)",

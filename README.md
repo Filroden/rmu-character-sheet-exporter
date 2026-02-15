@@ -43,5 +43,4 @@ The exported sheet combines text from three different sources. If you see Englis
 
 - Add tournament template for tabletop gameplay at conventions
 - Embed export of actor.json into html for later recovery
-- Add character or creature portraits / biography / appearance block
 - Add movement block
