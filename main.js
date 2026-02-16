@@ -50,6 +50,7 @@ const RMU_EXPORT_CONFIG = {
         biography: { label: "RMU_EXPORT.Section.Biography", default: false },
         defenses: { label: "RMU_EXPORT.Section.Defenses", default: true },
         attacks: { label: "RMU_EXPORT.Section.Attacks", default: true },
+        movement: { label: "RMU_EXPORT.Section.Movement", default: true },
         skills: { label: "RMU_EXPORT.Section.Skills", default: true },
         spells: { label: "RMU_EXPORT.Section.SpellLists", default: true },
         inventory: { label: "RMU_EXPORT.Section.Inventory", default: true },

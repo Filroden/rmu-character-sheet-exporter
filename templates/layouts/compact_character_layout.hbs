@@ -25,8 +25,7 @@
     {{#if options.quick_info}}
         <div class="quick-info-grid">
             <span>{{localize "RMU_EXPORT.Stats.BMR"}}:
-                {{quick_info_data.bmr_value}}
-                ({{quick_info_data.bmr_mode}})</span>
+                {{quick_info_data.bmr_value}}</span>
             <span>{{localize "RMU_EXPORT.Stats.Initiative"}}:
                 {{quick_info_data.initiative}}</span>
             <span>{{localize "RMU_EXPORT.Stats.HP"}}:
@@ -197,6 +196,42 @@
         </table>
     {{/if}}
 
+    {{! --- MOVEMENT --- }}
+    {{#if options.movement}}
+        <div class="section-title">
+            {{localize "RMU_EXPORT.Section.Movement"}}
+        </div>
+        <div class="compact-list-flow">
+            <span class="group-wrapper">
+                <span class="group-label">{{localize
+                        "RMU_EXPORT.Movement.ActiveMode"
+                    }}:</span>
+                <span>{{movement_data.active_mode_name}}</span>
+            </span>
+            <span class="separator">|</span>
+            <span class="group-wrapper">
+                <strong class="group-label">
+                    {{localize "RMU_EXPORT.Inventory.MaxPace"}}:
+                </strong>
+                {{inventory_data.max_pace}}
+            </span>
+        </div>
+        <div class="compact-list-flow">
+            <span>
+                <strong class="group-label">
+                    {{localize "RMU_EXPORT.Movement.BMR"}}&nbsp;
+                </strong>
+            </span>
+
+            {{#each movement_data.bmr_summary}}
+                <span class="group-wrapper">
+                    <span class="group-label">{{mode}}:</span>
+                    <span>{{bmr}}</span>
+                </span>
+            {{/each}}
+        </div>
+    {{/if}}
+
     {{! --- SKILLS --- }}
     {{#if options.skills}}
         <div class="section-title">{{localize
@@ -249,11 +284,6 @@
                     "RMU_EXPORT.Inventory.EncPenalty"
                 }}:</strong>
             {{inventory_data.enc_penalty}}
-            <span class="separator">|</span>
-            <strong class="group-label">{{localize
-                    "RMU_EXPORT.Inventory.MaxPace"
-                }}:</strong>
-            {{inventory_data.max_pace}}
             <span class="separator">|</span>
             <strong class="group-label">{{localize
                     "RMU_EXPORT.Inventory.Carried"

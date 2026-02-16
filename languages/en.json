@@ -9,6 +9,7 @@
     "RMU_EXPORT.Section.Biography": "Biography / Description",
     "RMU_EXPORT.Section.Defenses": "Defenses & Armor",
     "RMU_EXPORT.Section.Attacks": "Attacks",
+    "RMU_EXPORT.Section.Movement": "Movement",
     "RMU_EXPORT.Section.Skills": "Skills",
     "RMU_EXPORT.Section.SpellLists": "Spell Lists",
     "RMU_EXPORT.Section.Inventory": "Inventory",
@@ -127,5 +128,8 @@
     "RMU_EXPORT.Themes.Standard": "Standard Theme",
     "RMU_EXPORT.Themes.DarkMode": "Dark Mode",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
-    "RMU_EXPORT.Themes.PrintHighContrast": "Printer Friendly (High Contrast)"
+    "RMU_EXPORT.Themes.PrintHighContrast": "Printer Friendly (High Contrast)",
+
+    "RMU_EXPORT.Movement.ActiveMode": "Active Mode",
+    "RMU_EXPORT.Movement.BMR": "BMR"
 }
