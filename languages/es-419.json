@@ -2,7 +2,8 @@
     "RMU_EXPORT.Header.Level": "Nivel",
 
     "RMU_EXPORT.Section.Header": "Información",
-    "RMU_EXPORT.Section.QuickInfo": "Info Rápida (BMR/Inic/PV/PP)",
+    "RMU_EXPORT.Section.QuickInfo": "Info Rápida",
+    "RMU_EXPORT.Section.Movement": "Movimiento",
     "RMU_EXPORT.Section.Stats": "Estadísticas",
     "RMU_EXPORT.Section.Portrait": "Retrato",
     "RMU_EXPORT.Section.Details": "Información General",
@@ -14,7 +15,6 @@
     "RMU_EXPORT.Section.Inventory": "Inventario",
     "RMU_EXPORT.Section.Talents": "Talentos",
 
-    "RMU_EXPORT.Stats.BMR": "BMR",
     "RMU_EXPORT.Stats.Initiative": "Inic.",
     "RMU_EXPORT.Stats.HP": "PV",
     "RMU_EXPORT.Stats.PP": "PP",
@@ -127,5 +127,8 @@
     "RMU_EXPORT.Themes.Standard": "Tema Estándar",
     "RMU_EXPORT.Themes.DarkMode": "Modo Oscuro",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
-    "RMU_EXPORT.Themes.PrintHighContrast": "Impresión (Alto Contraste)"
+    "RMU_EXPORT.Themes.PrintHighContrast": "Impresión (Alto Contraste)",
+
+    "RMU_EXPORT.Movement.ActiveMode": "Modo Activo",
+    "RMU_EXPORT.Movement.BMR": "BMR"
 }

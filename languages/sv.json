@@ -2,7 +2,8 @@
     "RMU_EXPORT.Header.Level": "Nivå",
 
     "RMU_EXPORT.Section.Header": "Sidhuvud",
-    "RMU_EXPORT.Section.QuickInfo": "Snabbinfo (BMR/Init/KP/PP)",
+    "RMU_EXPORT.Section.QuickInfo": "Snabbinfo",
+    "RMU_EXPORT.Section.Movement": "Rörelse",
     "RMU_EXPORT.Section.Stats": "Grundegenskaper",
     "RMU_EXPORT.Section.Portrait": "Porträtt",
     "RMU_EXPORT.Section.Details": "Allmän information",
@@ -14,7 +15,6 @@
     "RMU_EXPORT.Section.Inventory": "Utrustning",
     "RMU_EXPORT.Section.Talents": "Talanger",
 
-    "RMU_EXPORT.Stats.BMR": "BMR",
     "RMU_EXPORT.Stats.Initiative": "Init.",
     "RMU_EXPORT.Stats.HP": "KP",
     "RMU_EXPORT.Stats.PP": "PP",
@@ -127,5 +127,8 @@
     "RMU_EXPORT.Themes.Standard": "Standardtema",
     "RMU_EXPORT.Themes.DarkMode": "Mörkt Läge",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
-    "RMU_EXPORT.Themes.PrintHighContrast": "Utskriftsvänlig (Hög Kontrast)"
+    "RMU_EXPORT.Themes.PrintHighContrast": "Utskriftsvänlig (Hög Kontrast)",
+
+    "RMU_EXPORT.Movement.ActiveMode": "Aktivt Läge",
+    "RMU_EXPORT.Movement.BMR": "BMR"
 }
