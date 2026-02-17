@@ -49,6 +49,10 @@ The exported sheet combines text from three different sources. If you see Englis
 
 - **Import from HTML:** You can re-import the embedded "character capsule" onto an existing actor you own from the sidebar using right-click context menu "Import from HTML". This will completely replace all information with the data stored in the capsule. **I highly recommend creating a new actor and importing to that.**
 
+  ![Import from HTML menu option](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/rmu_cse_context_menu_import.png)
+
+  ![Import HTML sheet dialogue](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/rmu_cse_import_dialog.png)
+
 - **Important Note on Editing:** The HTML file is a **visual display** of the data, not the data itself. If you edit the text in the HTML file it **will not** change the embedded backup data. *Think of it like a printed receipt:* Scribbling a new price on a receipt changes what you see on the paper, but it doesn't change what the bank actually charged you. Any future "Import" feature will read the hidden, unedited data block, *not* the visible text you see on the screen.
 
 ## Roadmap
