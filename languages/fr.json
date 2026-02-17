@@ -2,7 +2,7 @@
     "RMU_EXPORT.Header.Level": "Niveau",
 
     "RMU_EXPORT.Section.Header": "En-tête",
-    "RMU_EXPORT.Section.QuickInfo": "Infos Rapides (BMR/Init/PV/PP)",
+    "RMU_EXPORT.Section.QuickInfo": "Infos Rapides",
     "RMU_EXPORT.Section.Stats": "Caractéristiques",
     "RMU_EXPORT.Section.Portrait": "Portrait",
     "RMU_EXPORT.Section.Details": "Informations Générales",
@@ -14,7 +14,6 @@
     "RMU_EXPORT.Section.Inventory": "Inventaire",
     "RMU_EXPORT.Section.Talents": "Talents",
 
-    "RMU_EXPORT.Stats.BMR": "VDB",
     "RMU_EXPORT.Stats.Initiative": "Init.",
     "RMU_EXPORT.Stats.HP": "PV",
     "RMU_EXPORT.Stats.PP": "PP",
@@ -127,5 +126,16 @@
     "RMU_EXPORT.Themes.Standard": "Thème Standard",
     "RMU_EXPORT.Themes.DarkMode": "Mode Sombre",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
-    "RMU_EXPORT.Themes.PrintHighContrast": "Impression (Haut Contraste)"
+    "RMU_EXPORT.Themes.PrintHighContrast": "Impression (Haut Contraste)",
+
+    "RMU_EXPORT.Movement.ActiveMode": "Mode Actif",
+    "RMU_EXPORT.Movement.BMR": "VDB",
+
+    "RMU_EXPORT.Button.ImportSheet": "Importer depuis HTML",
+    "RMU_EXPORT.Button.ImportSheetHeader": "Importer une Feuille de Personnage HTML",
+    "RMU_EXPORT.Button.Import": "Importer les Données",
+    "RMU_EXPORT.Import.SelectFile": "Sélectionnez le fichier HTML exporté :",
+    "RMU_EXPORT.Import.Warning": "ATTENTION : Cela écrasera complètement toutes les données de {name} (stats, objets, compétences) avec les données du fichier. Cette action est irréversible.",
+    "RMU_EXPORT.Import.TypeMismatch": "RMU Exporter | Incompatibilité de Type : Le fichier contient un '{source}' mais vous essayez d'importer dans un '{target}'.",
+    "RMU_EXPORT.Import.Success": "Données importées avec succès pour {name}."
 }

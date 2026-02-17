@@ -1,6 +1,6 @@
 # RMU Character Sheet Exporter
 
-![Latest Version](https://img.shields.io/badge/Version-1.4.0-blue)
+![Latest Version](https://img.shields.io/badge/Version-1.5.0-blue)
 ![Foundry Version](https://img.shields.io/badge/Foundry-v13-orange)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![System](https://img.shields.io/badge/System-RMU-blue)
@@ -9,7 +9,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/Filroden/rmu-character-sheet-exporter)
 ![Issues](https://img.shields.io/github/issues/Filroden/rmu-character-sheet-exporter)
 
-This is a simple module to create a printable version of a character or creature sheet.
+This is a simple module to create a printable version of a character or creature sheet. It also creates a copy of the raw actor data, which means exported character sheets become a useful way to transfer characters between people but still lets them re-import them into Foundry. E.g., if you create an adventure you want to share, you could include character sheets as part of the adventure and GMs could import them into Foundry using real Foundry data that the RMU system understands.
 
 ## How to use
 
@@ -43,13 +43,14 @@ The exported sheet combines text from three different sources. If you see Englis
 - **Game Data** (the RMU system): Rules data (e.g., skill names like "Acrobatics", stats like "Ag", or attack tables) are fetched directly from the Rolemaster Unified system. The module attempts to look up the translated name within the system's files. If the core RMU system has not translated a specific skill or item, it will fallback to English.
 - **User Input** (your data): Text that you or the GM have manually typed (e.g., specific item names, character background, or custom skill specialisations) is exported exactly as it appears on the sheet.
 
-## Character Capsule (from v1.4.0)
+## Character Capsule (from v1.4.0 and v1.5.0)
 
-- **Embedded Raw Data:** The exported HTML file now silently contains a copy of your character's **Raw Foundry Data** (JSON). *Why?* This turns your HTML export into a self-contained backup. In a future update, I plan to allow re-importing characters directly from these HTML files.
+- **Embedded Raw Data:** The exported HTML file now silently contains a copy of your character's **Raw Foundry Data** (JSON). *Why?* This turns your HTML export into a self-contained backup or a simple way to share your character with others so they can not only read the character sheet (the HTML) but also import it into Foundry.
+
+- **Import from HTML:** You can re-import the embedded "character capsule" onto an existing actor you own from the sidebar using right-click context menu "Import from HTML". This will completely replace all information with the data stored in the capsule. **I highly recommend creating a new actor and importing to that.**
+
 - **Important Note on Editing:** The HTML file is a **visual display** of the data, not the data itself. If you edit the text in the HTML file it **will not** change the embedded backup data. *Think of it like a printed receipt:* Scribbling a new price on a receipt changes what you see on the paper, but it doesn't change what the bank actually charged you. Any future "Import" feature will read the hidden, unedited data block, *not* the visible text you see on the screen.
 
 ## Roadmap
 
 - Add tournament template for tabletop gameplay at conventions
-- Add function to extract embedded actor.json from html for import
-- Add movement block

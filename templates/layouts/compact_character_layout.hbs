@@ -24,9 +24,6 @@
     {{! --- QUICK INFO --- }}
     {{#if options.quick_info}}
         <div class="quick-info-grid">
-            <span>{{localize "RMU_EXPORT.Stats.BMR"}}:
-                {{quick_info_data.bmr_value}}
-                ({{quick_info_data.bmr_mode}})</span>
             <span>{{localize "RMU_EXPORT.Stats.Initiative"}}:
                 {{quick_info_data.initiative}}</span>
             <span>{{localize "RMU_EXPORT.Stats.HP"}}:
@@ -37,6 +34,28 @@
                 {{quick_info_data.endurance_physical}}</span>
             <span>{{localize "RMU_EXPORT.Stats.MentalEnd"}}:
                 {{quick_info_data.endurance_mental}}</span>
+        </div>
+    {{/if}}
+
+    {{! --- MOVEMENT --- }}
+    {{#if options.movement}}
+        <div class="quick-info-grid">
+            <span>{{localize "RMU_EXPORT.Movement.BMR"}}&nbsp;</span>
+            {{#each movement_data.bmr_summary}}
+                <span class="group-wrapper">
+                    <span>{{mode}}:</span>
+                    <span>{{bmr}}</span>
+                </span>
+            {{/each}}
+            <span class="separator">|</span>
+            <span class="group-wrapper">
+                <span>{{localize "RMU_EXPORT.Movement.ActiveMode"}}:</span>
+                <span>{{movement_data.active_mode_name}}</span>
+            </span>
+            <span class="group-wrapper">
+                <span>{{localize "RMU_EXPORT.Inventory.MaxPace"}}:</span>
+                <span>{{inventory_data.max_pace}}</span>
+            </span>
         </div>
     {{/if}}
 
@@ -249,11 +268,6 @@
                     "RMU_EXPORT.Inventory.EncPenalty"
                 }}:</strong>
             {{inventory_data.enc_penalty}}
-            <span class="separator">|</span>
-            <strong class="group-label">{{localize
-                    "RMU_EXPORT.Inventory.MaxPace"
-                }}:</strong>
-            {{inventory_data.max_pace}}
             <span class="separator">|</span>
             <strong class="group-label">{{localize
                     "RMU_EXPORT.Inventory.Carried"

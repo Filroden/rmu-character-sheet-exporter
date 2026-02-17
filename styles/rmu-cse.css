@@ -169,6 +169,11 @@
     height: 14px;
 }
 
+li.context-item .rmu-cse-icon {
+    width: 12px;
+    height: 12px;
+}
+
 .rmu-cse-icon.export {
     -webkit-mask-image: url("../icons/file_export.svg");
     mask-image: url("../icons/file_export.svg");
@@ -176,6 +181,18 @@
 .rmu-cse-icon.save {
     -webkit-mask-image: url("../icons/file_save.svg");
     mask-image: url("../icons/file_save.svg");
+}
+.rmu-cse-icon.html {
+    -webkit-mask-image: url("../icons/html.svg");
+    mask-image: url("../icons/html.svg");
+}
+.rmu-cse-icon.warning {
+    -webkit-mask-image: url("../icons/warning.svg");
+    mask-image: url("../icons/warning.svg");
+}
+.rmu-cse-icon.cancel {
+    -webkit-mask-image: url("../icons/cancel.svg");
+    mask-image: url("../icons/cancel.svg");
 }
 
 .rmu-cse .toggles-grid {
@@ -224,4 +241,26 @@
 
 .rmu-cse .rmu-cse-scrollable::-webkit-scrollbar-button {
     display: none;
+}
+
+dialog.rmu-cse {
+    width: 500px;
+}
+
+dialog.rmu-cse header {
+    background-color: var(--filroden-color-bg-medium-solid);
+}
+
+dialog.rmu-cse section.window-content {
+    padding: var(--filroden-space-m);
+}
+
+.rmu-cse p.notes {
+    font-size: var(--filroden-font-size-xs);
+    color: var(--filroden-color-text-muted);
+    margin-top: var(--filroden-space-s);
+    display: flex;
+    align-items: center;
+    gap: var(--filroden-space-xs);
+    text-wrap: wrap;
 }
