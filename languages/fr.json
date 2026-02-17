@@ -129,5 +129,13 @@
     "RMU_EXPORT.Themes.PrintHighContrast": "Impression (Haut Contraste)",
 
     "RMU_EXPORT.Movement.ActiveMode": "Mode Actif",
-    "RMU_EXPORT.Movement.BMR": "VDB"
+    "RMU_EXPORT.Movement.BMR": "VDB",
+
+    "RMU_EXPORT.Button.ImportSheet": "Importer depuis HTML",
+    "RMU_EXPORT.Button.ImportSheetHeader": "Importer une Feuille de Personnage HTML",
+    "RMU_EXPORT.Button.Import": "Importer les Données",
+    "RMU_EXPORT.Import.SelectFile": "Sélectionnez le fichier HTML exporté :",
+    "RMU_EXPORT.Import.Warning": "ATTENTION : Cela écrasera complètement toutes les données de {name} (stats, objets, compétences) avec les données du fichier. Cette action est irréversible.",
+    "RMU_EXPORT.Import.TypeMismatch": "RMU Exporter | Incompatibilité de Type : Le fichier contient un '{source}' mais vous essayez d'importer dans un '{target}'.",
+    "RMU_EXPORT.Import.Success": "Données importées avec succès pour {name}."
 }

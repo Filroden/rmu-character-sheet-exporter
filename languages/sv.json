@@ -130,5 +130,13 @@
     "RMU_EXPORT.Themes.PrintHighContrast": "Utskriftsvänlig (Hög Kontrast)",
 
     "RMU_EXPORT.Movement.ActiveMode": "Aktivt Läge",
-    "RMU_EXPORT.Movement.BMR": "BMR"
+    "RMU_EXPORT.Movement.BMR": "BMR",
+
+    "RMU_EXPORT.Button.ImportSheet": "Importera från HTML",
+    "RMU_EXPORT.Button.ImportSheetHeader": "Importera Rollformulär HTML",
+    "RMU_EXPORT.Button.Import": "Importera Data",
+    "RMU_EXPORT.Import.SelectFile": "Välj exporterad HTML-fil:",
+    "RMU_EXPORT.Import.Warning": "VARNING: Detta kommer att helt skriva över all data för {name} (grundegenskaper, föremål, färdigheter) med data från filen. Detta kan inte ångras.",
+    "RMU_EXPORT.Import.TypeMismatch": "RMU Exporter | Typfel: Filen innehåller en '{source}' men du försöker importera till en '{target}'.",
+    "RMU_EXPORT.Import.Success": "Data importerades framgångsrikt för {name}."
 }

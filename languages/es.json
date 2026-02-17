@@ -130,5 +130,13 @@
     "RMU_EXPORT.Themes.PrintHighContrast": "Impression (Haut Contraste)",
 
     "RMU_EXPORT.Movement.ActiveMode": "Mode Actif",
-    "RMU_EXPORT.Movement.BMR": "BMR"
+    "RMU_EXPORT.Movement.BMR": "BMR",
+
+    "RMU_EXPORT.Button.ImportSheet": "Importar desde HTML",
+    "RMU_EXPORT.Button.ImportSheetHeader": "Importar Hoja de Personaje HTML",
+    "RMU_EXPORT.Button.Import": "Importar Datos",
+    "RMU_EXPORT.Import.SelectFile": "Seleccionar archivo HTML exportado:",
+    "RMU_EXPORT.Import.Warning": "ADVERTENCIA: Esto sobrescribirá por completo todos los datos de {name} (estadísticas, objetos, habilidades) con los datos del archivo. Esta acción es irreversible.",
+    "RMU_EXPORT.Import.TypeMismatch": "RMU Exporter | Discrepancia de Tipo: El archivo contiene un '{source}' pero está intentando importar en un '{target}'.",
+    "RMU_EXPORT.Import.Success": "Datos importados con éxito para {name}."
 }
