@@ -9,7 +9,7 @@
 ![Last Commit](https://img.shields.io/github/last-commit/Filroden/rmu-character-sheet-exporter)
 ![Issues](https://img.shields.io/github/issues/Filroden/rmu-character-sheet-exporter)
 
-This is a simple module to create a printable version of a character or creature sheet.
+This is a simple module to create a printable version of a character or creature sheet. It also creates a copy of the raw actor data, which means exported character sheets become a useful way to transfer characters between people but still lets them re-import them into Foundry. E.g., if you create an adventure you want to share, you could include character sheets as part of the adventure and GMs could import them into Foundry using real Foundry data that the RMU system understands.
 
 ## How to use
 
