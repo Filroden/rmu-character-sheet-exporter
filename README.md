@@ -54,3 +54,4 @@ The exported sheet combines text from three different sources. If you see Englis
 ## Roadmap
 
 - Add tournament template for tabletop gameplay at conventions
+- Investigate if the actor portrait can be imported from the html
