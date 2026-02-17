@@ -130,5 +130,13 @@
     "RMU_EXPORT.Themes.PrintHighContrast": "Printer Friendly (High Contrast)",
 
     "RMU_EXPORT.Movement.ActiveMode": "Active Mode",
-    "RMU_EXPORT.Movement.BMR": "BMR"
+    "RMU_EXPORT.Movement.BMR": "BMR",
+
+    "RMU_EXPORT.Button.ImportSheet": "Import from HTML",
+    "RMU_EXPORT.Button.ImportSheetHeader": "Import Character Sheet HTML",
+    "RMU_EXPORT.Button.Import": "Import Data",
+    "RMU_EXPORT.Import.SelectFile": "Select exported HTML file:",
+    "RMU_EXPORT.Import.Warning": "WARNING: This will completely overwrite all data for {name} (stats, items, skills) with the data from the file. This cannot be undone.",
+    "RMU_EXPORT.Import.TypeMismatch": "RMU Exporter | Type Mismatch: The file contains a '{source}' but you are trying to import into a '{target}'.",
+    "RMU_EXPORT.Import.Success": "Successfully imported data for {name}."
 }

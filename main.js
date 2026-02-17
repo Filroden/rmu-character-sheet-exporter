@@ -1,6 +1,7 @@
 import { DataExtractor } from "./src/DataExtractor.js";
 import { OutputGenerator } from "./src/OutputGenerator.js";
 import { ExportDialog } from "./src/ExportDialog.js";
+import { ImportHandler } from "./src/ImportHandler.js";
 
 const MODULE_ID = "rmu-character-sheet-exporter";
 
@@ -162,3 +163,30 @@ async function handleExportSubmit(formData, actor) {
         themePath,
     );
 }
+
+/* -------------------------------------------- */
+/* Context Menu Injection                       */
+/* -------------------------------------------- */
+
+function getActorIdFromElement(li) {
+    const element = li instanceof jQuery ? li[0] : li;
+    return element.dataset?.entryId || element.dataset?.documentId;
+}
+
+Hooks.on("getActorContextOptions", (html, options) => {
+    options.push({
+        name: "RMU_EXPORT.Button.ImportSheet",
+        icon: '<i class="rmu-cse-icon html"></i>',
+        condition: (li) => {
+            const documentId = getActorIdFromElement(li);
+            if (!documentId) return false;
+            const actor = game.actors.get(documentId);
+            return actor && actor.isOwner;
+        },
+        callback: async (li) => {
+            const documentId = getActorIdFromElement(li);
+            const actor = game.actors.get(documentId);
+            await ImportHandler.promptForImport(actor);
+        },
+    });
+});
