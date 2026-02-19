@@ -5,6 +5,8 @@ import { ImportHandler } from "./src/ImportHandler.js";
 
 const MODULE_ID = "rmu-character-sheet-exporter";
 
+const VALID_ACTOR_TYPES = ["Character", "Creature"];
+
 const RMU_EXPORT_CONFIG = {
     layouts: {
         standard: {
@@ -66,6 +68,8 @@ Hooks.once("init", () => {
 const addHeaderButton = (app, buttons) => {
     const actor = app.document || app.object || app.actor;
     if (!actor) return;
+
+    if (!VALID_ACTOR_TYPES.includes(actor.type)) return;
 
     const exist = buttons.some((b) => b.class === "rmu-export-btn");
     if (exist) return;
@@ -181,7 +185,9 @@ Hooks.on("getActorContextOptions", (html, options) => {
             const documentId = getActorIdFromElement(li);
             if (!documentId) return false;
             const actor = game.actors.get(documentId);
-            return actor && actor.isOwner;
+            return (
+                actor && actor.isOwner && VALID_ACTOR_TYPES.includes(actor.type)
+            );
         },
         callback: async (li) => {
             const documentId = getActorIdFromElement(li);
