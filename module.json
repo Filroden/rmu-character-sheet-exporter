@@ -2,7 +2,7 @@
     "id": "rmu-character-sheet-exporter",
     "title": "RMU Character Sheet Exporter",
     "description": "A module to export character sheets using different templates and styles.",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "compatibility": {
         "minimum": "13",
         "verified": "13.351"
@@ -40,7 +40,7 @@
     "styles": ["styles/filroden-theme.css", "styles/rmu-cse.css"],
     "url": "https://github.com/Filroden/rmu-character-sheet-exporter",
     "manifest": "https://github.com/Filroden/rmu-character-sheet-exporter/releases/latest/download/module.json",
-    "download": " https://github.com/Filroden/rmu-character-sheet-exporter/releases/download/1.5.0/rmu-character-sheet-exporter.zip",
+    "download": " https://github.com/Filroden/rmu-character-sheet-exporter/releases/download/1.5.1/rmu-character-sheet-exporter.zip",
     "bugs": "https://github.com/Filroden/rmu-character-sheet-exporter/issues",
     "readme": "https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/README.md",
     "license": "https://mit-license.org/"
