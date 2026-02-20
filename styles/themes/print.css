@@ -331,7 +331,7 @@
 .inv-meta {
     display: flex; 
     justify-content: flex-end; 
-    min-width: 110px; 
+    min-width: 170px; 
     font-size: 0.9em; 
     color: #000;
     font-style: italic;
@@ -341,8 +341,17 @@
     border-right: 1px solid #000; 
     margin-right: 5px;
 }
-.inv-wgt { width: 60px; text-align: right; }
+.inv-wgt { 
+    width: 60px; text-align: right; 
+    border-right: 1px solid #000;
+    margin-right: 5px;
+    padding-right: 5px;
+}
+.inv-cost {
+    width: 50px; text-align: right; 
+}
 .inventory-list { columns: 2; }
+.loot-inventory-list { columns: 1; }
 
 /* --- COMPACT FLOW SUPPORT --- */
 .compact-list-flow {

@@ -1,0 +1,73 @@
+<div class="rmu-sheet compact-layout">
+
+    {{! --- HEADER --- }}
+    {{#if options.header}}
+        <div class="header-block">
+            <div class="header-title">{{header_data.name}}</div>
+        </div>
+    {{/if}}
+
+    {{! --- PORTRAIT & DETAILS (Compact) --- }}
+    {{#if (or options.portrait options.details)}}
+        <div class="section-title">
+            {{localize "RMU_EXPORT.Section.Details"}}
+        </div>
+
+        <div class="compact-bio-row">
+            {{#if options.portrait}}
+                {{#if portrait_data}}
+                    <div class="compact-portrait">
+                        <img src="{{portrait_data}}" alt="Portrait" />
+                    </div>
+                {{/if}}
+            {{/if}}
+        </div>
+    {{/if}}
+
+    {{! --- BIOGRAPHY TEXT --- }}
+    {{#if options.biography}}
+        {{#if biography_data.text}}
+            <div class="section-title">{{localize
+                    "RMU_EXPORT.Bio.Biography"
+                }}</div>
+            <div
+                class="compact-row"
+                style="margin-top:5px; font-size: 0.9em; font-style:italic;"
+            >
+                {{{biography_data.text}}}
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{! --- INVENTORY --- }}
+    {{#if options.inventory}}
+        <div class="section-title">{{localize
+                "RMU_EXPORT.Section.Inventory"
+            }}</div>
+
+        <div class="compact-list-flow">
+            {{#each inventory_data.items}}
+                <span>{{name}}
+                    <span
+                        style="opacity: 0.7;"
+                    >(x{{qty}})</span></span>{{#unless @last}}, {{/unless}}
+            {{/each}}
+        </div>
+    {{/if}}
+
+    <div class="footer">
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Generated"}}:
+                {{meta.timestamp}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.SystemVersion"
+                }}{{meta.systemVersion}}</span>
+            <span>{{localize
+                    "RMU_EXPORT.Footer.ModuleVersion"
+                }}{{meta.moduleVersion}}</span>
+        </div>
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Copyright"}}</span>
+        </div>
+    </div>
+</div>

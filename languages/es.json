@@ -87,6 +87,7 @@
     "RMU_EXPORT.Inventory.MaxPace": "Ritmo máx.",
     "RMU_EXPORT.Inventory.Qty": "Cant.",
     "RMU_EXPORT.Inventory.Weight": "Peso",
+    "RMU_EXPORT.Inventory.Cost": "Coste",
 
     "RMU_EXPORT.Footer.Generated": "Generado el",
     "RMU_EXPORT.Footer.SystemVersion": "Sistema RMU v",

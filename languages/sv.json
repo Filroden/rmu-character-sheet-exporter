@@ -87,6 +87,7 @@
     "RMU_EXPORT.Inventory.MaxPace": "Max Takt",
     "RMU_EXPORT.Inventory.Qty": "Antal",
     "RMU_EXPORT.Inventory.Weight": "Vikt",
+    "RMU_EXPORT.Inventory.Cost": "Kostnad",
 
     "RMU_EXPORT.Footer.Generated": "Genererad",
     "RMU_EXPORT.Footer.SystemVersion": "RMU System v",
