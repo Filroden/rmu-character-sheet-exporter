@@ -422,8 +422,9 @@ export class DataExtractor {
         }
 
         const init = sys._totalInitiativeBonus || 0;
-        const pEnc = sys._injuryBlock._endurance._bonusWithRacial ?? 0;
-        const mEnc = sys._injuryBlock._concentration._bonusWithRacial ?? 0;
+
+        const pEnc = sys._injuryBlock?._endurance?._bonusWithRacial ?? 0;
+        const mEnc = sys._injuryBlock?._concentration?._bonusWithRacial ?? 0;
 
         let modeLabel = mode;
         const skillKey = `RMU.Skills.${mode}`;
@@ -915,14 +916,16 @@ export class DataExtractor {
 
     static _getInventory(actor) {
         const enc_penalty = actor.system._encManeuverPenalty;
-        const items = actor.system._inventory;
+
+        const items = actor.system._inventory || [];
         const unknownTxt = this._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
 
         const itemList = items.map((i) => {
-            const weight = i.system.weight || i.system._weight.weight || 0;
-            const qty = i.system.quantity || 1;
+            const weight = i.system?.weight || i.system?._weight?.weight || 0;
+            const qty = i.system?.quantity || 1;
+            const rawCost = i.system?.cost || 0;
 
-            let itemName = i.item.name || i.system.name || unknownTxt;
+            let itemName = i.item?.name || i.system?.name || unknownTxt;
             itemName = game.i18n.localize(itemName);
 
             let weightDisplay = `${weight} lbs`;
@@ -934,6 +937,7 @@ export class DataExtractor {
                 name: itemName,
                 qty: qty,
                 weight: weightDisplay,
+                cost: `${rawCost} sp`,
             };
         });
 

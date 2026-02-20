@@ -86,6 +86,7 @@
     "RMU_EXPORT.Inventory.MaxPace": "Allure Max",
     "RMU_EXPORT.Inventory.Qty": "Qté",
     "RMU_EXPORT.Inventory.Weight": "Poids",
+    "RMU_EXPORT.Inventory.Cost": "Coût",
 
     "RMU_EXPORT.Footer.Generated": "Généré le",
     "RMU_EXPORT.Footer.SystemVersion": "Système RMU v",

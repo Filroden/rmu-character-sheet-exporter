@@ -65,13 +65,24 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         // Prepare lists for the select dropdowns
         const layouts = Object.values(this.config.layouts);
         const themes = Object.values(this.config.themes);
-        const sections = this.config.sections;
+
+        const availableSections = {};
+        for (const [key, sectionConfig] of Object.entries(
+            this.config.sections,
+        )) {
+            if (
+                !sectionConfig.validTypes ||
+                sectionConfig.validTypes.includes(this.actor.type)
+            ) {
+                availableSections[key] = sectionConfig;
+            }
+        }
 
         return {
             actor: this.actor,
             layouts: layouts,
             themes: themes,
-            sections: sections,
+            sections: availableSections, // <-- We use the filtered list here
             defaultLayout: "standard",
             defaultTheme: "standard",
         };
@@ -132,8 +143,7 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             return;
         }
 
-        const typeSuffix =
-            this.actor.type === "Character" ? "character" : "creature";
+        const typeSuffix = this.actor.type.toLowerCase();
         if (layoutPath.includes("_layout.hbs")) {
             layoutPath = layoutPath.replace(
                 "_layout.hbs",

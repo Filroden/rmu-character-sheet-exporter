@@ -333,7 +333,7 @@
 .inv-meta {
     display: flex; 
     justify-content: flex-end; 
-    min-width: 110px; 
+    min-width: 170px;
     font-size: 0.85em; 
     color: var(--rmu-cse-text-light);
 }
@@ -342,10 +342,17 @@
     border-right: 1px solid var(--rmu-cse-border-light); 
     margin-right: 5px;
 }
-.inv-wgt { width: 60px; text-align: right; }
-.inventory-list {
-    columns: 2;
+.inv-wgt { 
+    width: 60px; text-align: right; 
+    border-right: 1px solid var(--rmu-cse-border-light); /* Added separator */
+    margin-right: 5px;
+    padding-right: 5px;
 }
+.inv-cost {
+    width: 50px; text-align: right; 
+}
+.inventory-list { columns: 2; }
+.loot-inventory-list { columns: 1; }
 
 /* --- COMPACT FLOW LISTS (Used in Compact Layout) --- */
 .compact-list-flow {
