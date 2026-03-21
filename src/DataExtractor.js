@@ -14,6 +14,13 @@ export class DataExtractor {
         return game.i18n.localize(key) || fallback;
     }
 
+    static _safeLocalize(val, prefix = "") {
+        if (!val) return "";
+        if (game.i18n.has(val)) return game.i18n.localize(val);
+        if (prefix && game.i18n.has(`${prefix}.${val}`)) return game.i18n.localize(`${prefix}.${val}`);
+        return val;
+    }
+
     static get isMetric() {
         return game.settings.get("rmu", "measurementSystem") === "Metric";
     }
@@ -186,10 +193,7 @@ export class DataExtractor {
                 console.warn("RMU Export | Failed to create dummy token:", e);
             }
         }
-        if (
-            targetDoc &&
-            typeof targetDoc.hudDeriveExtendedData === "function"
-        ) {
+        if (targetDoc && typeof targetDoc.hudDeriveExtendedData === "function") {
             try {
                 await targetDoc.hudDeriveExtendedData();
                 const finalActor = targetDoc.actor || actor;
@@ -242,9 +246,7 @@ export class DataExtractor {
 
         // 2. Fetch Split Bio Data
         const detailsData = details ? this._getDetails(targetActor) : null;
-        const bioTextData = biography
-            ? this._getBiographyText(targetActor)
-            : null;
+        const bioTextData = biography ? this._getBiographyText(targetActor) : null;
 
         const movementData = movement ? this._getMovementDetails(sys) : null;
 
@@ -280,24 +282,18 @@ export class DataExtractor {
             quick_info_data: quick_info ? this._getQuickInfo(sys) : null,
             stats_data: stats ? this._getStats(sys) : null,
             resistances_data: stats ? this._getResistances(sys) : null,
-            defenses_data: defenses
-                ? this._getDefenses(sys, targetActor)
-                : null,
+            defenses_data: defenses ? this._getDefenses(sys, targetActor) : null,
             attacks_data: attacks ? this._getAttacks(targetActor) : null,
             movement_data: movementData,
             talents_data: talents ? this._getTalents(targetActor) : null,
-            skill_groups_data: skills
-                ? this._getSkills(targetActor, { showAllSkills })
-                : [],
+            skill_groups_data: skills ? this._getSkills(targetActor, { showAllSkills }) : [],
             spells_data: spells ? this._getSpells(targetActor) : [],
             inventory_data: inventory ? this._getInventory(targetActor) : null,
 
             meta: {
                 timestamp: new Date().toLocaleString(),
                 systemVersion: game.system.version,
-                moduleVersion:
-                    game.modules.get("rmu-character-sheet-exporter")?.version ||
-                    "Unknown",
+                moduleVersion: game.modules.get("rmu-character-sheet-exporter")?.version || "Unknown",
             },
         };
     }
@@ -320,17 +316,13 @@ export class DataExtractor {
         let realmLabel = sys.realm || noneTxt;
         if (sys.realm) {
             const realmKey = `RMU.RealmsOfMagic.${sys.realm}`;
-            if (game.i18n.has(realmKey))
-                realmLabel = game.i18n.localize(realmKey);
+            if (game.i18n.has(realmKey)) realmLabel = game.i18n.localize(realmKey);
         }
         return {
             name: actor.name,
             race: getSystemLabel("RMU.Race", sys._header?._raceName),
             culture: getSystemLabel("RMU.Culture", sys._header?._cultureName),
-            profession: getSystemLabel(
-                "RMU.Profession",
-                sys._header?._professionName,
-            ),
+            profession: getSystemLabel("RMU.Profession", sys._header?._professionName),
             level: sys.experience?.level ?? 1,
             realm: realmLabel,
             size: getSystemLabel("RMU.Size", sys.appearance?.size),
@@ -355,10 +347,14 @@ export class DataExtractor {
             if (lbs > 0) weightDisplay = this._toMetricWeight(lbs);
         }
 
+        // Apply localization
+        const powerLevelDisplay = this._safeLocalize(sys.powerLevel, "RMU.Setting.PlayerPowerLevel");
+        const sexDisplay = this._safeLocalize(app.sex, "RMU.Terms");
+
         const compactPlayer = [];
         if (player.name) compactPlayer.push(player.name);
         if (player.campaign) compactPlayer.push(player.campaign);
-        if (sys.powerLevel) compactPlayer.push(sys.powerLevel);
+        if (powerLevelDisplay) compactPlayer.push(powerLevelDisplay);
 
         const compactApp = [];
         const pushApp = (key, val) => {
@@ -373,14 +369,14 @@ export class DataExtractor {
         return {
             player_name: player.name || "",
             campaign: player.campaign || "",
-            power_level: sys.powerLevel || "",
+            power_level: powerLevelDisplay,
 
             age: app.age || "",
             eyes: app.eyes || "",
             hair: app.hair || "",
             height: heightDisplay,
             weight: weightDisplay,
-            sex: app.sex || "",
+            sex: sexDisplay,
             skin: app.skin || "",
 
             faith: id.faith || "",
@@ -415,9 +411,7 @@ export class DataExtractor {
         const modeTable = moveData._table?.[mode];
 
         if (modeTable?.paceRates) {
-            const walkEntry = modeTable.paceRates.find(
-                (p) => p.pace?.value === "Walk",
-            );
+            const walkEntry = modeTable.paceRates.find((p) => p.pace?.value === "Walk");
             bmr = walkEntry?.perRound || 0;
         }
 
@@ -458,18 +452,7 @@ export class DataExtractor {
     }
 
     static _getStats(sys) {
-        const statKeys = [
-            "Ag",
-            "Co",
-            "Em",
-            "In",
-            "Me",
-            "Pr",
-            "Qu",
-            "Re",
-            "SD",
-            "St",
-        ];
+        const statKeys = ["Ag", "Co", "Em", "In", "Me", "Pr", "Qu", "Re", "SD", "St"];
         const stats = [];
         const sourceBlock = sys._statBlock || {};
 
@@ -494,25 +477,12 @@ export class DataExtractor {
 
     static _getResistances(sys) {
         const block = sys._resistanceBlock || sys.resistanceBlock || {};
-        const list =
-            block._resistances ||
-            block.resistances ||
-            sys._resistances ||
-            sys.resistances ||
-            [];
+        const list = block._resistances || block.resistances || sys._resistances || sys.resistances || [];
 
-        const resistanceKeys = [
-            "Channeling",
-            "Essence",
-            "Mentalism",
-            "Physical",
-            "Fear",
-        ];
+        const resistanceKeys = ["Channeling", "Essence", "Mentalism", "Physical", "Fear"];
 
         const findRes = (name) => {
-            const r = list.find((x) =>
-                x.name.toLowerCase().includes(name.toLowerCase()),
-            );
+            const r = list.find((x) => x.name.toLowerCase().includes(name.toLowerCase()));
             return r ? (r.total ?? r.bonus ?? 0) : 0;
         };
 
@@ -539,12 +509,8 @@ export class DataExtractor {
         const shieldBonus = sys.defenses?.shield?.bonus || 0;
         const baseTotal = quDb + armorDb + otherDb;
 
-        let dodgeOpts =
-            dbBlock.dodgeOptions ||
-            (actor._cachedDodge ? actor._cachedDodge : []);
-        let blockOpts =
-            dbBlock.blockOptions ||
-            (actor._cachedBlock ? actor._cachedBlock : []);
+        let dodgeOpts = dbBlock.dodgeOptions || (actor._cachedDodge ? actor._cachedDodge : []);
+        let blockOpts = dbBlock.blockOptions || (actor._cachedBlock ? actor._cachedBlock : []);
 
         const getModifier = (opts, modeValue) => {
             if (!Array.isArray(opts)) return 0;
@@ -567,10 +533,7 @@ export class DataExtractor {
             }
 
             return {
-                mode: this._i18n(
-                    `RMU_EXPORT.DefenseMode.${labelKey}`,
-                    labelKey,
-                ),
+                mode: this._i18n(`RMU_EXPORT.DefenseMode.${labelKey}`, labelKey),
                 dodge: this._formatBonus(totalDodge),
                 block: this._formatBonus(totalBlock),
             };
@@ -606,11 +569,7 @@ export class DataExtractor {
             armor_db: this._formatBonus(armorDb),
             other_db: this._formatBonus(otherDb),
             total_db_current: this._formatBonus(dbBlock.totalDB ?? 0),
-            tactical: [
-                buildMode("Passive", "passive"),
-                buildMode("Partial", "partial"),
-                buildMode("Full", "full"),
-            ],
+            tactical: [buildMode("Passive", "passive"), buildMode("Partial", "partial"), buildMode("Full", "full")],
             armor: {
                 head: getArmorInfo("Head"),
                 torso: getArmorInfo("Torso"),
@@ -622,10 +581,7 @@ export class DataExtractor {
 
     static _getAttacks(actor) {
         const attacks = actor.system._attacks || [];
-        const unknownWpn = this._i18n(
-            "RMU_EXPORT.Common.UnknownWeapon",
-            "Unknown Weapon",
-        );
+        const unknownWpn = this._i18n("RMU_EXPORT.Common.UnknownWeapon", "Unknown Weapon");
         const unknownTxt = this._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
 
         return attacks.map((a) => {
@@ -641,10 +597,7 @@ export class DataExtractor {
                 } else {
                     let rawRangeStr = a.usage?.range?._shortRange;
                     if (rawRangeStr) {
-                        const cleanRange = String(rawRangeStr).replace(
-                            /['"a-zA-Z\s]/g,
-                            "",
-                        );
+                        const cleanRange = String(rawRangeStr).replace(/['"a-zA-Z\s]/g, "");
                         if (this.isMetric) {
                             if (String(rawRangeStr).includes("m")) {
                                 rangeDisplay = `<${cleanRange} m>`;
@@ -668,7 +621,9 @@ export class DataExtractor {
                 if (this.isMetric) {
                     reachDisplay = this._toMetricReach(a.meleeRange);
                 } else {
-                    reachDisplay = `${a.meleeRange}'`;
+                    // Round the reach to a maximum of two decimal places safely
+                    const roundedReach = Math.round(Number(a.meleeRange) * 100) / 100;
+                    reachDisplay = `${roundedReach}'`;
                 }
             }
 
@@ -726,9 +681,7 @@ export class DataExtractor {
             const table = tables[modeKey];
             if (!table.paceRates) return;
 
-            const walkEntry = table.paceRates.find(
-                (p) => p.pace?.value === "Walk",
-            );
+            const walkEntry = table.paceRates.find((p) => p.pace?.value === "Walk");
             const bmrVal = walkEntry?.perRound || 0;
 
             let bmrDisplay = `${bmrVal}'/rd`;
@@ -753,9 +706,7 @@ export class DataExtractor {
     }
 
     static _getTalents(actor) {
-        const talents = actor.items.filter(
-            (i) => i.type === "talent" || i.type === "trait",
-        );
+        const talents = actor.items.filter((i) => i.type === "talent" || i.type === "trait");
         const grouped = {};
         const generalTxt = this._i18n("RMU_EXPORT.Common.General", "General");
 
@@ -776,8 +727,7 @@ export class DataExtractor {
             .map((key) => {
                 let displayGroup = key;
                 if (key === "General") displayGroup = generalTxt;
-                else if (game.i18n.has(key))
-                    displayGroup = game.i18n.localize(key);
+                else if (game.i18n.has(key)) displayGroup = game.i18n.localize(key);
 
                 return {
                     group: displayGroup,
@@ -863,9 +813,7 @@ export class DataExtractor {
                     }
                 }
 
-                const sortedList = grouped[rawKey].sort((a, b) =>
-                    a.sortName.localeCompare(b.sortName),
-                );
+                const sortedList = grouped[rawKey].sort((a, b) => a.sortName.localeCompare(b.sortName));
 
                 return {
                     category: displayCat,
@@ -882,21 +830,15 @@ export class DataExtractor {
             rawSpells.forEach((typeGroup) => {
                 let listType = typeGroup.listType;
                 if (game.i18n.has(`RMU.SpellListType.${listType}`)) {
-                    listType = game.i18n.localize(
-                        `RMU.SpellListType.${listType}`,
-                    );
+                    listType = game.i18n.localize(`RMU.SpellListType.${listType}`);
                 }
 
                 if (typeGroup.spellLists) {
                     typeGroup.spellLists.forEach((list) => {
-                        const knownSpells = (list.spells || []).filter(
-                            (s) => s.known,
-                        );
+                        const knownSpells = (list.spells || []).filter((s) => s.known);
 
                         if (knownSpells.length > 0) {
-                            const translatedListName = game.i18n.localize(
-                                list.spellListName,
-                            );
+                            const translatedListName = game.i18n.localize(list.spellListName);
 
                             spellGroups.push({
                                 listName: translatedListName,
@@ -943,9 +885,7 @@ export class DataExtractor {
 
         let maxPace = "Dash";
         if (actor.system._movementBlock?.maxPaceForLoadLabel) {
-            maxPace = game.i18n.localize(
-                actor.system._movementBlock.maxPaceForLoadLabel,
-            );
+            maxPace = game.i18n.localize(actor.system._movementBlock.maxPaceForLoadLabel);
         } else if (actor.system.encumbrance?.pace) {
             maxPace = actor.system.encumbrance.pace;
         }
