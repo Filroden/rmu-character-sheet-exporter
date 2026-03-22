@@ -1,6 +1,7 @@
 import { ExportHelpers } from "../utils/ExportHelpers.js";
 
 export function extractResistances(actor) {
+    const sys = actor.system;
     const block = sys._resistanceBlock || sys.resistanceBlock || {};
     const list = block._resistances || block.resistances || sys._resistances || sys.resistances || [];
 
@@ -16,12 +17,12 @@ export function extractResistances(actor) {
         let label = game.i18n.localize(systemKey);
 
         if (label === systemKey) {
-            label = ExportHelpers._i18n(`RMU_EXPORT.Resistances.${key}`, key);
+            label = ExportHelpers.i18n(`RMU_EXPORT.Resistances.${key}`, key);
         }
 
         return {
             label: label,
-            bonus: ExportHelpers._formatBonus(findRes(key)),
+            bonus: ExportHelpers.formatBonus(findRes(key)),
         };
     });
 }

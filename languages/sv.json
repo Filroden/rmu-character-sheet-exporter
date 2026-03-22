@@ -14,6 +14,7 @@
     "RMU_EXPORT.Section.SpellLists": "Besvärjelselistor",
     "RMU_EXPORT.Section.Inventory": "Utrustning",
     "RMU_EXPORT.Section.Talents": "Talanger",
+    "RMU_EXPORT.Section.Conditions": "Tillstånd & Effekter",
 
     "RMU_EXPORT.Stats.Initiative": "Init.",
     "RMU_EXPORT.Stats.HP": "KP",
@@ -124,6 +125,7 @@
 
     "RMU_EXPORT.Layouts.Standard": "Standardlayout",
     "RMU_EXPORT.Layouts.Compact": "Kompakt Layout",
+    "RMU_EXPORT.Layouts.Extended": "Utökad (Turnering)",
 
     "RMU_EXPORT.Themes.Standard": "Standardtema",
     "RMU_EXPORT.Themes.DarkMode": "Mörkt Läge",

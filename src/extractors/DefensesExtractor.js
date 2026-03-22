@@ -1,6 +1,7 @@
 import { ExportHelpers } from "../utils/ExportHelpers.js";
 
 export function extractDefenses(actor) {
+    const sys = actor.system;
     const dbBlock = sys._dbBlock || {};
     const quDb = dbBlock.quicknessDB ?? 0;
     const armorDb = dbBlock.armorDB ?? 0;
@@ -32,14 +33,14 @@ export function extractDefenses(actor) {
         }
 
         return {
-            mode: ExportHelpers._i18n(`RMU_EXPORT.DefenseMode.${labelKey}`, labelKey),
-            dodge: ExportHelpers._formatBonus(totalDodge),
-            block: ExportHelpers._formatBonus(totalBlock),
+            mode: ExportHelpers.i18n(`RMU_EXPORT.DefenseMode.${labelKey}`, labelKey),
+            dodge: ExportHelpers.formatBonus(totalDodge),
+            block: ExportHelpers.formatBonus(totalBlock),
         };
     };
 
     const armorData = sys._armorWorn || {};
-    const noneTxt = ExportHelpers._i18n("RMU_EXPORT.Common.None", "None");
+    const noneTxt = ExportHelpers.i18n("RMU_EXPORT.Common.None", "None");
 
     const getArmorInfo = (loc) => {
         const part = armorData[loc];
@@ -64,10 +65,10 @@ export function extractDefenses(actor) {
     };
 
     return {
-        quickness_bonus: ExportHelpers._formatBonus(quDb),
-        armor_db: ExportHelpers._formatBonus(armorDb),
-        other_db: ExportHelpers._formatBonus(otherDb),
-        total_db_current: ExportHelpers._formatBonus(dbBlock.totalDB ?? 0),
+        quickness_bonus: ExportHelpers.formatBonus(quDb),
+        armor_db: ExportHelpers.formatBonus(armorDb),
+        other_db: ExportHelpers.formatBonus(otherDb),
+        total_db_current: ExportHelpers.formatBonus(dbBlock.totalDB ?? 0),
         tactical: [buildMode("Passive", "passive"), buildMode("Partial", "partial"), buildMode("Full", "full")],
         armor: {
             head: getArmorInfo("Head"),

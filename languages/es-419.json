@@ -14,6 +14,7 @@
     "RMU_EXPORT.Section.SpellLists": "Listas de hechizos",
     "RMU_EXPORT.Section.Inventory": "Inventario",
     "RMU_EXPORT.Section.Talents": "Talentos",
+    "RMU_EXPORT.Section.Conditions": "Condiciones y Efectos",
 
     "RMU_EXPORT.Stats.Initiative": "Inic.",
     "RMU_EXPORT.Stats.HP": "PG",
@@ -124,6 +125,7 @@
 
     "RMU_EXPORT.Layouts.Standard": "Disposición estándar",
     "RMU_EXPORT.Layouts.Compact": "Disposición compacta",
+    "RMU_EXPORT.Layouts.Extended": "Extendido (Torneo)",
 
     "RMU_EXPORT.Themes.Standard": "Tema estándar",
     "RMU_EXPORT.Themes.DarkMode": "Modo oscuro",

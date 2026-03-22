@@ -2,8 +2,8 @@ import { ExportHelpers } from "../utils/ExportHelpers.js";
 
 export function extractHeader(actor) {
     const sys = actor.system;
-    const unknownTxt = ExportHelpers._i18n("RMU_EXPORT.Common.Unknown", "Unknown");
-    const noneTxt = ExportHelpers._i18n("RMU_EXPORT.Common.None", "None");
+    const unknownTxt = ExportHelpers.i18n("RMU_EXPORT.Common.Unknown", "Unknown");
+    const noneTxt = ExportHelpers.i18n("RMU_EXPORT.Common.None", "None");
     const getSystemLabel = (prefix, val) => {
         if (!val) return unknownTxt;
         const key = `${prefix}.${val}`;

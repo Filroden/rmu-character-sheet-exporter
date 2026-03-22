@@ -1,6 +1,6 @@
 import { ExportHelpers } from "../utils/ExportHelpers.js";
 
-export function extractSkills(actor) {
+export function extractSkills(actor, options) {
     const src = actor.system._skills;
     if (!src) return [];
 
@@ -30,7 +30,7 @@ export function extractSkills(actor) {
     collectSkills(src);
 
     const grouped = {};
-    const generalTxt = ExportHelpers._i18n("RMU_EXPORT.Common.General", "General");
+    const generalTxt = ExportHelpers.i18n("RMU_EXPORT.Common.General", "General");
 
     allSkills.forEach((s) => {
         const rawCat = s.category || "General";
@@ -58,7 +58,7 @@ export function extractSkills(actor) {
                 name: displayName,
                 specialisation: displaySpec,
                 ranks: s._totalRanks ?? 0,
-                bonus: ExportHelpers._formatBonus(finalBonus),
+                bonus: ExportHelpers.formatBonus(finalBonus),
             });
         }
     });

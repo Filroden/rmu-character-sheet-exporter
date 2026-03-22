@@ -2,8 +2,8 @@ import { ExportHelpers } from "./utils/ExportHelpers.js";
 import { extractHeader } from "./extractors/HeaderExtractor.js";
 import { extractDetails } from "./extractors/DetailsExtractor.js";
 import { extractBiography } from "./extractors/BiographyExtractor.js";
-import { extractQuickInfo } from "./extractors/QuickInfoExtractors.js";
-import { extractStats } from "./extractors/StatsExtractors.js";
+import { extractQuickInfo } from "./extractors/QuickInfoExtractor.js";
+import { extractStats } from "./extractors/StatsExtractor.js";
 import { extractResistances } from "./extractors/ResistancesExtractor.js";
 import { extractDefenses } from "./extractors/DefensesExtractor.js";
 import { extractMovement } from "./extractors/MovementExtractor.js";
@@ -59,7 +59,6 @@ export class DataExtractor {
     static async getCleanData(targetActor, options = {}) {
         if (!targetActor) return {};
 
-        const sys = targetActor.system;
         const {
             showAllSkills = false,
             header = true,

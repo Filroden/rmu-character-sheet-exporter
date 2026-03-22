@@ -11,16 +11,16 @@ export function extractDetails(actor) {
     let weightDisplay = app._weight || "";
 
     if (ExportHelpers.isMetric) {
-        const feet = ExportHelpers._parseHeightString(app._height);
-        if (feet > 0) heightDisplay = ExportHelpers._toMetricHeight(feet);
+        const feet = ExportHelpers.parseHeightString(app._height);
+        if (feet > 0) heightDisplay = ExportHelpers.toMetricHeight(feet);
 
-        const lbs = ExportHelpers._parseWeightString(app._weight);
-        if (lbs > 0) weightDisplay = ExportHelpers._toMetricWeight(lbs);
+        const lbs = ExportHelpers.parseWeightString(app._weight);
+        if (lbs > 0) weightDisplay = ExportHelpers.toMetricWeight(lbs);
     }
 
     // Apply localization
-    const powerLevelDisplay = ExportHelpers._safeLocalize(sys.powerLevel, "RMU.Setting.PlayerPowerLevel");
-    const sexDisplay = ExportHelpers._safeLocalize(app.sex, "RMU.Terms");
+    const powerLevelDisplay = ExportHelpers.safeLocalize(sys.powerLevel, "RMU.Setting.PlayerPowerLevel");
+    const sexDisplay = ExportHelpers.safeLocalize(app.sex, "RMU.Terms");
 
     const compactPlayer = [];
     if (player.name) compactPlayer.push(player.name);
@@ -29,7 +29,7 @@ export function extractDetails(actor) {
 
     const compactApp = [];
     const pushApp = (key, val) => {
-        if (val) compactApp.push(`${ExportHelpers._i18n(key)}: ${val}`);
+        if (val) compactApp.push(`${ExportHelpers.i18n(key)}: ${val}`);
     };
     pushApp("RMU_EXPORT.Bio.Age", app.age);
     pushApp("RMU_EXPORT.Bio.Height", heightDisplay);

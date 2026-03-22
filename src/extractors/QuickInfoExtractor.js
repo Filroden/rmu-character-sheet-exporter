@@ -2,6 +2,7 @@ import { ExportHelpers } from "../utils/ExportHelpers.js";
 
 export function extractQuickInfo(actor) {
     let bmr = 0;
+    const sys = actor.system;
     const mode = sys.activeMovementName || "Running";
     const moveData = sys._movementBlock || {};
     const modeTable = moveData._table?.[mode];
@@ -27,19 +28,19 @@ export function extractQuickInfo(actor) {
 
     let bmrDisplay = `${bmr}'/rd`;
     if (ExportHelpers.isMetric) {
-        bmrDisplay = `${ExportHelpers._toMetricMovement(bmr)}/rd`;
+        bmrDisplay = `${ExportHelpers.toMetricMovement(bmr)}/rd`;
     }
 
     return {
         bmr_value: bmrDisplay,
         bmr_mode: modeLabel,
-        initiative: ExportHelpers._formatBonus(init),
+        initiative: ExportHelpers.formatBonus(init),
         hits: {
             current: sys.health?.hp?.value ?? 0,
             max: sys.health?.hp?.max ?? 0,
         },
-        endurance_physical: ExportHelpers._formatBonus(pEnc),
-        endurance_mental: ExportHelpers._formatBonus(mEnc),
+        endurance_physical: ExportHelpers.formatBonus(pEnc),
+        endurance_mental: ExportHelpers.formatBonus(mEnc),
         power: {
             current: sys.health?.power?.value ?? 0,
             max: sys.health?.power?.max ?? 0,

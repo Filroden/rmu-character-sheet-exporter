@@ -3,7 +3,7 @@ import { ExportHelpers } from "../utils/ExportHelpers.js";
 export function extractTalents(actor) {
     const talents = actor.items.filter((i) => i.type === "talent" || i.type === "trait");
     const grouped = {};
-    const generalTxt = ExportHelpers._i18n("RMU_EXPORT.Common.General", "General");
+    const generalTxt = ExportHelpers.i18n("RMU_EXPORT.Common.General", "General");
 
     talents.forEach((t) => {
         const group = t.system.category || "General";

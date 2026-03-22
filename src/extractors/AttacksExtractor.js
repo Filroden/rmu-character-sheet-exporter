@@ -16,7 +16,7 @@ export function extractAttacks(actor) {
                     rangeDisplay = `<${rawRangeVal}'>`;
                 }
             } else {
-                let rawRangeStr = a.usage?.range?._shortRange;
+                let rawRangeStr = a.usage?.range?.shortRange;
                 if (rawRangeStr) {
                     const cleanRange = String(rawRangeStr).replace(/['"a-zA-Z\s]/g, "");
                     if (ExportHelpers.isMetric) {

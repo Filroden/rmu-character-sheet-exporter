@@ -1,6 +1,7 @@
 import { ExportHelpers } from "../utils/ExportHelpers.js";
 
 export function extractStats(actor) {
+    const sys = actor.system;
     const statKeys = ["Ag", "Co", "Em", "In", "Me", "Pr", "Qu", "Re", "SD", "St"];
     const stats = [];
     const sourceBlock = sys._statBlock || {};
@@ -13,12 +14,12 @@ export function extractStats(actor) {
         let label = game.i18n.localize(systemKey);
 
         if (label === systemKey) {
-            label = ExportHelpers._i18n(`RMU_EXPORT.Stats.${key}`, key);
+            label = ExportHelpers.i18n(`RMU_EXPORT.Stats.${key}`, key);
         }
 
         stats.push({
             label: label,
-            bonus: ExportHelpers._formatBonus(data.total ?? 0),
+            bonus: ExportHelpers.formatBonus(data.total ?? 0),
             tmp: data.tmp ?? 50,
             pot: data.pot ?? 50,
         });

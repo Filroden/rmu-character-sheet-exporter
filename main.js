@@ -21,6 +21,11 @@ const RMU_EXPORT_CONFIG = {
             label: "RMU_EXPORT.Layouts.Compact",
             path: "modules/rmu-character-sheet-exporter/templates/layouts/compact_layout.hbs",
         },
+        extended: {
+            id: "extended",
+            label: "RMU_EXPORT.Layouts.Extended",
+            path: "modules/rmu-character-sheet-exporter/templates/layouts/extended_layout.hbs",
+        },
     },
 
     themes: {
@@ -47,71 +52,20 @@ const RMU_EXPORT_CONFIG = {
     },
 
     sections: {
-        header: {
-            label: "RMU_EXPORT.Section.Header",
-            default: true,
-            validTypes: ["Character", "Creature", "Loot"],
-        },
-        quick_info: {
-            label: "RMU_EXPORT.Section.QuickInfo",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
-        movement: {
-            label: "RMU_EXPORT.Section.Movement",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
-        stats: {
-            label: "RMU_EXPORT.Section.Stats",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
-        portrait: {
-            label: "RMU_EXPORT.Section.Portrait",
-            default: true,
-            validTypes: ["Character", "Creature", "Loot"],
-        },
-        details: {
-            label: "RMU_EXPORT.Section.Details",
-            default: true,
-            validTypes: ["Character", "Creature", "Loot"],
-        },
-        biography: {
-            label: "RMU_EXPORT.Section.Biography",
-            default: false,
-            validTypes: ["Character", "Creature", "Loot"],
-        },
-        defenses: {
-            label: "RMU_EXPORT.Section.Defenses",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
-        attacks: {
-            label: "RMU_EXPORT.Section.Attacks",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
-        skills: {
-            label: "RMU_EXPORT.Section.Skills",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
-        spells: {
-            label: "RMU_EXPORT.Section.SpellLists",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
-        inventory: {
-            label: "RMU_EXPORT.Section.Inventory",
-            default: true,
-            validTypes: ["Character", "Creature", "Loot"],
-        },
-        talents: {
-            label: "RMU_EXPORT.Section.Talents",
-            default: true,
-            validTypes: ["Character", "Creature"],
-        },
+        header: { label: "RMU_EXPORT.Section.Header", default: true, validTypes: ["Character", "Creature", "Loot"] },
+        quick_info: { label: "RMU_EXPORT.Section.QuickInfo", default: true, validTypes: ["Character", "Creature"] },
+        movement: { label: "RMU_EXPORT.Section.Movement", default: true, validTypes: ["Character", "Creature"] },
+        stats: { label: "RMU_EXPORT.Section.Stats", default: true, validTypes: ["Character", "Creature"] },
+        portrait: { label: "RMU_EXPORT.Section.Portrait", default: true, validTypes: ["Character", "Creature", "Loot"] },
+        details: { label: "RMU_EXPORT.Section.Details", default: true, validTypes: ["Character", "Creature", "Loot"] },
+        biography: { label: "RMU_EXPORT.Section.Biography", default: false, validTypes: ["Character", "Creature", "Loot"] },
+        defenses: { label: "RMU_EXPORT.Section.Defenses", default: true, validTypes: ["Character", "Creature"] },
+        attacks: { label: "RMU_EXPORT.Section.Attacks", default: true, validTypes: ["Character", "Creature"] },
+        skills: { label: "RMU_EXPORT.Section.Skills", default: true, validTypes: ["Character", "Creature"] },
+        spells: { label: "RMU_EXPORT.Section.SpellLists", default: true, validTypes: ["Character", "Creature"] },
+        inventory: { label: "RMU_EXPORT.Section.Inventory", default: true, validTypes: ["Character", "Creature", "Loot"] },
+        talents: { label: "RMU_EXPORT.Section.Talents", default: true, validTypes: ["Character", "Creature"] },
+        conditions: { label: "RMU_EXPORT.Section.Conditions", default: false, validTypes: ["Character", "Creature"] },
     },
 };
 
@@ -174,14 +128,10 @@ Hooks.on("getActorSheetV2HeaderControls", addAppV2Control);
 async function startExportProcess(actor) {
     if (!actor) return;
 
-    const hasActiveToken =
-        actor.isToken ||
-        (actor.getActiveTokens && actor.getActiveTokens().length > 0);
+    const hasActiveToken = actor.isToken || (actor.getActiveTokens && actor.getActiveTokens().length > 0);
 
     if (!hasActiveToken) {
-        ui.notifications.warn(
-            game.i18n.localize("RMU_EXPORT.Notify.TokenRequired"),
-        );
+        ui.notifications.warn(game.i18n.localize("RMU_EXPORT.Notify.TokenRequired"));
         return;
     }
 
@@ -189,15 +139,10 @@ async function startExportProcess(actor) {
         const derivedActor = await DataExtractor.ensureExtendedData(actor);
 
         if (!derivedActor) {
-            console.warn(
-                `${MODULE_ID} | Data initialization failed completely.`,
-            );
+            console.warn(`${MODULE_ID} | Data initialization failed completely.`);
         }
 
-        const result = await ExportDialog.wait(
-            derivedActor || actor,
-            RMU_EXPORT_CONFIG,
-        );
+        const result = await ExportDialog.wait(derivedActor || actor, RMU_EXPORT_CONFIG);
 
         if (result) {
             await handleExportSubmit(result, derivedActor || actor);
@@ -234,18 +179,9 @@ async function handleExportSubmit(formData, actor) {
     const themePath = RMU_EXPORT_CONFIG.themes[themeId].path;
     let rawLayoutPath = RMU_EXPORT_CONFIG.layouts[layoutId].path;
     const typeSuffix = actor.type.toLowerCase();
-    const layoutPath = rawLayoutPath.replace(
-        "_layout.hbs",
-        `_${typeSuffix}_layout.hbs`,
-    );
+    const layoutPath = rawLayoutPath.replace("_layout.hbs", `_${typeSuffix}_layout.hbs`);
 
-    await OutputGenerator.download(
-        cleanData,
-        formData.format,
-        actor.name,
-        layoutPath,
-        themePath,
-    );
+    await OutputGenerator.download(cleanData, formData.format, actor.name, layoutPath, themePath);
 }
 
 /* -------------------------------------------- */
@@ -265,9 +201,7 @@ Hooks.on("getActorContextOptions", (html, options) => {
             const documentId = getActorIdFromElement(li);
             if (!documentId) return false;
             const actor = game.actors.get(documentId);
-            return (
-                actor && actor.isOwner && VALID_ACTOR_TYPES.includes(actor.type)
-            );
+            return actor && actor.isOwner && VALID_ACTOR_TYPES.includes(actor.type);
         },
         callback: async (li) => {
             const documentId = getActorIdFromElement(li);

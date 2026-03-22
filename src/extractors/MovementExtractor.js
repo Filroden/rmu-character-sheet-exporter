@@ -1,6 +1,7 @@
 import { ExportHelpers } from "../utils/ExportHelpers.js";
 
 export function extractMovement(actor) {
+    const sys = actor.system;
     const moveBlock = sys._movementBlock || {};
     const tables = moveBlock._table || {};
     const activeMode = sys.activeMovementName || "Running";
@@ -22,7 +23,7 @@ export function extractMovement(actor) {
 
         let bmrDisplay = `${bmrVal}'/rd`;
         if (isMetric) {
-            bmrDisplay = `${ExportHelpers._toMetricMovement(bmrVal)}/rd`;
+            bmrDisplay = `${ExportHelpers.toMetricMovement(bmrVal)}/rd`;
         }
 
         let label = modeKey;
