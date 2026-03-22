@@ -1,6 +1,11 @@
+import { ExportHelpers } from "../utils/ExportHelpers.js";
+
 export function extractConditions(actor) {
     const sys = actor.system;
-    const rawEffects = sys._injuryBlock?._effects || actor.effects || [];
+
+    // Priority 1: actor.appliedEffects (Foundry standard for ALL active + transferred effects)
+    // Priority 2: sys._injuryBlock._effects (System specific fallback)
+    const rawEffects = actor.appliedEffects || sys._injuryBlock?._effects || [];
     const effectsList = rawEffects.map ? Array.from(rawEffects.map((e) => e.value || e)) : Array.from(rawEffects);
 
     const conditions = {
@@ -15,15 +20,19 @@ export function extractConditions(actor) {
 
     effectsList.forEach((e) => {
         const effectSys = e.system || {};
-        const type = effectSys.type;
 
+        // RMU properties can be located at system.type OR system.summary.type depending on the effect origin
+        const rmuType = effectSys.type || effectSys.summary?.type;
+
+        // 1. Calculate running penalty totals
         if (effectSys.penalty) {
-            if (type === "injury") conditions.totalInjuryPenalty += Number(effectSys.penalty);
-            if (type === "fatigue") conditions.totalFatiguePenalty += Number(effectSys.penalty);
-            if (type === "stun") conditions.totalStunPenalty += Number(effectSys.penalty);
+            if (rmuType === "injury") conditions.totalInjuryPenalty += Number(effectSys.penalty);
+            if (rmuType === "fatigue") conditions.totalFatiguePenalty += Number(effectSys.penalty);
+            if (rmuType === "stun") conditions.totalStunPenalty += Number(effectSys.penalty);
         }
 
-        if (type === "injury") {
+        // 2. Categorize the effects
+        if (rmuType === "injury") {
             let severity = effectSys.penalty ? `${effectSys.penalty}` : "";
             if (effectSys.value && effectSys.effect === "Bleed") severity = `${effectSys.value}/rd`;
 
@@ -33,7 +42,7 @@ export function extractConditions(actor) {
                 severity: severity,
                 description: effectSys.description || "",
             });
-        } else if (type === "stun") {
+        } else if (rmuType === "stun") {
             const roundsArr = effectSys.rounds || [];
             const stunDetails = [];
             const labels = ["-25", "-50", "-75"];
@@ -48,13 +57,34 @@ export function extractConditions(actor) {
             if (totalRounds > 0) {
                 conditions.stun = { totalRounds: totalRounds, details: stunDetails };
             }
-        } else if (type === "power" || (type === "base" && !["fatigue", "prone", "injury", "stun"].includes(effectSys.effect?.toLowerCase()))) {
-            conditions.activeEffects.push({
-                name: e.name || "Unknown Effect",
-                bonus: effectSys.summary?.bonus || "—",
-                duration: e.duration?.rounds ? `${e.duration.rounds} rds` : "—",
-                description: effectSys.summary?.sub1Label ? game.i18n.localize(effectSys.summary.sub1Label) : "—",
-            });
+        } else if (rmuType === "fatigue") {
+            // Already summed up in the penalty values, no table row needed
+        } else {
+            // CATCH-ALL: Active Effects, Buffs, and Statuses (like Prone or Power Multipliers)
+            let bonus = effectSys.summary?.bonus || "—";
+            let description = "—";
+
+            // Localize the summary label if it exists, otherwise fallback to the raw description
+            if (effectSys.summary?.sub1Label) {
+                description = ExportHelpers.i18n(effectSys.summary.sub1Label);
+            } else if (effectSys.description) {
+                description = effectSys.description;
+            }
+
+            // If it's a generic Foundry effect with no RMU summary, try to extract the mod count
+            if (bonus === "—" && e.changes?.length > 0) {
+                bonus = `${e.changes.length} Mods`;
+            }
+
+            // Prevent blank/corrupted entities from breaking the table
+            if (e.name) {
+                conditions.activeEffects.push({
+                    name: e.name,
+                    bonus: bonus,
+                    duration: e.duration?.rounds ? `${e.duration.rounds} rds` : "—",
+                    description: description,
+                });
+            }
         }
     });
 
