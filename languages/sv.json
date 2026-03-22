@@ -125,10 +125,11 @@
 
     "RMU_EXPORT.Layouts.Standard": "Standardlayout",
     "RMU_EXPORT.Layouts.Compact": "Kompakt Layout",
-    "RMU_EXPORT.Layouts.Extended": "Utökad (Turnering)",
+    "RMU_EXPORT.Layouts.Extended": "Utökad Layout",
 
     "RMU_EXPORT.Themes.Standard": "Standardtema",
     "RMU_EXPORT.Themes.DarkMode": "Mörkt Läge",
+    "RMU_EXPORT.Themes.Rulebook": "Regelbok",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
     "RMU_EXPORT.Themes.PrintHighContrast": "Utskriftsvänlig (Hög Kontrast)",
 

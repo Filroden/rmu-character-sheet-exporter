@@ -125,10 +125,11 @@
 
     "RMU_EXPORT.Layouts.Standard": "Standard Layout",
     "RMU_EXPORT.Layouts.Compact": "Compact Layout",
-    "RMU_EXPORT.Layouts.Extended": "Extended (Tournament)",
+    "RMU_EXPORT.Layouts.Extended": "Extended Layout",
 
     "RMU_EXPORT.Themes.Standard": "Standard Theme",
     "RMU_EXPORT.Themes.DarkMode": "Dark Mode",
+    "RMU_EXPORT.Themes.Rulebook": "Rulebook",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
     "RMU_EXPORT.Themes.PrintHighContrast": "Printer Friendly (High Contrast)",
 

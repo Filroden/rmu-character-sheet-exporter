@@ -124,10 +124,11 @@
 
     "RMU_EXPORT.Layouts.Standard": "Disposition Standard",
     "RMU_EXPORT.Layouts.Compact": "Disposition Compacte",
-    "RMU_EXPORT.Layouts.Extended": "Étendu (Tournoi)",
+    "RMU_EXPORT.Layouts.Extended": "Disposition Étendue",
 
     "RMU_EXPORT.Themes.Standard": "Thème Standard",
     "RMU_EXPORT.Themes.DarkMode": "Mode Sombre",
+    "RMU_EXPORT.Themes.Rulebook": "Livre de Règles",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
     "RMU_EXPORT.Themes.PrintHighContrast": "Impression (Haut Contraste)",
 

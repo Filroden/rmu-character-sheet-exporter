@@ -1,0 +1,501 @@
+/* ========================================= */
+/* RMU EXPORT: RULEBOOK CLASSIC (CARD UI)    */
+/* Deep Crimson, High Contrast, Elevated UI  */
+/* ========================================= */
+
+:root {
+    /* Primary palette - Deep Crimson and Charcoal */
+    --rmu-cse-primary: #991b1b; 
+    --rmu-cse-secondary: #374151; 
+    --rmu-cse-tertiary: #6b7280;
+    --rmu-cse-alert: #dc2626;
+    
+    /* Text colours */
+    --rmu-cse-text-main: #111827;
+    --rmu-cse-text-light: #4b5563;
+    --rmu-cse-text-inverse: #ffffff;
+    
+    /* Background colours - Essential for the card blocking effect */
+    --rmu-cse-bg-sheet: #e5e7eb; /* Cool grey background to recede from the eye */
+    --rmu-cse-bg-card: #ffffff;  /* Pure white for the raised content blocks */
+    --rmu-cse-bg-panel: #f3f4f6; /* Subtle inset panel colour */
+    --rmu-cse-bg-header: #991b1b;
+    
+    /* Borders and shadows */
+    --rmu-cse-border-main: #d1d5db;
+    --rmu-cse-border-light: #e5e7eb;
+    --rmu-cse-shadow-card: 0 0.25rem 0.375rem -0.0625rem rgba(0, 0, 0, 0.1), 0 0.125rem 0.25rem -0.0625rem rgba(0, 0, 0, 0.06);
+    --rmu-cse-radius: 0.5rem;
+}
+
+/* --- GENERAL SHEET LAYOUT --- */
+.rmu-sheet {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    color: var(--rmu-cse-text-main);
+    line-height: 1.4;
+    font-size: 0.875rem; 
+    background-color: var(--rmu-cse-bg-sheet);
+    padding: 1.5rem;
+    border-radius: var(--rmu-cse-radius);
+}
+
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
+.alert-text { color: var(--rmu-cse-alert); font-weight: bold; }
+
+/* --- RAISED CARD CONTAINERS --- */
+/* Grouping structural elements into elevated cards */
+.quick-info-grid, 
+.bio-col, 
+.defense-left, 
+.defense-right, 
+.block, 
+.bio-text-block,
+.inv-stats,
+.spell-card,
+.inventory-list,
+.loot-inventory-list,
+.conditions-container .compact-row /* Ensures the Stun block is rendered as a card */ {
+    background-color: var(--rmu-cse-bg-card);
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--rmu-cse-border-light);
+}
+
+/* --- HEADERS --- */
+.header-block {
+    background: var(--rmu-cse-primary);
+    color: var(--rmu-cse-text-inverse);
+    padding: 1.5rem;
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.header-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 0.25rem 0;
+    letter-spacing: 0.05rem;
+}
+
+.header-sub {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1rem;
+}
+
+.section-title {
+    background-color: var(--rmu-cse-primary);
+    color: var(--rmu-cse-text-inverse);
+    padding: 0.5rem 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    font-size: 1.25rem;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+}
+
+/* Secondary headers (often placed directly above cards or tables) */
+.header {
+    font-weight: bold;
+    color: var(--rmu-cse-secondary);
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rmu-cse-border-light);
+    padding-bottom: 0.25rem;
+}
+
+/* Clean spacing between secondary headers and the elevated cards beneath them */
+.header + .tactical-table,
+.header + .spell-table,
+.header + .armor-grid,
+.header + .compact-row {
+    margin-top: 0.5rem; 
+}
+
+/* --- STRUCTURAL GRIDS --- */
+.quick-info-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bio-top {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+    align-items: flex-start;
+}
+
+.bio-col {
+    flex: 1;
+}
+
+.bio-portrait {
+    flex: 0 0 auto;
+    width: 200px;
+}
+
+.bio-portrait img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    border: 2px solid var(--rmu-cse-border-main);
+    display: block;
+}
+
+.bio-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dotted var(--rmu-cse-border-main);
+    padding: 0.25rem 0;
+}
+
+/* --- STATS & RESISTANCE --- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.stat-box {
+    background: var(--rmu-cse-bg-card);
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    border: 1px solid var(--rmu-cse-border-light);
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.stat-label {
+    font-weight: bold;
+    font-size: 0.75rem;
+    display: block;
+    color: var(--rmu-cse-secondary);
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-size: 1.125rem;
+    font-weight: bold;
+    color: var(--rmu-cse-primary); /* Highlight the final bonus in crimson */
+}
+
+.res-grid {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--rmu-cse-bg-card);
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    border: 1px solid var(--rmu-cse-border-light);
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.res-item {
+    text-align: center;
+    flex: 1;
+    border-right: 1px solid var(--rmu-cse-border-subtle);
+}
+
+.res-item:last-child {
+    border-right: none;
+}
+
+/* --- COMPACT PORTRAIT STYLES --- */
+.compact-bio-row {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+}
+
+.compact-portrait img {
+    width: 80px;
+    height: auto;
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    border: 1px solid var(--rmu-cse-border-main);
+    background: var(--rmu-cse-bg-card);
+    display: block;
+}
+
+.compact-bio-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+/* --- DEFENSES --- */
+.defense-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.armor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.armor-box {
+    border: 1px solid var(--rmu-cse-border-main);
+    padding: 0.5rem;
+    text-align: center;
+    border-radius: var(--rmu-cse-radius);
+    background: var(--rmu-cse-bg-panel);
+}
+
+.armor-loc {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--rmu-cse-secondary);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+/* --- TABLES (Modernised for Card Layout) --- */
+.attack-table, .inventory-table, .spell-table, .tactical-table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0;
+    font-size: 0.875rem;
+    background: var(--rmu-cse-bg-card);
+    border-radius: var(--rmu-cse-radius);
+    box-shadow: var(--rmu-cse-shadow-card);
+    margin-bottom: 1.25rem;
+    overflow: hidden; /* Clips row backgrounds to the rounded corners */
+}
+
+.attack-table th, .inventory-table th, .spell-table th, .tactical-table th {
+    background: var(--rmu-cse-secondary);
+    color: var(--rmu-cse-text-inverse);
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.attack-table td, .inventory-table td, .spell-table td, .tactical-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--rmu-cse-border-light);
+}
+
+/* Dynamic depth indentation for the inventory table */
+.inventory-table td:first-child {
+    padding-left: calc(var(--depth, 0) * 1.5rem + 0.5rem) !important;
+}
+
+/* Clean up table styling when a table is already nested inside a card */
+.defense-left .tactical-table,
+.spell-card .spell-table,
+.inventory-list .inventory-table {
+    box-shadow: none; 
+    border: 1px solid var(--rmu-cse-border-light);
+    margin-bottom: 0;
+}
+
+/* Zebra striping for readability */
+.attack-table tbody tr:nth-child(even),
+.inventory-table tbody tr:nth-child(even) {
+    background-color: var(--rmu-cse-bg-panel);
+}
+
+/* Clean up the last row's border so it doesn't clip the card shadow */
+.attack-table tbody tr:last-child td,
+.inventory-table tbody tr:last-child td,
+.spell-table tbody tr:last-child td,
+.tactical-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- LISTS & TALENTS --- */
+.list-container {
+    columns: 3;
+    column-gap: 1.25rem;
+}
+
+.block {
+    break-inside: avoid;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+}
+
+.talent-item {
+    display: flex; 
+    justify-content: space-between;
+    border-bottom: 1px dotted var(--rmu-cse-border-main);
+    padding: 0.25rem 0; 
+    width: 100%;
+}
+
+.skill-bonus { 
+    font-weight: bold; 
+    color: var(--rmu-cse-primary);
+}
+
+.spell-list-type { 
+    font-size: 0.8em; 
+    font-weight: normal; 
+    color: var(--rmu-cse-tertiary); 
+}
+
+/* --- MISC HELPERS --- */
+.group-wrapper { display: inline-block; }
+.separator { color: var(--rmu-cse-tertiary); margin: 0 0.5rem; }
+
+/* --- FOOTER --- */
+.footer {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rmu-cse-border-main);
+    font-size: 0.75rem;
+    color: var(--rmu-cse-tertiary);
+    display: flex; 
+    flex-direction: column;
+}
+
+.footer-row { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 0.25rem; 
+}
+
+/* ========================================= */
+/* STANDARD & COMPACT LAYOUT FALLBACKS       */
+/* Ensures the theme supports non-table UIs  */
+/* ========================================= */
+
+/* --- Standard Spells & Categories --- */
+.cat-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    background: var(--rmu-cse-bg-panel);
+    padding: 0.25rem 0.5rem;
+    border-left: 3px solid var(--rmu-cse-primary);
+    margin-bottom: 0.25rem;
+}
+.spell-row { 
+    display: flex; 
+    font-size: 0.95em; 
+}
+
+/* --- Standard/Compact Inventory (Non-Table) --- */
+.inv-stats {
+    display: flex;
+    justify-content: space-evenly;
+    background: var(--rmu-cse-bg-panel);
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--rmu-cse-border-light);
+    font-size: 0.9em;
+    margin-bottom: 0.5rem;
+}
+.inv-row { 
+    align-items: center; 
+    break-inside: avoid; 
+}
+.inv-meta {
+    display: flex; 
+    justify-content: flex-end; 
+    min-width: 170px;
+    font-size: 0.85em; 
+    color: var(--rmu-cse-text-light);
+}
+.inv-qty {
+    width: 35px; text-align: center; 
+    border-right: 1px solid var(--rmu-cse-border-main); 
+    margin-right: 5px;
+}
+.inv-wgt { 
+    width: 60px; text-align: right; 
+    border-right: 1px solid var(--rmu-cse-border-main);
+    margin-right: 5px;
+    padding-right: 5px;
+}
+.inv-cost {
+    width: 50px; text-align: right; 
+}
+.inventory-list { columns: 2; }
+.loot-inventory-list { columns: 1; }
+
+/* --- Compact Layout Flows --- */
+.compact-list-flow {
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+.compact-row {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+.group-label {
+    color: var(--rmu-cse-primary);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+/* --- PRINT MEDIA QUERY --- */
+@media print {
+    .rmu-sheet { 
+        max-width: 100%; 
+        border: none; 
+        background-color: white;
+    }
+
+    /* Remove shadows for cleaner printing */
+    .quick-info-grid, 
+    .bio-col, 
+    .defense-left, 
+    .defense-right, 
+    .block, 
+    .bio-text-block,
+    .inv-stats,
+    .spell-card,
+    .inventory-list,
+    .loot-inventory-list,
+    .conditions-container .compact-row,
+    .header-block,
+    .section-title,
+    .attack-table, 
+    .inventory-table, 
+    .spell-table, 
+    .tactical-table {
+        box-shadow: none !important;
+        border: 1px solid #ccc;
+    }
+
+    .section-title, 
+    .header-block, 
+    .quick-info-grid, 
+    .stat-grid, 
+    .res-grid, 
+    .block, 
+    .inv-stats { 
+        break-inside: avoid; 
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
