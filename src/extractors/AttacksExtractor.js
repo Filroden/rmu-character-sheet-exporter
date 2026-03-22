@@ -10,26 +10,17 @@ export function extractAttacks(actor) {
         if (a.isRanged) {
             let rawRangeVal = a.usage?.range?.short;
             if (rawRangeVal !== undefined && rawRangeVal !== null) {
-                if (ExportHelpers.isMetric) {
-                    rangeDisplay = `<${ExportHelpers.toMetricRange(rawRangeVal)}>`;
-                } else {
-                    rangeDisplay = `<${rawRangeVal}'>`;
-                }
+                rangeDisplay = ExportHelpers.isMetric ? `<${ExportHelpers.toMetricRange(rawRangeVal)}>` : `<${rawRangeVal}'>`;
             } else {
-                let rawRangeStr = a.usage?.range?.shortRange;
+                let rawRangeStr = a.usage?.range?._shortRange;
                 if (rawRangeStr) {
                     const cleanRange = String(rawRangeStr).replace(/['"a-zA-Z\s]/g, "");
                     if (ExportHelpers.isMetric) {
-                        if (String(rawRangeStr).includes("m")) {
-                            rangeDisplay = `<${cleanRange} m>`;
-                        } else {
-                            const numeric = parseFloat(cleanRange);
-                            if (!isNaN(numeric)) {
-                                rangeDisplay = `<${ExportHelpers.toMetricRange(numeric)}>`;
-                            } else {
-                                rangeDisplay = `<${cleanRange}>`;
-                            }
-                        }
+                        rangeDisplay = String(rawRangeStr).includes("m")
+                            ? `<${cleanRange} m>`
+                            : !isNaN(parseFloat(cleanRange))
+                              ? `<${ExportHelpers.toMetricRange(parseFloat(cleanRange))}>`
+                              : `<${cleanRange}>`;
                     } else {
                         rangeDisplay = `<${cleanRange}>`;
                     }
@@ -39,37 +30,23 @@ export function extractAttacks(actor) {
 
         let reachDisplay = "";
         if (!rangeDisplay && a.meleeRange) {
-            if (ExportHelpers.isMetric) {
-                reachDisplay = ExportHelpers.toMetricReach(a.meleeRange);
-            } else {
-                const roundedReach = Math.round(Number(a.meleeRange) * 100) / 100;
-                reachDisplay = `${roundedReach}'`;
-            }
+            reachDisplay = ExportHelpers.isMetric ? ExportHelpers.toMetricReach(a.meleeRange) : `${Math.round(Number(a.meleeRange) * 100) / 100}'`;
         }
 
         let attackName = a.attackName || unknownWpn;
-        const tableKey = `RMU.AttackTables.${a.attackName}`;
-        const attackKey = `RMU.Attacks.${a.attackName}`;
+        if (game.i18n.has(`RMU.AttackTables.${a.attackName}`)) attackName = game.i18n.localize(`RMU.AttackTables.${a.attackName}`);
+        else if (game.i18n.has(`RMU.Attacks.${a.attackName}`)) attackName = game.i18n.localize(`RMU.Attacks.${a.attackName}`);
 
-        if (game.i18n.has(tableKey)) {
-            attackName = game.i18n.localize(tableKey);
-        } else if (game.i18n.has(attackKey)) {
-            attackName = game.i18n.localize(attackKey);
-        }
+        let chartName = game.i18n.has(`RMU.AttackTables.${a.chart.name}`) ? game.i18n.localize(`RMU.AttackTables.${a.chart.name}`) : a.chart.name || unknownTxt;
+        let specialization = a.specialization
+            ? game.i18n.has(`RMU.Specializations.${a.specialization}`)
+                ? game.i18n.localize(`RMU.Specializations.${a.specialization}`)
+                : a.specialization
+            : unknownTxt;
 
-        let chartName = a.chart.name || unknownTxt;
-        const chartKey = `RMU.AttackTables.${a.chart.name}`;
-        if (game.i18n.has(chartKey)) {
-            chartName = game.i18n.localize(chartKey);
-        }
-
-        let specialization = a.specialization || unknownTxt;
-        if (a.specialization) {
-            const specKey = `RMU.Specializations.${a.specialization}`;
-            if (game.i18n.has(specKey)) {
-                specialization = game.i18n.localize(specKey);
-            }
-        }
+        // NEW: Breakage hiding logic
+        let strength = a.itemStrength !== undefined && a.itemStrength !== null ? a.itemStrength : "—";
+        let breakage_dmg = strength !== "—" && a.damagePenalty ? a.damagePenalty : "—";
 
         return {
             name: attackName,
@@ -81,8 +58,8 @@ export function extractAttacks(actor) {
             reach: reachDisplay,
             range: rangeDisplay,
             has_breakage: a.breakage === "true" || a.breakage === true,
-            strength: a.itemStrength ?? "",
-            breakage_dmg: a.damagePenalty ?? 0,
+            strength: strength,
+            breakage_dmg: breakage_dmg,
         };
     });
 }

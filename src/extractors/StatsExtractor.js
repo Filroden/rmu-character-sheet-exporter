@@ -12,7 +12,6 @@ export function extractStats(actor) {
 
         const systemKey = `rmu.stats.${key}`;
         let label = game.i18n.localize(systemKey);
-
         if (label === systemKey) {
             label = ExportHelpers.i18n(`RMU_EXPORT.Stats.${key}`, key);
         }

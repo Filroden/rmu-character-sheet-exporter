@@ -278,25 +278,25 @@
     margin-right: 5px;
 }
 
-/* --- TABLES (Attacks & Tactical) --- */
-.tactical-table, .attack-table {
+/* --- TABLES --- */
+.tactical-table, .attack-table, .inventory-table, .spell-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9em;
 }
 .tactical-table { text-align: center; }
-.attack-table { text-align: left; margin-bottom: 15px; }
+.attack-table, .inventory-table, .spell-table { text-align: left; margin-bottom: 15px; }
 
-.tactical-table th, .attack-table th {
+.tactical-table th, .attack-table th, .inventory-table th, .spell-table th {
     background: var(--rmu-cse-bg-table-head);
     padding: 4px;
     border: 1px solid var(--rmu-cse-border-main);
 }
-.attack-table th {
+.attack-table th, .inventory-table th, .spell-table th {
     border-bottom: 2px solid var(--rmu-cse-border-heavy);
 }
 
-.tactical-table td {
+.tactical-table td, .inventory-table td, .spell-table td {
     border: 1px solid var(--rmu-cse-border-main);
     padding: 4px;
 }
@@ -306,7 +306,9 @@
 }
 
 .attack-ob { font-weight: bold; font-size: 1.1em; }
-.text-center { text-align: center; }
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
 .alert-text { color: var(--rmu-cse-alert); }
 
 /* --- INVENTORY --- */
@@ -343,6 +345,10 @@
 }
 .inventory-list { columns: 2; }
 .loot-inventory-list { columns: 1; }
+.item-name-cell {
+    /* Multiplies the inline variable. Defaults to 0 if --depth is missing */
+    padding-left: calc(var(--depth, 0) * 1.2rem + 6px); 
+}
 
 /* --- COMPACT FLOW LISTS (Used in Compact Layout) --- */
 .compact-list-flow {
@@ -375,6 +381,20 @@
     display: flex; justify-content: space-between;
     border-bottom: 1px dotted var(--rmu-cse-border-main);
     padding: 1px 0; font-size: 0.95em;
+}
+
+/* --- EXTENDED LAYOUT SPACING --- */
+.header + .tactical-table,
+.header + .spell-table,
+.header + .armor-grid,
+.header + .compact-row {
+    margin-top: 0.3rem; 
+}
+
+/* Ensure tables in the extended layout maintain good bottom spacing */
+.conditions-container .tactical-table,
+.conditions-container .compact-row {
+    margin-bottom: 15px;
 }
 
 /* --- FOOTER --- */

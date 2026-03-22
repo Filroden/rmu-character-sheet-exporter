@@ -1,0 +1,85 @@
+<div class="rmu-sheet extended-layout">
+
+    {{! --- HEADER --- }}
+    {{#if options.header}}
+        <div class="header-block">
+            <div class="header-title">{{header_data.name}}</div>
+        </div>
+    {{/if}}
+
+    {{! --- PORTRAIT & DETAILS --- }}
+    {{#if (or options.portrait options.details)}}
+        <div class="section-title">
+            {{localize "RMU_EXPORT.Section.Details"}}
+        </div>
+
+        <div class="bio-section">
+            <div class="bio-top">
+                {{#if options.portrait}}
+                    {{#if portrait_data}}
+                        <div class="bio-portrait">
+                            <img src="{{portrait_data}}" alt="Loot Portrait" />
+                        </div>
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+
+    {{! --- BIOGRAPHY TEXT --- }}
+    {{#if options.biography}}
+        {{#if biography_data.text}}
+            <div class="bio-section">
+                <div class="bio-text-block">
+                    <div class="header">{{localize "RMU_EXPORT.Bio.Biography"}}</div>
+                    <div class="bio-content">
+                        {{{biography_data.text}}}
+                    </div>
+                </div>
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{! --- INVENTORY (TABLE FORMAT) --- }}
+    {{#if options.inventory}}
+        <div class="section-title">{{localize "RMU_EXPORT.Section.Inventory"}}</div>
+
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th class="text-left" style="width: auto;">{{localize "RMU_EXPORT.Inventory.Item"}}</th>
+                    <th class="text-center" style="width: 12%;">{{localize "RMU_EXPORT.Inventory.Status"}}</th>
+                    <th class="text-center" style="width: 10%;">{{localize "RMU_EXPORT.Inventory.Strength"}}</th>
+                    <th class="text-center" style="width: 12%;">{{localize "RMU_EXPORT.Inventory.Breakage"}}</th>
+                    <th class="text-center" style="width: 10%;">{{localize "RMU_EXPORT.Inventory.Cost"}}</th>
+                    <th class="text-center" style="width: 8%;">{{localize "RMU_EXPORT.Inventory.Qty"}}</th>
+                    <th class="text-right" style="width: 12%;">{{localize "RMU_EXPORT.Inventory.Weight"}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each inventory_data.items}}
+                    <tr>
+                        <td class="text-left" style="padding-left: calc({{depth}} * 1rem + 6px);"><strong>{{name}}</strong></td>
+                        <td class="text-center">{{status}}</td>
+                        <td class="text-center">{{strength}}</td>
+                        <td class="text-center">{{breakage}}</td>
+                        <td class="text-center">{{cost}}</td>
+                        <td class="text-center">x{{qty}}</td>
+                        <td class="text-right">{{weight}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+
+    <div class="footer">
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Generated"}}: {{meta.timestamp}}</span>
+            <span>{{localize "RMU_EXPORT.Footer.SystemVersion"}}{{meta.systemVersion}}</span>
+            <span>{{localize "RMU_EXPORT.Footer.ModuleVersion"}}{{meta.moduleVersion}}</span>
+        </div>
+        <div class="footer-row">
+            <span>{{localize "RMU_EXPORT.Footer.Copyright"}}</span>
+        </div>
+    </div>
+</div>

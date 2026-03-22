@@ -1,6 +1,5 @@
 export function extractConditions(actor) {
     const sys = actor.system;
-
     const rawEffects = sys._injuryBlock?._effects || actor.effects || [];
     const effectsList = rawEffects.map ? Array.from(rawEffects.map((e) => e.value || e)) : Array.from(rawEffects);
 
@@ -41,7 +40,7 @@ export function extractConditions(actor) {
 
             for (let i = 2; i >= 0; i--) {
                 if (roundsArr[i] > 0) {
-                    stunDetails.push({ penalty: labels[i], rounds: roundsArr[i] });
+                    stunDetails.push({ stunLabel: labels[i], stunRounds: roundsArr[i] });
                 }
             }
             const totalRounds = roundsArr.reduce((a, b) => a + b, 0);

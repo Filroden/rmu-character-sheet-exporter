@@ -13,10 +13,13 @@ export function extractInventory(actor) {
         let itemName = i.item?.name || i.system?.name || unknownTxt;
         itemName = game.i18n.localize(itemName);
 
-        let weightDisplay = `${weight} lbs`;
-        if (ExportHelpers.isMetric) {
-            weightDisplay = ExportHelpers.toMetricWeight(weight);
-        }
+        let weightDisplay = ExportHelpers.isMetric ? ExportHelpers.toMetricWeight(weight) : `${weight} lbs`;
+
+        let status = i.system?.equipped || "carried";
+        status = status.charAt(0).toUpperCase() + status.slice(1);
+
+        let strength = i.system?.strength !== undefined && i.system?.strength !== null ? i.system?.strength : "—";
+        let breakage = strength !== "—" && i.system?._breakagePenalty ? i.system._breakagePenalty : "—";
 
         return {
             name: itemName,
@@ -24,9 +27,9 @@ export function extractInventory(actor) {
             weight: weightDisplay,
             cost: `${rawCost} sp`,
             depth: i._depth || 0,
-            status: i.system?.equipped || "carried",
-            strength: i.system?.strength ?? "—",
-            breakage: i.system?._breakagePenalty ?? "—",
+            status: status,
+            strength: strength,
+            breakage: breakage,
         };
     });
 
@@ -43,13 +46,8 @@ export function extractInventory(actor) {
     const cleanAllowance = Math.round(Number(allowance) * 100) / 100;
     const cleanCarried = Math.round(Number(carried) * 100) / 100;
 
-    let allowanceDisplay = `${cleanAllowance} lbs`;
-    let carriedDisplay = `${cleanCarried} lbs`;
-
-    if (ExportHelpers.isMetric) {
-        allowanceDisplay = ExportHelpers.toMetricWeight(cleanAllowance);
-        carriedDisplay = ExportHelpers.toMetricWeight(cleanCarried);
-    }
+    let allowanceDisplay = ExportHelpers.isMetric ? ExportHelpers.toMetricWeight(cleanAllowance) : `${cleanAllowance} lbs`;
+    let carriedDisplay = ExportHelpers.isMetric ? ExportHelpers.toMetricWeight(cleanCarried) : `${cleanCarried} lbs`;
 
     return {
         weight_allowance: allowanceDisplay,
