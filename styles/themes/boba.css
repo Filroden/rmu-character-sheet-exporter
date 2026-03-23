@@ -356,7 +356,7 @@
 }
 
 /* --- TABLES --- */
-.tactical-table, .attack-table {
+.tactical-table, .attack-table, .inventory-table, .spell-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 4px;
@@ -364,7 +364,7 @@
     text-align: center;
 }
 
-.tactical-table th, .attack-table th {
+.tactical-table th, .attack-table th, .inventory-table th, .spell-table th {
     background: var(--pop-blue);
     padding: 8px;
     border: 2px solid var(--pop-dark);
@@ -374,14 +374,14 @@
 }
 
 /* Rounded Header Corners */
-.tactical-table th:first-child, .attack-table th:first-child {
+.tactical-table th:first-child, .attack-table th:first-child, .inventory-table th:first-child, .spell-table th:first-child {
     border-radius: 10px 0 0 10px; border-right: none;
 }
-.tactical-table th:last-child, .attack-table th:last-child {
+.tactical-table th:last-child, .attack-table th:last-child, .inventory-table th:last-child, .spell-table th:last-child {
     border-radius: 0 10px 10px 0; border-left: none;
 }
 
-.tactical-table td, .attack-table td {
+.tactical-table td, .attack-table td, .inventory-table td, .spell-table td {
     border-top: 2px solid var(--pop-dark);
     border-bottom: 2px solid var(--pop-dark);
     background: white;
@@ -389,11 +389,11 @@
 }
 
 /* Rounded Cell Corners */
-.tactical-table td:first-child, .attack-table td:first-child {
+.tactical-table td:first-child, .attack-table td:first-child, .inventory-table td:first-child, .spell-table td:first-child {
     border-left: 2px solid var(--pop-dark);
     border-radius: 10px 0 0 10px;
 }
-.tactical-table td:last-child, .attack-table td:last-child {
+.tactical-table td:last-child, .attack-table td:last-child, .inventory-table td:last-child, .spell-table td:last-child {
     border-right: 2px solid var(--pop-dark);
     border-radius: 0 10px 10px 0;
 }
@@ -404,9 +404,11 @@
     color: var(--pop-dark);
     text-shadow: 2px 2px 0px var(--pop-yellow);
 }
-.text-center { text-align: center; }
+.text-center { text-align: center !important; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
 
-/* --- INVENTORY (Refactored) --- */
+/* --- INVENTORY --- */
 /* Matches the "Card" style of .block but for a larger container */
 .inventory-list {
     columns: 2;
@@ -458,6 +460,10 @@
 }
 .inventory-list { columns: 2; }
 .loot-inventory-list { columns: 1; }
+.item-name-cell {
+    /* Multiplies the inline variable. Defaults to 0 if --depth is missing */
+    padding-left: calc(var(--depth, 0) * 1.2rem + 6px); 
+}
 
 /* --- COMPATIBILITY: COMPACT LAYOUT SUPPORT --- */
 .compact-list-flow {
@@ -498,6 +504,20 @@
     padding: 0 5px;
     border-radius: 5px;
     font-size: 0.9em;
+}
+
+/* --- EXTENDED LAYOUT SPACING --- */
+.header + .tactical-table,
+.header + .spell-table,
+.header + .armor-grid,
+.header + .compact-row {
+    margin-top: 0.3rem; 
+}
+
+/* Ensure tables in the extended layout maintain good bottom spacing */
+.conditions-container .tactical-table,
+.conditions-container .compact-row {
+    margin-bottom: 15px;
 }
 
 /* --- FOOTER --- */

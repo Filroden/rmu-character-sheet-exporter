@@ -14,6 +14,7 @@
     "RMU_EXPORT.Section.SpellLists": "Listas de hechizos",
     "RMU_EXPORT.Section.Inventory": "Inventario",
     "RMU_EXPORT.Section.Talents": "Talentos",
+    "RMU_EXPORT.Section.Conditions": "Condiciones y Efectos",
 
     "RMU_EXPORT.Stats.Initiative": "Inic.",
     "RMU_EXPORT.Stats.HP": "PG",
@@ -124,9 +125,12 @@
 
     "RMU_EXPORT.Layouts.Standard": "Disposición estándar",
     "RMU_EXPORT.Layouts.Compact": "Disposición compacta",
+    "RMU_EXPORT.Layouts.Extended": "Disposición extendida",
+    "RMU_EXPORT.Layouts.Tournament": "Disposición de torneo",
 
     "RMU_EXPORT.Themes.Standard": "Tema estándar",
     "RMU_EXPORT.Themes.DarkMode": "Modo oscuro",
+    "RMU_EXPORT.Themes.Rulebook": "Manual de Reglas",
     "RMU_EXPORT.Themes.Boba": "Boba Shop",
     "RMU_EXPORT.Themes.PrintHighContrast": "Impresión (alto contraste)",
 
@@ -139,5 +143,34 @@
     "RMU_EXPORT.Import.SelectFile": "Seleccionar archivo HTML exportado:",
     "RMU_EXPORT.Import.Warning": "ADVERTENCIA: Esto sobrescribirá por completo todos los datos de {name} (estadísticas, objetos, habilidades) con los datos del archivo. Esta acción es irreversible.",
     "RMU_EXPORT.Import.TypeMismatch": "RMU Exporter | Discrepancia de Tipo: El archivo contiene un '{source}' pero está intentando importar en un '{target}'.",
-    "RMU_EXPORT.Import.Success": "Datos importados con éxito para {name}."
+    "RMU_EXPORT.Import.Success": "Datos importados con éxito para {name}.",
+
+    "RMU_EXPORT.Header.XP": "PX",
+    "RMU_EXPORT.Conditions.HitLoss": "Pérdida por Golpes",
+    "RMU_EXPORT.Conditions.Fatigue": "Cansancio",
+    "RMU_EXPORT.Conditions.Injury": "Herida",
+    "RMU_EXPORT.Conditions.Stun": "Aturdimiento",
+    "RMU_EXPORT.Conditions.StunLevels": "Niveles de Aturdimiento",
+    "RMU_EXPORT.Conditions.Rounds": "Asaltos",
+    "RMU_EXPORT.Conditions.Injuries": "Heridas",
+    "RMU_EXPORT.Conditions.Effect": "Efecto",
+    "RMU_EXPORT.Conditions.Location": "Localización",
+    "RMU_EXPORT.Conditions.Severity": "Gravedad",
+    "RMU_EXPORT.Conditions.Description": "Descripción",
+    "RMU_EXPORT.Conditions.ActiveEffects": "Efectos Activos",
+    "RMU_EXPORT.Conditions.Bonus": "Bono",
+    "RMU_EXPORT.Conditions.Duration": "Duración",
+    "RMU_EXPORT.Attacks.Strength": "Resistencia",
+    "RMU_EXPORT.Attacks.Breakage": "Rotura",
+    "RMU_EXPORT.Spells.Spell": "Conjuro",
+    "RMU_EXPORT.Spells.Type": "Tipo",
+    "RMU_EXPORT.Spells.OB": "BO",
+    "RMU_EXPORT.Spells.SCR": "TCE",
+    "RMU_EXPORT.Spells.Range": "Alcance",
+    "RMU_EXPORT.Spells.AoE": "Área de Efecto",
+    "RMU_EXPORT.Spells.Duration": "Duración",
+    "RMU_EXPORT.Inventory.Item": "Objeto",
+    "RMU_EXPORT.Inventory.Status": "Estado",
+    "RMU_EXPORT.Inventory.Strength": "Resistencia",
+    "RMU_EXPORT.Inventory.Breakage": "Rotura"
 }

@@ -287,15 +287,15 @@
 }
 
 /* --- TABLES --- */
-.tactical-table, .attack-table {
+.tactical-table, .attack-table, .inventory-table, .spell-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 10pt;
+    font-size: 0.9em;
 }
 .tactical-table { text-align: center; }
-.attack-table { text-align: left; margin-bottom: 15px; }
+.attack-table, .inventory-table, .spell-table { text-align: left; margin-bottom: 15px; }
 
-.tactical-table th, .attack-table th {
+.tactical-table th, .attack-table th, .inventory-table th, .spell-table th {
     background: white;
     padding: 4px;
     border: 1px solid #000;
@@ -304,13 +304,15 @@
     border-bottom: 2px solid #000;
 }
 
-.tactical-table td, .attack-table td {
+.tactical-table td, .inventory-table td, .spell-table td {
     border: 1px solid #000;
     padding: 4px;
 }
 
 .attack-ob { font-weight: 900; }
 .text-center { text-align: center; }
+.text-left { text-align: left !important; }
+.text-right { text-align: right !important; }
 .alert-text { font-weight: bold; }
 
 /* --- INVENTORY --- */
@@ -352,6 +354,10 @@
 }
 .inventory-list { columns: 2; }
 .loot-inventory-list { columns: 1; }
+.item-name-cell {
+    /* Multiplies the inline variable. Defaults to 0 if --depth is missing */
+    padding-left: calc(var(--depth, 0) * 1.2rem + 6px); 
+}
 
 /* --- COMPACT FLOW SUPPORT --- */
 .compact-list-flow {
@@ -378,6 +384,20 @@
     font-weight: bold;
 }
 .group-wrapper { display: inline-block; }
+
+/* --- EXTENDED LAYOUT SPACING --- */
+.header + .tactical-table,
+.header + .spell-table,
+.header + .armor-grid,
+.header + .compact-row {
+    margin-top: 0.3rem; 
+}
+
+/* Ensure tables in the extended layout maintain good bottom spacing */
+.conditions-container .tactical-table,
+.conditions-container .compact-row {
+    margin-bottom: 15px;
+}
 
 /* --- FOOTER --- */
 .footer {
