@@ -17,9 +17,9 @@
     "RMU_EXPORT.Section.Conditions": "Tillstånd & Effekter",
 
     "RMU_EXPORT.Stats.Initiative": "Init.",
-    "RMU_EXPORT.Stats.HP": "KP",
+    "RMU_EXPORT.Stats.HP": "HP",
     "RMU_EXPORT.Stats.PP": "PP",
-    "RMU_EXPORT.Stats.PhysicalEnd": "Fys. Uthållighet",
+    "RMU_EXPORT.Stats.PhysicalEnd": "Fysisk Uthållighet",
     "RMU_EXPORT.Stats.MentalEnd": "Mental Uthållighet",
     "RMU_EXPORT.Stats.Ag": "Sm",
     "RMU_EXPORT.Stats.Co": "Fy",
@@ -39,7 +39,7 @@
     "RMU_EXPORT.Resistances.Fear": "Skräck",
 
     "RMU_EXPORT.Details.Outlook": "Inställning",
-    "RMU_EXPORT.Details.Encounter": "Möte",
+    "RMU_EXPORT.Details.Encounter": "Strid",
     "RMU_EXPORT.Details.Treasure": "Skatt",
     "RMU_EXPORT.Details.Biome": "Biom",
     "RMU_EXPORT.Details.SizeDesc": "Storleksnotering",
@@ -55,12 +55,12 @@
     "RMU_EXPORT.Bio.PowerLevel": "Kraftnivå",
 
     "RMU_EXPORT.Bio.Age": "Ålder",
-    "RMU_EXPORT.Bio.Eyes": "Ögon",
-    "RMU_EXPORT.Bio.Hair": "Hår",
+    "RMU_EXPORT.Bio.Eyes": "Ögonfärg",
+    "RMU_EXPORT.Bio.Hair": "Hårfärg",
     "RMU_EXPORT.Bio.Height": "Längd",
     "RMU_EXPORT.Bio.Weight": "Vikt",
     "RMU_EXPORT.Bio.Sex": "Kön",
-    "RMU_EXPORT.Bio.Skin": "Hud",
+    "RMU_EXPORT.Bio.Skin": "Hudton",
 
     "RMU_EXPORT.Bio.Faith": "Tro",
     "RMU_EXPORT.Bio.Gender": "Genus",
@@ -73,7 +73,7 @@
     "RMU_EXPORT.Defenses.Torso": "Torso",
     "RMU_EXPORT.Defenses.Arms": "Armar",
     "RMU_EXPORT.Defenses.Legs": "Ben",
-    "RMU_EXPORT.Defenses.AT": "RT",
+    "RMU_EXPORT.Defenses.AT": "AT",
 
     "RMU_EXPORT.Attacks.Weapon": "Vapen",
     "RMU_EXPORT.Attacks.OB": "OB",
@@ -126,6 +126,7 @@
     "RMU_EXPORT.Layouts.Standard": "Standardlayout",
     "RMU_EXPORT.Layouts.Compact": "Kompakt Layout",
     "RMU_EXPORT.Layouts.Extended": "Utökad Layout",
+    "RMU_EXPORT.Layouts.Tournament": "Turneringslayout",
 
     "RMU_EXPORT.Themes.Standard": "Standardtema",
     "RMU_EXPORT.Themes.DarkMode": "Mörkt Läge",
@@ -144,8 +145,8 @@
     "RMU_EXPORT.Import.TypeMismatch": "RMU Exporter | Typfel: Filen innehåller en '{source}' men du försöker importera till en '{target}'.",
     "RMU_EXPORT.Import.Success": "Data importerades framgångsrikt för {name}.",
 
-    "RMU_EXPORT.Header.XP": "EP",
-    "RMU_EXPORT.Conditions.HitLoss": "KP-förlust",
+    "RMU_EXPORT.Header.XP": "EXP",
+    "RMU_EXPORT.Conditions.HitLoss": "HP-förlust",
     "RMU_EXPORT.Conditions.Fatigue": "Utmattning",
     "RMU_EXPORT.Conditions.Injury": "Skada",
     "RMU_EXPORT.Conditions.Stun": "Bedövning",

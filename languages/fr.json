@@ -125,6 +125,7 @@
     "RMU_EXPORT.Layouts.Standard": "Disposition Standard",
     "RMU_EXPORT.Layouts.Compact": "Disposition Compacte",
     "RMU_EXPORT.Layouts.Extended": "Disposition Étendue",
+    "RMU_EXPORT.Layouts.Tournament": "Disposition Tournoi",
 
     "RMU_EXPORT.Themes.Standard": "Thème Standard",
     "RMU_EXPORT.Themes.DarkMode": "Mode Sombre",

@@ -26,6 +26,11 @@ const RMU_EXPORT_CONFIG = {
             label: "RMU_EXPORT.Layouts.Extended",
             path: "modules/rmu-character-sheet-exporter/templates/layouts/extended_layout.hbs",
         },
+        tournament: {
+            id: "tournament",
+            label: "RMU_EXPORT.Layouts.Tournament",
+            path: "modules/rmu-character-sheet-exporter/templates/layouts/tournament_layout.hbs",
+        },
     },
 
     themes: {

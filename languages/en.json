@@ -126,6 +126,7 @@
     "RMU_EXPORT.Layouts.Standard": "Standard Layout",
     "RMU_EXPORT.Layouts.Compact": "Compact Layout",
     "RMU_EXPORT.Layouts.Extended": "Extended Layout",
+    "RMU_EXPORT.Layouts.Tournament": "Tournament Layout",
 
     "RMU_EXPORT.Themes.Standard": "Standard Theme",
     "RMU_EXPORT.Themes.DarkMode": "Dark Mode",
