@@ -12,10 +12,7 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this._reject = null;
 
         // Debounce the preview refresh to prevent lag on rapid changes
-        this._debouncedPreview = foundry.utils.debounce(
-            this._refreshPreview.bind(this),
-            500,
-        );
+        this._debouncedPreview = foundry.utils.debounce(this._refreshPreview.bind(this), 500);
     }
 
     static get DEFAULT_OPTIONS() {
@@ -40,8 +37,7 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     static get PARTS() {
         return {
             form: {
-                template:
-                    "modules/rmu-character-sheet-exporter/templates/export_dialog.hbs",
+                template: "modules/rmu-character-sheet-exporter/templates/export_dialog.hbs",
             },
         };
     }
@@ -67,13 +63,8 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         const themes = Object.values(this.config.themes);
 
         const availableSections = {};
-        for (const [key, sectionConfig] of Object.entries(
-            this.config.sections,
-        )) {
-            if (
-                !sectionConfig.validTypes ||
-                sectionConfig.validTypes.includes(this.actor.type)
-            ) {
+        for (const [key, sectionConfig] of Object.entries(this.config.sections)) {
+            if (!sectionConfig.validTypes || sectionConfig.validTypes.includes(this.actor.type)) {
                 availableSections[key] = sectionConfig;
             }
         }
@@ -106,34 +97,35 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     async _refreshPreview() {
-        const frame = this.element.querySelector("#rmu-preview-frame");
-        const status = this.element.querySelector("#preview-status");
+        // Natively locate the form, whether it is the root element or a child
+        const form = this.element.tagName === "FORM" ? this.element : this.element.querySelector("form");
+        if (!form) return;
+
+        const formData = new FormData(form);
+        const dataObj = Object.fromEntries(formData.entries());
+
+        const layoutId = dataObj.layout;
+        const themeId = dataObj.theme;
+
+        const status = this.element.querySelector(".status-message");
+        const frame = this.element.querySelector("iframe.preview-frame");
+
         if (!frame) return;
 
-        if (status) status.innerText = "Refreshing...";
+        if (status) status.innerText = "Generating preview...";
 
-        const form = this.element;
-        const formData = new FormData(form);
+        const sectionOptions = {};
+        Object.keys(this.config.sections).forEach((key) => {
+            const validTypes = this.config.sections[key].validTypes;
+            const isTypeValid = validTypes ? validTypes.includes(this.actor.type) : true;
+            sectionOptions[key] = isTypeValid ? dataObj[key] === "on" : false;
+        });
 
-        const layoutId = formData.get("layout");
-        const themeId = formData.get("theme");
+        const skillFilter = dataObj.skillFilter || "ranked";
+        sectionOptions.showAllSkills = skillFilter === "all";
 
-        const exportOptions = {
-            showAllSkills: formData.get("skillFilter") === "all",
-        };
+        const cleanData = await DataExtractor.getCleanData(this.actor, sectionOptions);
 
-        if (this.config && this.config.sections) {
-            Object.keys(this.config.sections).forEach((key) => {
-                exportOptions[key] = formData.get(key) !== null;
-            });
-        }
-
-        const cleanData = await DataExtractor.getCleanData(
-            this.actor,
-            exportOptions,
-        );
-
-        // Get the base path from config
         let layoutPath = this.config?.layouts?.[layoutId]?.path;
         const themePath = this.config?.themes?.[themeId]?.path;
 
@@ -145,22 +137,14 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
         const typeSuffix = this.actor.type.toLowerCase();
         if (layoutPath.includes("_layout.hbs")) {
-            layoutPath = layoutPath.replace(
-                "_layout.hbs",
-                `_${typeSuffix}_layout.hbs`,
-            );
+            layoutPath = layoutPath.replace("_layout.hbs", `_${typeSuffix}_layout.hbs`);
         }
 
-        const htmlContent = await OutputGenerator.generateHTML(
-            cleanData,
-            layoutPath,
-            themePath,
-        );
+        const htmlContent = await OutputGenerator.generateHTML(cleanData, layoutPath, themePath);
 
-        const doc = frame.contentDocument || frame.contentWindow.document;
-        doc.open();
-        doc.write(htmlContent);
-        doc.close();
+        // --- SRCDOC IMPLEMENTATION ---
+        // Binds the HTML directly to the iframe attribute so it survives V14 reparenting
+        frame.srcdoc = htmlContent;
 
         if (status) status.innerText = "";
     }
