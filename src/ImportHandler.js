@@ -20,12 +20,10 @@ export class ImportHandler {
 
         const result = await DialogV2.wait({
             window: {
-                title: game.i18n.localize(
-                    "RMU_EXPORT.Button.ImportSheetHeader",
-                ),
+                title: game.i18n.localize("RMU_EXPORT.Button.ImportSheetHeader"),
                 icon: "rmu-cse-icon html",
             },
-            classes: ["rmu-cse"],
+            classes: ["rmu-cse", "standard-form"],
             width: 300,
             content: content,
             buttons: [
@@ -34,8 +32,7 @@ export class ImportHandler {
                     label: game.i18n.localize("RMU_EXPORT.Button.Import"),
                     icon: "rmu-cse-icon html",
                     callback: (event, button, dialog) => {
-                        const form =
-                            dialog.element.querySelector("input[name='file']");
+                        const form = dialog.element.querySelector("input[name='file']");
                         const file = form?.files[0];
                         if (!file) {
                             ui.notifications.warn("No file selected.");
@@ -51,7 +48,6 @@ export class ImportHandler {
                 },
             ],
             default: "import",
-            classes: ["rmu-cse", "standard-form"],
         });
 
         if (result) {
@@ -75,15 +71,11 @@ export class ImportHandler {
             if (script) {
                 jsonData = JSON.parse(script.textContent);
             } else {
-                throw new Error(
-                    "Could not find embedded actor data (#foundry-actor-data) in this HTML file.",
-                );
+                throw new Error("Could not find embedded actor data (#foundry-actor-data) in this HTML file.");
             }
         } catch (err) {
             console.error(err);
-            return ui.notifications.error(
-                "RMU Export | Failed to parse file: " + err.message,
-            );
+            return ui.notifications.error("RMU Export | Failed to parse file: " + err.message);
         }
 
         if (jsonData) {
@@ -124,10 +116,8 @@ export class ImportHandler {
             const itemIds = actor.items.map((i) => i.id);
             const effectIds = actor.effects.map((e) => e.id);
 
-            if (itemIds.length > 0)
-                await actor.deleteEmbeddedDocuments("Item", itemIds);
-            if (effectIds.length > 0)
-                await actor.deleteEmbeddedDocuments("ActiveEffect", effectIds);
+            if (itemIds.length > 0) await actor.deleteEmbeddedDocuments("Item", itemIds);
+            if (effectIds.length > 0) await actor.deleteEmbeddedDocuments("ActiveEffect", effectIds);
 
             const itemsToCreate = updateData.items || [];
             const effectsToCreate = updateData.effects || [];
@@ -137,13 +127,8 @@ export class ImportHandler {
 
             await actor.update(updateData);
 
-            if (itemsToCreate.length > 0)
-                await actor.createEmbeddedDocuments("Item", itemsToCreate);
-            if (effectsToCreate.length > 0)
-                await actor.createEmbeddedDocuments(
-                    "ActiveEffect",
-                    effectsToCreate,
-                );
+            if (itemsToCreate.length > 0) await actor.createEmbeddedDocuments("Item", itemsToCreate);
+            if (effectsToCreate.length > 0) await actor.createEmbeddedDocuments("ActiveEffect", effectsToCreate);
 
             ui.notifications.info(
                 game.i18n.format("RMU_EXPORT.Import.Success", {

@@ -154,9 +154,8 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     /* -------------------------------------------- */
 
     static async formHandler(event, form, formData) {
-        const app = this;
-        if (app._resolve) {
-            app._resolve(formData.object);
+        if (this._resolve) {
+            this._resolve(formData.object);
         }
     }
 

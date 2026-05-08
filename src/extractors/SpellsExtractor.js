@@ -6,6 +6,9 @@ export function extractSpells(actor) {
 
     if (Array.isArray(rawSpells)) {
         rawSpells.forEach((typeGroup) => {
+            // Guard clause: Exclude the aggregate group to prevent duplicate entries
+            if (typeGroup.listType === "All Known Spells") return;
+
             let listType = typeGroup.listType;
             if (game.i18n.has(`RMU.SpellListType.${listType}`)) {
                 listType = game.i18n.localize(`RMU.SpellListType.${listType}`);

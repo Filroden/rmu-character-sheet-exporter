@@ -9,11 +9,7 @@ export class OutputGenerator {
      */
     static async generateHTML(data, layoutPath, themePath) {
         // 1. Render the HTML Layout
-        const htmlContent =
-            await foundry.applications.handlebars.renderTemplate(
-                layoutPath,
-                data,
-            );
+        const htmlContent = await foundry.applications.handlebars.renderTemplate(layoutPath, data);
 
         // 2. Fetch the CSS Theme
         let cssContent = "";
@@ -22,11 +18,8 @@ export class OutputGenerator {
             if (response.ok) {
                 cssContent = await response.text();
             } else {
-                console.warn(
-                    `RMU Export | Failed to load theme CSS: ${themePath} (${response.status})`,
-                );
-                cssContent =
-                    "/* Failed to load theme CSS. Check console for details. */";
+                console.warn(`RMU Export | Failed to load theme CSS: ${themePath} (${response.status})`);
+                cssContent = "/* Failed to load theme CSS. Check console for details. */";
             }
         } catch (error) {
             console.error("RMU Export | CSS Fetch Error:", error);
@@ -71,36 +64,22 @@ export class OutputGenerator {
         // 1. Create a timestamp string for unique filenames
         const now = new Date();
         const dateString = now.toISOString().split("T")[0];
-        const timeString = now.toTimeString().split(" ")[0].replace(/:/g, "-");
+        const timeString = now.toTimeString().split(" ")[0].replaceAll(":", "-");
         const timestamp = `${dateString}_${timeString}`;
 
         // Clean filename of unsafe characters
-        const cleanName = filenameBase
-            .replace(/[^\w\s-]/g, "")
-            .replace(/\s+/g, "_");
+        const cleanName = filenameBase.replaceAll(/[^\w\s-]/g, "").replaceAll(/\s+/g, "_");
         const filename = `${cleanName}_Sheet_${timestamp}`;
 
         if (format === "json") {
             // Save JSON directly
-            foundry.utils.saveDataToFile(
-                JSON.stringify(data, null, 2),
-                "text/json",
-                `${filename}.json`,
-            );
+            foundry.utils.saveDataToFile(JSON.stringify(data, null, 2), "text/json", `${filename}.json`);
         } else if (format === "html") {
             // 2. Generate the HTML String
-            const fullHtml = await this.generateHTML(
-                data,
-                layoutPath,
-                themePath,
-            );
+            const fullHtml = await this.generateHTML(data, layoutPath, themePath);
 
             // 3. Save HTML using Foundry's helper (Fixes Blob/OS warning)
-            foundry.utils.saveDataToFile(
-                fullHtml,
-                "text/html",
-                `${filename}.html`,
-            );
+            foundry.utils.saveDataToFile(fullHtml, "text/html", `${filename}.html`);
         }
     }
 }

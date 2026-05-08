@@ -14,12 +14,12 @@ export function extractAttacks(actor) {
             } else {
                 let rawRangeStr = a.usage?.range?._shortRange;
                 if (rawRangeStr) {
-                    const cleanRange = String(rawRangeStr).replace(/['"a-zA-Z\s]/g, "");
+                    const cleanRange = String(rawRangeStr).replaceAll(/['"a-zA-Z\s]/g, "");
                     if (ExportHelpers.isMetric) {
                         rangeDisplay = String(rawRangeStr).includes("m")
                             ? `<${cleanRange} m>`
-                            : !isNaN(parseFloat(cleanRange))
-                              ? `<${ExportHelpers.toMetricRange(parseFloat(cleanRange))}>`
+                            : !Number.isNaN(Number.parseFloat(cleanRange))
+                              ? `<${ExportHelpers.toMetricRange(Number.parseFloat(cleanRange))}>`
                               : `<${cleanRange}>`;
                     } else {
                         rangeDisplay = `<${cleanRange}>`;
