@@ -33,8 +33,7 @@ export class ExportHelpers {
         } else {
             roundedKilograms = Math.floor(kg * rd) / rd;
         }
-        const options = { style: "decimal", minimumFractionDigits: 0, maximumFractionDigits: digits, useGrouping: false };
-        return roundedKilograms.toLocaleString(undefined, options) + " kg";
+        return roundedKilograms.toLocaleString(undefined, { style: "decimal", minimumFractionDigits: 0, maximumFractionDigits: digits, useGrouping: false }) + " kg";
     }
 
     static toMetricMovement(feet) {
@@ -67,17 +66,17 @@ export class ExportHelpers {
         if (!str) return 0;
         const match = str.match(/(\d+)'\s*(?:(\d+)")?/);
         if (match) {
-            const feet = parseInt(match[1]) || 0;
-            const inches = parseInt(match[2]) || 0;
+            const feet = Number.parseInt(match[1]) || 0;
+            const inches = Number.parseInt(match[2]) || 0;
             return feet + inches / 12;
         }
-        return parseFloat(str) || 0;
+        return Number.parseFloat(str) || 0;
     }
 
     static parseWeightString(str) {
         if (!str) return 0;
-        const clean = str.replace(/[^\d.]/g, "");
-        return parseFloat(clean) || 0;
+        const clean = str.replaceAll(/[^\d.]/g, "");
+        return Number.parseFloat(clean) || 0;
     }
 
     static async imageToBase64(url) {

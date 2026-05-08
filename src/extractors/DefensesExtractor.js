@@ -50,7 +50,7 @@ export function extractDefenses(actor) {
 
         if (part.piece?._base?.material) {
             const rawMat = part.piece._base.material;
-            const cleanMat = rawMat.replace(/\s+/g, "");
+            const cleanMat = rawMat.replaceAll(/\s+/g, "");
 
             const armorKey = `RMU.ArmorTypes.${cleanMat}`;
             if (game.i18n.has(armorKey)) {
