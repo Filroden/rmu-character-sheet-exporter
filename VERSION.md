@@ -2,6 +2,7 @@
 
 | Version | Changes |
 | :--- | :--- |
+| **Version 1.7.4** | **BUG FIXES**<br>- Restored missing system requirement in `module.json`. |
 | **Version 1.7.3** | **BUG FIXES**<br>- Correctly prioritise the adjusted range of a weapon over its RAW value.<br><br>**UNDER THE HOOD**<br>- Updated weapon range data extraction to prioritise the RMU system's new `usage` data structure, ensuring continued compatibility with upcoming system updates. |
 | **Version 1.7.2** | **BUG FIXES**<br>- Exclude the new "All Known Spells" list from being shown in the character sheet exporter.<br>- Minor code cleanup.|
 | **Version 1.7.1** | **UNDER THE HOOD**<br>- Verified compatibility with Foundry V14 with minor code change. <br>- Bound the HTML character sheet directly to the iframe attribute so it survives V14 re-parenting if popped-out. |

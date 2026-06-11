@@ -1,6 +1,6 @@
 # Character Sheet Exporter for RMU
 
-![Latest Version](https://img.shields.io/badge/Version-1.7.3-blue)
+![Latest Version](https://img.shields.io/badge/Version-1.7.4-blue)
 ![Foundry Version](https://img.shields.io/badge/Foundry-v13-orange)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![System](https://img.shields.io/badge/System-RMU-blue)
