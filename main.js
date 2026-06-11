@@ -7,7 +7,7 @@ const MODULE_ID = "rmu-character-sheet-exporter";
 
 // --- CONFIGURATION: VALID ACTOR TYPES ---
 // Only these types will show the Export/Import buttons.
-const VALID_ACTOR_TYPES = ["Character", "Creature", "Loot"];
+const VALID_ACTOR_TYPES = new Set(["Character", "Creature", "Loot"]);
 
 const RMU_EXPORT_CONFIG = {
     layouts: {
@@ -91,7 +91,7 @@ const addHeaderButton = (app, buttons) => {
     const actor = app.document || app.object || app.actor;
     if (!actor) return;
 
-    if (!VALID_ACTOR_TYPES.includes(actor.type)) return;
+    if (!VALID_ACTOR_TYPES.has(actor.type)) return;
 
     const exist = buttons.some((b) => b.class === "rmu-export-btn");
     if (exist) return;
@@ -115,7 +115,7 @@ const addAppV2Control = (app, controls) => {
     const actor = app.document || app.object || app.actor;
     if (!actor) return;
 
-    if (!VALID_ACTOR_TYPES.includes(actor.type)) return;
+    if (!VALID_ACTOR_TYPES.has(actor.type)) return;
 
     const ACTION_NAME = "rmuExportSheet";
 
@@ -211,7 +211,7 @@ Hooks.on("getActorContextOptions", (html, options) => {
             const documentId = getActorIdFromElement(li);
             if (!documentId) return false;
             const actor = game.actors.get(documentId);
-            return actor && actor.isOwner && VALID_ACTOR_TYPES.includes(actor.type);
+            return actor?.isOwner && VALID_ACTOR_TYPES.has(actor.type);
         },
         callback: async (li) => {
             const documentId = getActorIdFromElement(li);

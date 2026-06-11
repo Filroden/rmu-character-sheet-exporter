@@ -1,6 +1,6 @@
-# RMU Character Sheet Exporter
+# Character Sheet Exporter for RMU
 
-![Latest Version](https://img.shields.io/badge/Version-1.7.2-blue)
+![Latest Version](https://img.shields.io/badge/Version-1.7.3-blue)
 ![Foundry Version](https://img.shields.io/badge/Foundry-v13-orange)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 ![System](https://img.shields.io/badge/System-RMU-blue)
@@ -23,7 +23,7 @@ This will open a preview window, showing options on the left and a preview of th
 
 ![Character Sheet Preview Window](https://github.com/Filroden/rmu-character-sheet-exporter/blob/main/screenshots/sheet_preview.png)
 
-Depending on the template you select, you will be offered additional options:
+Depending on the layout you select, you will be offered additional options:
 
 - **Layout**: The sheet layout design you would like to use.
 - **Theme**: The style of the sheet.
@@ -55,7 +55,10 @@ The exported sheet combines text from three different sources. If you see Englis
 
 - **Important Note on Editing:** The HTML file is a **visual display** of the data, not the data itself. If you edit the text in the HTML file it **will not** change the embedded backup data. *Think of it like a printed receipt:* Scribbling a new price on a receipt changes what you see on the paper, but it doesn't change what the bank actually charged you. Any future "Import" feature will read the hidden, unedited data block, *not* the visible text you see on the screen.
 
-## Roadmap
+## Disclaimer and IP Notice
 
-- Add tournament template for tabletop gameplay at conventions
-- Investigate if the actor portrait can be imported from the html
+The Character Sheet Exporter for RMU module is an unofficial, community-developed tool designed to enhance the Rolemaster Unified experience on Foundry Virtual Tabletop.
+
+This module is completely independent and is not affiliated with, endorsed, sponsored, or approved by Iron Crown Enterprises (ICE). "Rolemaster", "Rolemaster Unified", and the "RMU" acronym are trademarks of Iron Crown Enterprises.
+
+This project does not distribute any proprietary text, artwork, or core rulebook content belonging to ICE. It functions strictly as a mechanical, workflow, and user interface enhancement for the official RMU system on Foundry VTT. Any use of specific system terminology or mechanical values is for functional compatibility purposes only.
