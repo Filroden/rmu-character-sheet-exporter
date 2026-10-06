@@ -73,6 +73,8 @@ const RMU_EXPORT_CONFIG = {
         defenses: { label: "RMU_EXPORT.Section.Defenses", default: true, validTypes: ["Character", "Creature"] },
         attacks: { label: "RMU_EXPORT.Section.Attacks", default: true, validTypes: ["Character", "Creature"] },
         skills: { label: "RMU_EXPORT.Section.Skills", default: true, validTypes: ["Character", "Creature"] },
+        training_packages: { label: "RMU_EXPORT.Section.TrainingPackages", default: true, validTypes: ["Character"] },
+        fighting_styles: { label: "RMU_EXPORT.Section.FightingStyles", default: true, validTypes: ["Character"] },
         spells: { label: "RMU_EXPORT.Section.SpellLists", default: true, validTypes: ["Character", "Creature"] },
         inventory: { label: "RMU_EXPORT.Section.Inventory", default: true, validTypes: ["Character", "Creature", "Loot"] },
         talents: { label: "RMU_EXPORT.Section.Talents", default: true, validTypes: ["Character", "Creature"] },

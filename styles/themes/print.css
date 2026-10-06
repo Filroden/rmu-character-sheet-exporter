@@ -4,7 +4,7 @@
 /* ========================================= */
 
 :root {
-    --filroden-font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --filroden-font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
     /* STRICT BLACK & WHITE PALETTE */
     --rmu-cse-primary: #000000;
@@ -75,7 +75,7 @@
     text-transform: uppercase;
     border-top: 2px solid #000;
     border-bottom: 1px solid #000;
-    border-radius: 0; 
+    border-radius: 0;
 }
 
 /* Sub-headers */
@@ -101,6 +101,10 @@
     justify-content: space-between;
     border-bottom: 1px dotted #999;
     padding: 1px 0;
+}
+.training-package-row {
+    display: flex;
+    justify-content: space-between;
 }
 
 /* --- QUICK INFO --- */
@@ -159,7 +163,9 @@
     flex: 1;
     border-right: 1px solid #000;
 }
-.res-item:last-child { border-right: none; }
+.res-item:last-child {
+    border-right: none;
+}
 
 /* --- BIOGRAPHY & PORTRAIT SECTION --- */
 .bio-section {
@@ -261,7 +267,10 @@
     gap: 20px;
     margin-bottom: 15px;
 }
-.defense-left, .defense-right { flex: 1; }
+.defense-left,
+.defense-right {
+    flex: 1;
+}
 
 .armor-grid {
     display: grid;
@@ -287,15 +296,28 @@
 }
 
 /* --- TABLES --- */
-.tactical-table, .attack-table, .inventory-table, .spell-table {
+.tactical-table,
+.attack-table,
+.inventory-table,
+.spell-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9em;
 }
-.tactical-table { text-align: center; }
-.attack-table, .inventory-table, .spell-table { text-align: left; margin-bottom: 15px; }
+.tactical-table {
+    text-align: center;
+}
+.attack-table,
+.inventory-table,
+.spell-table {
+    text-align: left;
+    margin-bottom: 15px;
+}
 
-.tactical-table th, .attack-table th, .inventory-table th, .spell-table th {
+.tactical-table th,
+.attack-table th,
+.inventory-table th,
+.spell-table th {
     background: white;
     padding: 4px;
     border: 1px solid #000;
@@ -304,16 +326,28 @@
     border-bottom: 2px solid #000;
 }
 
-.tactical-table td, .inventory-table td, .spell-table td {
+.tactical-table td,
+.inventory-table td,
+.spell-table td {
     border: 1px solid #000;
     padding: 4px;
 }
 
-.attack-ob { font-weight: 900; }
-.text-center { text-align: center; }
-.text-left { text-align: left !important; }
-.text-right { text-align: right !important; }
-.alert-text { font-weight: bold; }
+.attack-ob {
+    font-weight: 900;
+}
+.text-center {
+    text-align: center;
+}
+.text-left {
+    text-align: left !important;
+}
+.text-right {
+    text-align: right !important;
+}
+.alert-text {
+    font-weight: bold;
+}
 
 /* --- INVENTORY --- */
 .inv-stats {
@@ -325,38 +359,45 @@
     font-size: 10pt;
     margin-bottom: 10px;
 }
-.inv-row { 
-    align-items: center; 
-    break-inside: avoid; 
+.inv-row {
+    align-items: center;
+    break-inside: avoid;
     border-bottom: 1px solid #ccc;
 }
 .inv-meta {
-    display: flex; 
-    justify-content: flex-end; 
-    min-width: 170px; 
-    font-size: 0.9em; 
+    display: flex;
+    justify-content: flex-end;
+    min-width: 170px;
+    font-size: 0.9em;
     color: #000;
     font-style: italic;
 }
 .inv-qty {
-    width: 35px; text-align: center; 
-    border-right: 1px solid #000; 
+    width: 35px;
+    text-align: center;
+    border-right: 1px solid #000;
     margin-right: 5px;
 }
-.inv-wgt { 
-    width: 60px; text-align: right; 
+.inv-wgt {
+    width: 60px;
+    text-align: right;
     border-right: 1px solid #000;
     margin-right: 5px;
     padding-right: 5px;
 }
 .inv-cost {
-    width: 50px; text-align: right; 
+    width: 50px;
+    text-align: right;
 }
-.inventory-list { columns: 2; }
-.loot-inventory-list { columns: 1; }
+.inventory-list {
+    columns: 2;
+}
+.loot-inventory-list {
+    columns: 1;
+}
 .item-name-cell {
     /* Multiplies the inline variable. Defaults to 0 if --depth is missing */
-    padding-left: calc(var(--depth, 0) * 1.2rem + 6px); 
+    padding-left: calc(var(--depth, 0) * 1.2rem + 6px);
 }
 
 /* --- COMPACT FLOW SUPPORT --- */
@@ -383,14 +424,16 @@
     margin: 0 8px;
     font-weight: bold;
 }
-.group-wrapper { display: inline-block; }
+.group-wrapper {
+    display: inline-block;
+}
 
 /* --- EXTENDED LAYOUT SPACING --- */
 .header + .tactical-table,
 .header + .spell-table,
 .header + .armor-grid,
 .header + .compact-row {
-    margin-top: 0.3rem; 
+    margin-top: 0.3rem;
 }
 
 /* Ensure tables in the extended layout maintain good bottom spacing */
@@ -406,30 +449,35 @@
     border-top: 3px solid #000;
     font-size: 8pt;
     color: #000;
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
-.footer-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
 
 /* --- PRINT MEDIA QUERY --- */
 @media print {
     /* Ensure exact matching on paper */
-    .rmu-sheet { 
-        width: 100%; 
-        max-width: none; 
-        border: none; 
+    .rmu-sheet {
+        width: 100%;
+        max-width: none;
+        border: none;
         padding: 0;
     }
 
     /* Prevent breaking inside critical blocks */
-    .section-title, 
-    .header-block, 
-    .quick-info-grid, 
-    .stat-grid, 
-    .res-grid, 
-    .block, 
+    .section-title,
+    .header-block,
+    .quick-info-grid,
+    .stat-grid,
+    .res-grid,
+    .block,
     .inv-stats,
-    .compact-row { 
-        break-inside: avoid; 
+    .compact-row {
+        break-inside: avoid;
     }
 
     .no-print {

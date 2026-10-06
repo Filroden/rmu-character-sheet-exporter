@@ -15,6 +15,8 @@
     "RMU_EXPORT.Section.Inventory": "Inventory",
     "RMU_EXPORT.Section.Talents": "Talents",
     "RMU_EXPORT.Section.Conditions": "Conditions & Effects",
+    "RMU_EXPORT.Section.TrainingPackages": "Training Packages",
+    "RMU_EXPORT.Section.FightingStyles": "Fighting Styles",
 
     "RMU_EXPORT.Stats.Initiative": "Init.",
     "RMU_EXPORT.Stats.HP": "HP",
@@ -172,5 +174,16 @@
     "RMU_EXPORT.Inventory.Item": "Item",
     "RMU_EXPORT.Inventory.Status": "Status",
     "RMU_EXPORT.Inventory.Strength": "Strength",
-    "RMU_EXPORT.Inventory.Breakage": "Breakage"
+    "RMU_EXPORT.Inventory.Breakage": "Breakage",
+    "RMU_EXPORT.TrainingPackages.InProgress": "In Progress",
+    "RMU_EXPORT.FightingStyles.Ability": "Ability",
+    "RMU_EXPORT.FightingStyles.Cost": "Cost",
+    "RMU_EXPORT.FightingStyles.Progress": "Progress",
+    "RMU_EXPORT.FightingStyles.Status": "Status",
+    "RMU_EXPORT.FightingStyles.Ranks": "Ranks",
+    "RMU_EXPORT.FightingStyles.Unallocated": "Unallocated Ranks",
+    "RMU_EXPORT.FightingStyles.Complete": "Complete",
+    "RMU_EXPORT.FightingStyles.Partial": "Partial",
+    "RMU_EXPORT.FightingStyles.NotStarted": "Not Started",
+    "RMU_EXPORT.FightingStyles.RepeatableNote": "* May be selected multiple times."
 }

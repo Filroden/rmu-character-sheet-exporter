@@ -303,6 +303,70 @@
         </div>
     {{/if}}
 
+    {{! --- TRAINING PACKAGES --- }}
+    {{#if options.training_packages}}
+        {{#if training_packages_data.length}}
+            <div class="section-title">{{localize "RMU_EXPORT.Section.TrainingPackages"}}</div>
+            <div class="list-container">
+                {{#each training_packages_data}}
+                    <div class="block training-package-row">
+                        <span>{{name}}{{#if inProgress}}
+                                <span class="spell-list-type">({{localize "RMU_EXPORT.TrainingPackages.InProgress"}})</span>{{/if}}</span>
+                        <span>{{skillGrant}}</span>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{! --- FIGHTING STYLES --- }}
+    {{#if options.fighting_styles}}
+        {{#if fighting_styles_data.length}}
+            <div class="section-title">{{localize "RMU_EXPORT.Section.FightingStyles"}}</div>
+            {{#each fighting_styles_data}}
+                <div class="header">{{name}}
+                    <span class="spell-list-type">({{skill}}, {{category}}{{#if styleType}}, {{styleType}}{{/if}})</span></div>
+                <div class="inv-stats">
+                    <span><strong>{{localize "RMU_EXPORT.FightingStyles.Ranks"}}:</strong> {{totalRanks}}</span>
+                    <span><strong>{{localize "RMU_EXPORT.FightingStyles.Unallocated"}}:</strong> {{unallocatedRanks}}</span>
+                    {{#if hasRepeatable}}<span class="spell-list-type">{{localize "RMU_EXPORT.FightingStyles.RepeatableNote"}}</span>{{/if}}
+                </div>
+                <table class="spell-table">
+                    <thead>
+                        <tr>
+                            <th class="text-left">{{localize "RMU_EXPORT.FightingStyles.Ability"}}</th>
+                            <th class="text-center">{{localize "RMU_EXPORT.FightingStyles.Cost"}}</th>
+                            <th class="text-center">{{localize "RMU_EXPORT.FightingStyles.Progress"}}</th>
+                            <th class="text-center">{{localize "RMU_EXPORT.FightingStyles.Status"}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each abilities}}
+                            <tr>
+                                <td class="text-left">{{name}}</td>
+                                <td class="text-center">{{cost}}</td>
+                                <td class="text-center">{{progress}}</td>
+                                <td class="text-center">{{#if timesTakenLabel}}{{timesTakenLabel}}, {{/if}}{{statusLabel}}</td>
+                            </tr>
+                        {{/each}}
+                            <tr>
+                                <td class="text-left">&nbsp;</td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">&nbsp;</td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                    </tbody>
+                </table>
+            {{/each}}
+        {{/if}}
+    {{/if}}
+
     {{! --- SPELLS --- }}
     {{#if options.spells}}
         {{#if spells_data.length}}

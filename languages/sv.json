@@ -15,6 +15,8 @@
     "RMU_EXPORT.Section.Inventory": "Utrustning",
     "RMU_EXPORT.Section.Talents": "Talanger",
     "RMU_EXPORT.Section.Conditions": "Tillstånd & Effekter",
+    "RMU_EXPORT.Section.TrainingPackages": "Träningspaket",
+    "RMU_EXPORT.Section.FightingStyles": "Stridsstilar",
 
     "RMU_EXPORT.Stats.Initiative": "Init.",
     "RMU_EXPORT.Stats.HP": "HP",
@@ -172,5 +174,16 @@
     "RMU_EXPORT.Inventory.Item": "Föremål",
     "RMU_EXPORT.Inventory.Status": "Status",
     "RMU_EXPORT.Inventory.Strength": "Hållbarhet",
-    "RMU_EXPORT.Inventory.Breakage": "Brytvärde"
+    "RMU_EXPORT.Inventory.Breakage": "Brytvärde",
+    "RMU_EXPORT.TrainingPackages.InProgress": "Pågående",
+    "RMU_EXPORT.FightingStyles.Ability": "Teknik",
+    "RMU_EXPORT.FightingStyles.Cost": "Kostnad",
+    "RMU_EXPORT.FightingStyles.Progress": "Framsteg",
+    "RMU_EXPORT.FightingStyles.Status": "Status",
+    "RMU_EXPORT.FightingStyles.Ranks": "Rang",
+    "RMU_EXPORT.FightingStyles.Unallocated": "Otilldelade Rang",
+    "RMU_EXPORT.FightingStyles.Complete": "Klar",
+    "RMU_EXPORT.FightingStyles.Partial": "Delvis",
+    "RMU_EXPORT.FightingStyles.NotStarted": "Ej Startad",
+    "RMU_EXPORT.FightingStyles.RepeatableNote": "* Kan väljas flera gånger."
 }

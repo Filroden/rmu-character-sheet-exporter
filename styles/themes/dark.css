@@ -6,23 +6,23 @@
 :root {
     /* --- PALETTE: DARK MODE --- */
     /* Primary is lighter gray to stand out against dark bg, but not blinding */
-    --rmu-cse-primary: #4a4a4a;     
-    --rmu-cse-secondary: #aaaaaa;   
+    --rmu-cse-primary: #4a4a4a;
+    --rmu-cse-secondary: #aaaaaa;
     --rmu-cse-tertiary: #888888;
-    
+
     /* Alert is brightened/pastel to be visible on dark */
-    --rmu-cse-alert: #ff6b6b;       
+    --rmu-cse-alert: #ff6b6b;
 
     /* Text is inverted to light colours */
-    --rmu-cse-text-main: #e0e0e0;   
-    --rmu-cse-text-light: #b0b0b0;  
-    --rmu-cse-text-inverse: #ffffff; 
+    --rmu-cse-text-main: #e0e0e0;
+    --rmu-cse-text-light: #b0b0b0;
+    --rmu-cse-text-inverse: #ffffff;
 
     /* Backgrounds: Dark grays */
-    --rmu-cse-bg-sheet: #121212;    /* Almost black background */
-    --rmu-cse-bg-card: #1e1e1e;     /* Dark card surface */
-    --rmu-cse-bg-panel: #181818;    /* Slightly darker panel */
-    --rmu-cse-bg-header: #252525;   /* Header background */
+    --rmu-cse-bg-sheet: #121212; /* Almost black background */
+    --rmu-cse-bg-card: #1e1e1e; /* Dark card surface */
+    --rmu-cse-bg-panel: #181818; /* Slightly darker panel */
+    --rmu-cse-bg-header: #252525; /* Header background */
     --rmu-cse-bg-table-head: #2a2a2a;
 
     /* Borders: Lightened to be visible */
@@ -103,6 +103,10 @@
     border-bottom: 1px dotted var(--rmu-cse-border-main);
     padding: 1px 0;
     font-size: 0.95em;
+}
+.training-package-row {
+    display: flex;
+    justify-content: space-between;
 }
 
 /* --- QUICK INFO (Compact Style) --- */
@@ -261,7 +265,8 @@
     gap: 20px;
     margin-bottom: 15px;
 }
-.defense-left, .defense-right {
+.defense-left,
+.defense-right {
     flex: 1;
 }
 
@@ -289,24 +294,41 @@
 }
 
 /* --- TABLES --- */
-.tactical-table, .attack-table, .inventory-table, .spell-table {
+.tactical-table,
+.attack-table,
+.inventory-table,
+.spell-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9em;
 }
-.tactical-table { text-align: center; }
-.attack-table, .inventory-table, .spell-table { text-align: left; margin-bottom: 15px; }
+.tactical-table {
+    text-align: center;
+}
+.attack-table,
+.inventory-table,
+.spell-table {
+    text-align: left;
+    margin-bottom: 15px;
+}
 
-.tactical-table th, .attack-table th, .inventory-table th, .spell-table th {
+.tactical-table th,
+.attack-table th,
+.inventory-table th,
+.spell-table th {
     background: var(--rmu-cse-bg-table-head);
     padding: 4px;
     border: 1px solid var(--rmu-cse-border-main);
 }
-.attack-table th, .inventory-table th, .spell-table th {
+.attack-table th,
+.inventory-table th,
+.spell-table th {
     border-bottom: 2px solid var(--rmu-cse-border-heavy);
 }
 
-.tactical-table td, .inventory-table td, .spell-table td {
+.tactical-table td,
+.inventory-table td,
+.spell-table td {
     border: 1px solid var(--rmu-cse-border-main);
     padding: 4px;
 }
@@ -315,11 +337,22 @@
     padding: 2px 4px;
 }
 
-.attack-ob { font-weight: bold; font-size: 1.1em; }
-.text-center { text-align: center !important; }
-.text-left { text-align: left !important; }
-.text-right { text-align: right !important; }
-.alert-text { color: var(--rmu-cse-alert); }
+.attack-ob {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.text-center {
+    text-align: center !important;
+}
+.text-left {
+    text-align: left !important;
+}
+.text-right {
+    text-align: right !important;
+}
+.alert-text {
+    color: var(--rmu-cse-alert);
+}
 
 /* --- INVENTORY --- */
 .inv-stats {
@@ -331,33 +364,43 @@
     font-size: 0.9em;
     margin-bottom: 5px;
 }
-.inv-row { align-items: center; break-inside: avoid; }
+.inv-row {
+    align-items: center;
+    break-inside: avoid;
+}
 .inv-meta {
-    display: flex; 
-    justify-content: flex-end; 
+    display: flex;
+    justify-content: flex-end;
     min-width: 170px;
-    font-size: 0.85em; 
+    font-size: 0.85em;
     color: var(--rmu-cse-text-light);
 }
 .inv-qty {
-    width: 35px; text-align: center; 
-    border-right: 1px solid var(--rmu-cse-border-light); 
+    width: 35px;
+    text-align: center;
+    border-right: 1px solid var(--rmu-cse-border-light);
     margin-right: 5px;
 }
-.inv-wgt { 
-    width: 60px; text-align: right; 
+.inv-wgt {
+    width: 60px;
+    text-align: right;
     border-right: 1px solid var(--rmu-cse-border-light); /* Added separator */
     margin-right: 5px;
     padding-right: 5px;
 }
 .inv-cost {
-    width: 50px; text-align: right; 
+    width: 50px;
+    text-align: right;
 }
-.inventory-list { columns: 2; }
-.loot-inventory-list { columns: 1; }
+.inventory-list {
+    columns: 2;
+}
+.loot-inventory-list {
+    columns: 1;
+}
 .item-name-cell {
     /* Multiplies the inline variable. Defaults to 0 if --depth is missing */
-    padding-left: calc(var(--depth, 0) * 1.2rem + 6px); 
+    padding-left: calc(var(--depth, 0) * 1.2rem + 6px);
 }
 
 /* --- COMPACT FLOW LISTS (Used in Compact Layout) --- */
@@ -381,16 +424,29 @@
     margin: 0 6px;
     font-weight: normal;
 }
-.group-wrapper { display: inline-block; }
+.group-wrapper {
+    display: inline-block;
+}
 
 /* --- MISC --- */
-.skill-bonus { font-weight: bold; }
-.spell-list-type { font-size: 0.8em; font-weight: normal; color: var(--rmu-cse-secondary); }
-.spell-row { display: flex; font-size: 0.95em; }
+.skill-bonus {
+    font-weight: bold;
+}
+.spell-list-type {
+    font-size: 0.8em;
+    font-weight: normal;
+    color: var(--rmu-cse-secondary);
+}
+.spell-row {
+    display: flex;
+    font-size: 0.95em;
+}
 .talent-item {
-    display: flex; justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
     border-bottom: 1px dotted var(--rmu-cse-border-main);
-    padding: 1px 0; font-size: 0.95em;
+    padding: 1px 0;
+    font-size: 0.95em;
 }
 
 /* --- EXTENDED LAYOUT SPACING --- */
@@ -398,7 +454,7 @@
 .header + .spell-table,
 .header + .armor-grid,
 .header + .compact-row {
-    margin-top: 0.3rem; 
+    margin-top: 0.3rem;
 }
 
 /* Ensure tables in the extended layout maintain good bottom spacing */
@@ -414,9 +470,14 @@
     border-top: 1px solid var(--rmu-cse-border-main);
     font-size: 0.7em;
     color: var(--rmu-cse-tertiary);
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
-.footer-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
 
 /* --- PRINT MEDIA QUERY --- */
 @media print {
@@ -425,44 +486,54 @@
         margin: 0;
         padding: 0;
     }
-    
-    .rmu-sheet { 
-        max-width: 100%; 
+
+    .rmu-sheet {
+        max-width: 100%;
         border: none;
         background-color: white; /* Invert back for print */
         color: #000;
     }
 
     /* Fix colors for print */
-    .section-title { 
-        background: #333; 
+    .section-title {
+        background: #333;
         color: #fff;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
-    
-    .header-sub, .group-label, .armor-loc, .stat-label {
+
+    .header-sub,
+    .group-label,
+    .armor-loc,
+    .stat-label {
         color: #666;
     }
-    
-    .stat-box, .armor-box, .quick-info-grid, .tactical-table th, .tactical-table td, .attack-table th, .attack-table td {
+
+    .stat-box,
+    .armor-box,
+    .quick-info-grid,
+    .tactical-table th,
+    .tactical-table td,
+    .attack-table th,
+    .attack-table td {
         border-color: #ccc;
         background: #fff;
     }
-    
-    .inv-stats, .res-grid {
+
+    .inv-stats,
+    .res-grid {
         background: #fafafa;
         border-color: #ccc;
     }
 
-    .section-title, 
-    .header-block, 
-    .quick-info-grid, 
-    .stat-grid, 
-    .res-grid, 
-    .block, 
-    .inv-stats { 
-        break-inside: avoid; 
+    .section-title,
+    .header-block,
+    .quick-info-grid,
+    .stat-grid,
+    .res-grid,
+    .block,
+    .inv-stats {
+        break-inside: avoid;
     }
 
     .no-print {

@@ -13,6 +13,8 @@ import { extractConditions } from "./extractors/ConditionsExtractor.js";
 import { extractSpells } from "./extractors/SpellsExtractor.js";
 import { extractAttacks } from "./extractors/AttacksExtractor.js";
 import { extractInventory } from "./extractors/InventoryExtractor.js";
+import { extractTrainingPackages } from "./extractors/TrainingPackagesExtractor.js";
+import { extractFightingStyles } from "./extractors/FightingStylesExtractor.js";
 
 export class DataExtractor {
     static async ensureExtendedData(actor) {
@@ -71,6 +73,8 @@ export class DataExtractor {
             attacks = true,
             movement = true,
             skills = true,
+            training_packages = true,
+            fighting_styles = true,
             spells = true,
             inventory = true,
             talents = true,
@@ -98,6 +102,8 @@ export class DataExtractor {
                 attacks,
                 movement,
                 skills,
+                training_packages,
+                fighting_styles,
                 spells,
                 inventory,
                 talents,
@@ -115,6 +121,8 @@ export class DataExtractor {
             movement_data: movement ? extractMovement(targetActor) : null,
             talents_data: talents ? extractTalents(targetActor) : null,
             skill_groups_data: skills ? extractSkills(targetActor, { showAllSkills }) : [],
+            training_packages_data: training_packages ? extractTrainingPackages(targetActor) : [],
+            fighting_styles_data: fighting_styles ? extractFightingStyles(targetActor) : [],
             attacks_data: attacks ? extractAttacks(targetActor) : null,
             spells_data: spells ? extractSpells(targetActor) : [],
             inventory_data: inventory ? extractInventory(targetActor) : null,

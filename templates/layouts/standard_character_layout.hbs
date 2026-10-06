@@ -325,6 +325,48 @@
         </div>
     {{/if}}
 
+    {{! --- TRAINING PACKAGES --- }}
+    {{#if options.training_packages}}
+        {{#if training_packages_data.length}}
+            <div class="section-title">{{localize "RMU_EXPORT.Section.TrainingPackages"}}</div>
+            <div class="list-container">
+                {{#each training_packages_data}}
+                    <div class="block training-package-row">
+                        <span>{{name}}{{#if inProgress}}
+                                <span class="spell-list-type">({{localize "RMU_EXPORT.TrainingPackages.InProgress"}})</span>{{/if}}</span>
+                        <span>{{skillGrant}}</span>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{! --- FIGHTING STYLES --- }}
+    {{#if options.fighting_styles}}
+        {{#if fighting_styles_data.length}}
+            <div class="section-title">{{localize "RMU_EXPORT.Section.FightingStyles"}}</div>
+            <div class="list-container">
+                {{#each fighting_styles_data}}
+                    <div class="block">
+                        <div class="header">{{name}} ({{totalRanks}})
+                            <span class="spell-list-type">{{category}}</span></div>
+                        {{#each abilities}}
+                            <div class="row">
+                                <span>{{name}}{{#if timesTakenLabel}} ({{timesTakenLabel}}){{/if}}{{#unless isComplete}}
+                                        <span class="spell-list-type">({{statusLabel}})</span>{{/unless}}</span>
+                                <span class="skill-bonus">{{progress}}</span>
+                            </div>
+                        {{/each}}
+                        <div class="row">
+                            <span>{{localize "RMU_EXPORT.FightingStyles.Unallocated"}}</span>
+                            <span class="skill-bonus">{{unallocatedRanks}}</span>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+    {{/if}}
+
     {{! --- SPELLS --- }}
     {{#if options.spells}}
         {{#if spells_data.length}}

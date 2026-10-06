@@ -99,9 +99,7 @@
                     {{! Group 1: Player Info }}
                     {{#if details_data.compact_player.length}}
                         <div class="compact-row">
-                            <strong class="group-label">{{localize
-                                    "RMU_EXPORT.Bio.PlayerInfo"
-                                }}:</strong>
+                            <strong class="group-label">{{localize "RMU_EXPORT.Bio.PlayerInfo"}}:</strong>
                             {{#each details_data.compact_player}}
                                 <span>{{this}}</span>
                                 {{#unless @last}} | {{/unless}}
@@ -112,9 +110,7 @@
                     {{! Group 2: Appearance }}
                     {{#if details_data.compact_appearance.length}}
                         <div class="compact-row">
-                            <strong class="group-label">{{localize
-                                    "RMU_EXPORT.Bio.Appearance"
-                                }}:</strong>
+                            <strong class="group-label">{{localize "RMU_EXPORT.Bio.Appearance"}}:</strong>
                             {{#each details_data.compact_appearance}}
                                 <span>{{this}}</span>
                                 {{#unless @last}}, {{/unless}}
@@ -130,13 +126,8 @@
     {{! --- BIOGRAPHY TEXT --- }}
     {{#if options.biography}}
         {{#if biography_data.text}}
-            <div class="section-title">{{localize
-                    "RMU_EXPORT.Bio.Biography"
-                }}</div>
-            <div
-                class="compact-row"
-                style="margin-top:5px; font-size: 0.9em; font-style:italic;"
-            >
+            <div class="section-title">{{localize "RMU_EXPORT.Bio.Biography"}}</div>
+            <div class="compact-row" style="margin-top:5px; font-size: 0.9em; font-style:italic;">
                 {{{biography_data.text}}}
             </div>
         {{/if}}
@@ -144,14 +135,10 @@
 
     {{! --- DEFENSES (Flow Layout) --- }}
     {{#if options.defenses}}
-        <div class="section-title">{{localize
-                "RMU_EXPORT.Section.Defenses"
-            }}</div>
+        <div class="section-title">{{localize "RMU_EXPORT.Section.Defenses"}}</div>
 
         <div class="compact-row">
-            <strong class="group-label">{{localize
-                    "RMU_EXPORT.Defenses.ArmorCoverage"
-                }}:</strong>
+            <strong class="group-label">{{localize "RMU_EXPORT.Defenses.ArmorCoverage"}}:</strong>
             {{localize "RMU_EXPORT.Defenses.Head"}}
             {{defenses_data.armor.head.name}},
             {{localize "RMU_EXPORT.Defenses.Torso"}}
@@ -163,9 +150,7 @@
         </div>
 
         <div class="compact-row">
-            <strong class="group-label">{{localize
-                    "RMU_EXPORT.Defenses.TotalDB"
-                }}:</strong>
+            <strong class="group-label">{{localize "RMU_EXPORT.Defenses.TotalDB"}}:</strong>
             {{localize "RMU_EXPORT.Defenses.DodgeDB"}}
             ({{#each defenses_data.tactical}}{{mode}}
                 {{dodge}}{{#unless @last}}, {{/unless}}{{/each}}),
@@ -177,28 +162,16 @@
 
     {{! --- ATTACKS --- }}
     {{#if options.attacks}}
-        <div class="section-title">{{localize
-                "RMU_EXPORT.Section.Attacks"
-            }}</div>
+        <div class="section-title">{{localize "RMU_EXPORT.Section.Attacks"}}</div>
         <table class="attack-table">
             <thead>
                 <tr>
-                    <th width="30%">{{localize
-                            "RMU_EXPORT.Attacks.Weapon"
-                        }}</th>
-                    <th width="10%" class="text-center">{{localize
-                            "RMU_EXPORT.Attacks.OB"
-                        }}</th>
-                    <th width="10%" class="text-center">{{localize
-                            "RMU_EXPORT.Attacks.Fumble"
-                        }}</th>
+                    <th width="30%">{{localize "RMU_EXPORT.Attacks.Weapon"}}</th>
+                    <th width="10%" class="text-center">{{localize "RMU_EXPORT.Attacks.OB"}}</th>
+                    <th width="10%" class="text-center">{{localize "RMU_EXPORT.Attacks.Fumble"}}</th>
                     <th width="20%">{{localize "RMU_EXPORT.Attacks.Chart"}}</th>
-                    <th width="15%" class="text-center">{{localize
-                            "RMU_EXPORT.Attacks.Reach"
-                        }}</th>
-                    <th width="15%" class="text-center">{{localize
-                            "RMU_EXPORT.Attacks.Range"
-                        }}</th>
+                    <th width="15%" class="text-center">{{localize "RMU_EXPORT.Attacks.Reach"}}</th>
+                    <th width="15%" class="text-center">{{localize "RMU_EXPORT.Attacks.Range"}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -218,9 +191,7 @@
 
     {{! --- SKILLS --- }}
     {{#if options.skills}}
-        <div class="section-title">{{localize
-                "RMU_EXPORT.Section.Skills"
-            }}</div>
+        <div class="section-title">{{localize "RMU_EXPORT.Section.Skills"}}</div>
         <div class="list-container">
             {{#each skill_groups_data}}
                 <div class="block">
@@ -238,12 +209,48 @@
         </div>
     {{/if}}
 
+    {{! --- TRAINING PACKAGES --- }}
+    {{#if options.training_packages}}
+        {{#if training_packages_data.length}}
+            <div class="section-title">{{localize "RMU_EXPORT.Section.TrainingPackages"}}</div>
+            <div class="compact-list-flow">
+                {{#each training_packages_data}}
+                    <span class="group-wrapper">
+                        <span class="group-label">{{name}}</span>
+                        {{#if skillGrant}}({{skillGrant}}){{/if}}{{#if inProgress}}
+                            <span class="spell-list-type">({{localize "RMU_EXPORT.TrainingPackages.InProgress"}})</span>{{/if}}
+                    </span>
+                    {{#unless @last}}<span class="separator"> | </span>{{/unless}}
+                {{/each}}
+            </div>
+        {{/if}}
+    {{/if}}
+
+    {{! --- FIGHTING STYLES --- }}
+    {{#if options.fighting_styles}}
+        {{#if fighting_styles_data.length}}
+            <div class="section-title">{{localize "RMU_EXPORT.Section.FightingStyles"}}</div>
+            <div class="compact-list-flow">
+                {{#each fighting_styles_data}}
+                    <span class="group-wrapper">
+                        <span class="group-label">{{name}} ({{totalRanks}}):</span>
+                        {{#each abilities}}
+                            <span>{{name}}{{#if timesTakenLabel}} ({{timesTakenLabel}}){{/if}}{{#unless isComplete}}
+                                    <span class="spell-list-type">({{statusLabel}})</span>{{/unless}}
+                                {{progress}}</span>,
+                        {{/each}}
+                        <span>{{localize "RMU_EXPORT.FightingStyles.Unallocated"}} {{unallocatedRanks}}</span>
+                    </span>
+                    {{#unless @last}}<span class="separator"> | </span>{{/unless}}
+                {{/each}}
+            </div>
+        {{/if}}
+    {{/if}}
+
     {{! --- SPELLS --- }}
     {{#if options.spells}}
         {{#if spells_data.length}}
-            <div class="section-title">{{localize
-                    "RMU_EXPORT.Section.SpellLists"
-                }}</div>
+            <div class="section-title">{{localize "RMU_EXPORT.Section.SpellLists"}}</div>
             <div class="compact-list-flow">
                 {{#each spells_data}}
                     <span class="group-wrapper">
@@ -259,19 +266,13 @@
 
     {{! --- INVENTORY --- }}
     {{#if options.inventory}}
-        <div class="section-title">{{localize
-                "RMU_EXPORT.Section.Inventory"
-            }}</div>
+        <div class="section-title">{{localize "RMU_EXPORT.Section.Inventory"}}</div>
 
         <div class="compact-row">
-            <strong class="group-label">{{localize
-                    "RMU_EXPORT.Inventory.EncPenalty"
-                }}:</strong>
+            <strong class="group-label">{{localize "RMU_EXPORT.Inventory.EncPenalty"}}:</strong>
             {{inventory_data.enc_penalty}}
             <span class="separator">|</span>
-            <strong class="group-label">{{localize
-                    "RMU_EXPORT.Inventory.Carried"
-                }}:</strong>
+            <strong class="group-label">{{localize "RMU_EXPORT.Inventory.Carried"}}:</strong>
             {{inventory_data.weight_carried}}
             /
             {{inventory_data.weight_allowance}}
@@ -280,18 +281,14 @@
         <div class="compact-list-flow">
             {{#each inventory_data.items}}
                 <span>{{name}}
-                    <span
-                        style="opacity: 0.7;"
-                    >(x{{qty}})</span></span>{{#unless @last}}, {{/unless}}
+                    <span style="opacity: 0.7;">(x{{qty}})</span></span>{{#unless @last}}, {{/unless}}
             {{/each}}
         </div>
     {{/if}}
 
     {{! --- TALENTS --- }}
     {{#if options.talents}}
-        <div class="section-title">{{localize
-                "RMU_EXPORT.Section.Talents"
-            }}</div>
+        <div class="section-title">{{localize "RMU_EXPORT.Section.Talents"}}</div>
         <div class="compact-list-flow">
             {{#each talents_data}}
                 <span class="group-wrapper">
@@ -310,12 +307,8 @@
         <div class="footer-row">
             <span>{{localize "RMU_EXPORT.Footer.Generated"}}:
                 {{meta.timestamp}}</span>
-            <span>{{localize
-                    "RMU_EXPORT.Footer.SystemVersion"
-                }}{{meta.systemVersion}}</span>
-            <span>{{localize
-                    "RMU_EXPORT.Footer.ModuleVersion"
-                }}{{meta.moduleVersion}}</span>
+            <span>{{localize "RMU_EXPORT.Footer.SystemVersion"}}{{meta.systemVersion}}</span>
+            <span>{{localize "RMU_EXPORT.Footer.ModuleVersion"}}{{meta.moduleVersion}}</span>
         </div>
         <div class="footer-row">
             <span>{{localize "RMU_EXPORT.Footer.Copyright"}}</span>
