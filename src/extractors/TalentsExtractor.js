@@ -20,9 +20,7 @@ export function extractTalents(actor) {
     return Object.keys(grouped)
         .sort()
         .map((key) => {
-            let displayGroup = key;
-            if (key === "General") displayGroup = generalTxt;
-            else if (game.i18n.has(key)) displayGroup = game.i18n.localize(key);
+            const displayGroup = key === "General" ? generalTxt : ExportHelpers.i18n(key, key);
 
             return {
                 group: displayGroup,

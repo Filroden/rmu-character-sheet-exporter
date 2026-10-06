@@ -1,11 +1,15 @@
 {
-  "name": "visage",
+  "name": "rmu-character-sheet-exporter",
+  "private": true,
   "type": "module",
   "scripts": {
     "pack": "node scripts/pack.mjs",
+    "lint": "eslint .",
     "foundry-id": "node scripts/foundry-id.mjs"
   },
   "devDependencies": {
-    "@foundryvtt/foundryvtt-cli": "3.0.0"
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "globals": "^16.5.0"
   }
 }

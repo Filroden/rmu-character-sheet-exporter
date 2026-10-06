@@ -1,7 +1,48 @@
+import { EXPORT_CONFIG } from "./ExportConfig.js";
+import { ExportHelpers } from "./utils/ExportHelpers.js";
+
 export class OutputGenerator {
     /**
+     * Fetches a stylesheet's text. A failed load returns a CSS comment rather than throwing,
+     * so a missing theme degrades to an unstyled sheet instead of blocking the export.
+     * @param {string} path - Path to the CSS file.
+     * @returns {Promise<string>}
+     */
+    static async fetchStylesheet(path) {
+        try {
+            const response = await fetch(path);
+            if (response.ok) return await response.text();
+            console.warn(`RMU Export | Failed to load stylesheet: ${path} (${response.status})`);
+            return "/* Failed to load stylesheet. Check console for details. */";
+        } catch (error) {
+            console.error("RMU Export | CSS Fetch Error:", error);
+            return `/* Error loading stylesheet: ${error.message} */`;
+        }
+    }
+
+    /**
+     * Builds the version attributes written on the embedded actor data element.
+     * @param {Object} meta - The meta block from DataExtractor.getCleanData.
+     * @returns {string} The attributes, each preceded by a space.
+     */
+    static buildCapsuleAttributes(meta = {}) {
+        const attributes = {
+            "data-format": meta.capsuleFormat,
+            "data-module-version": meta.moduleVersion,
+            "data-system-id": meta.systemId,
+            "data-system-version": meta.systemVersion,
+            "data-core-version": meta.coreVersion,
+        };
+        return Object.entries(attributes)
+            .filter(([, value]) => value !== undefined && value !== null)
+            .map(([name, value]) => ` ${name}="${ExportHelpers.escapeHTML(String(value))}"`)
+            .join("");
+    }
+
+    /**
      * Generates the full HTML string for the character sheet.
-     * Combines the structural Handlebars layout with the visual CSS theme.
+     * Combines the structural Handlebars layout with the shared base styles and the visual
+     * CSS theme. The base styles come first so that a theme can override them.
      * @param {Object} data - The prepared actor data object (including options)
      * @param {string} layoutPath - Path to the HBS layout template
      * @param {string} themePath - Path to the CSS theme file
@@ -11,37 +52,31 @@ export class OutputGenerator {
         // 1. Render the HTML Layout
         const htmlContent = await foundry.applications.handlebars.renderTemplate(layoutPath, data);
 
-        // 2. Fetch the CSS Theme
-        let cssContent = "";
-        try {
-            const response = await fetch(themePath);
-            if (response.ok) {
-                cssContent = await response.text();
-            } else {
-                console.warn(`RMU Export | Failed to load theme CSS: ${themePath} (${response.status})`);
-                cssContent = "/* Failed to load theme CSS. Check console for details. */";
-            }
-        } catch (error) {
-            console.error("RMU Export | CSS Fetch Error:", error);
-            cssContent = `/* Error loading theme: ${error.message} */`;
-        }
+        // 2. Fetch the shared base styles and the chosen theme
+        const [baseCss, themeCss] = await Promise.all([this.fetchStylesheet(EXPORT_CONFIG.baseStylesPath), this.fetchStylesheet(themePath)]);
 
-        // 3. Construct the Passive Backup Data
+        // 3. Construct the Passive Backup Data.
+        // raw_foundry_data is already escaped for embedding (see ExportHelpers.toEmbeddedJSON).
+        // The versions that produced the file are stored as data-* attributes rather than
+        // inside the JSON, so importers from before these attributes existed still read the
+        // block unchanged, while newer importers can check compatibility before importing.
         const backupData = `
-            <script id="foundry-actor-data" type="application/json">
+            <script id="foundry-actor-data" type="application/json"${this.buildCapsuleAttributes(data.meta)}>
                 ${data.raw_foundry_data || "{}"}
             </script>
         `;
 
         // 4. Assemble the Final Document
+        const title = ExportHelpers.escapeHTML(data.header_data?.name || ExportHelpers.i18n("RMU_EXPORT.Common.CharacterSheet", "Character Sheet"));
         return `
             <!DOCTYPE html>
             <html>
             <head>
                 <meta charset="utf-8">
-                <title>${data.header_data?.name || "Character Sheet"}</title>
+                <title>${title}</title>
                 <style>
-                    ${cssContent}
+                    ${baseCss}
+                    ${themeCss}
                 </style>
             </head>
             <body>

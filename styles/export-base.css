@@ -1,0 +1,60 @@
+/* ===================================================================
+   --- EXPORT BASE STYLES ---
+   Structural rules shared by every export theme (column widths, spacing
+   and write-in rows). The output generator places this file before the
+   chosen theme, so a theme can override any rule here.
+   Rules that replace an older inline style use a compound selector
+   (e.g. ".group-wrapper.inline-gap") so they keep winning over the
+   theme's single-class rules, as the inline style did.
+=================================================================== */
+
+/* --- TABLE COLUMN WIDTHS --- */
+.col-auto { width: auto; }
+.col-5 { width: 5%; }
+.col-6 { width: 6%; }
+.col-8 { width: 8%; }
+.col-10 { width: 10%; }
+.col-12 { width: 12%; }
+.col-14 { width: 14%; }
+.col-15 { width: 15%; }
+
+/* --- TOURNAMENT WRITE-IN ROWS --- */
+/* Empty table rows left for players to write in by hand. */
+.write-in-row > td {
+    height: 1.5rem;
+}
+
+/* --- NESTED INVENTORY --- */
+/* --depth is set per row in the template from the item's container depth. */
+.item-name-cell {
+    padding-left: calc(var(--depth, 0) * 1.2rem + 0.375rem);
+}
+
+/* --- SPACING AND TEXT --- */
+.group-wrapper.inline-gap {
+    margin-right: 1rem;
+}
+
+.header.list-heading-spaced {
+    margin-top: 1rem;
+}
+
+.bio-col.span-2 {
+    grid-column: span 2;
+}
+
+.stat-raw {
+    font-size: 0.75em;
+    color: var(--rmu-cse-secondary);
+    margin-top: -0.125rem;
+}
+
+.compact-row.compact-bio-note {
+    margin-top: 0.3rem;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.qty-note {
+    opacity: 0.7;
+}

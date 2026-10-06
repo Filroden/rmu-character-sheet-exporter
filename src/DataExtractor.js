@@ -1,4 +1,5 @@
 import { ExportHelpers } from "./utils/ExportHelpers.js";
+import { CAPSULE_FORMAT, MODULE_ID } from "./ExportConfig.js";
 import { extractHeader } from "./extractors/HeaderExtractor.js";
 import { extractDetails } from "./extractors/DetailsExtractor.js";
 import { extractBiography } from "./extractors/BiographyExtractor.js";
@@ -17,43 +18,38 @@ import { extractTrainingPackages } from "./extractors/TrainingPackagesExtractor.
 import { extractFightingStyles } from "./extractors/FightingStylesExtractor.js";
 
 export class DataExtractor {
+    /**
+     * Makes sure the system has prepared the actor's derived data (attacks, defensive options,
+     * movement tables and so on) before it is read.
+     * The RMU system derives this data through the actor's token, which is why the export
+     * button requires the actor to have a token on the scene. If no token document offers the
+     * derivation method, the actor's own data preparation is used instead.
+     * @param {Actor} actor - The actor being exported.
+     * @returns {Promise<Actor|null>} The actor holding the derived data, or null on failure.
+     */
     static async ensureExtendedData(actor) {
         if (actor.system?._hudInitialized) return actor;
-        let targetDoc = null;
-        if (actor.token) {
-            targetDoc = actor.token;
-        } else if (actor.getActiveTokens) {
-            const tokens = actor.getActiveTokens();
-            if (tokens.length > 0) targetDoc = tokens[0].document;
-        }
-        if (!targetDoc) {
+
+        const tokenDoc = actor.token ?? actor.getActiveTokens?.()[0]?.document ?? null;
+        if (typeof tokenDoc?.hudDeriveExtendedData === "function") {
             try {
-                const tokenData = actor.prototypeToken.toObject();
-                tokenData.actorId = actor.id;
-                tokenData.actorLink = true;
-                targetDoc = new TokenDocument(tokenData, {
-                    parent: canvas?.scene || null,
-                });
-                if (!targetDoc.actor) targetDoc._actor = actor;
-            } catch (e) {
-                console.warn("RMU Export | Failed to create dummy token:", e);
-            }
-        }
-        if (targetDoc && typeof targetDoc.hudDeriveExtendedData === "function") {
-            try {
-                await targetDoc.hudDeriveExtendedData();
-                const finalActor = targetDoc.actor || actor;
-                finalActor._cachedDodge = targetDoc.dodgeOptions;
-                finalActor._cachedBlock = targetDoc.blockOptions;
+                await tokenDoc.hudDeriveExtendedData();
+                const finalActor = tokenDoc.actor || actor;
+                // The dodge and block option lists live on the token document, not the actor,
+                // so they are cached on the actor for the defences extractor.
+                finalActor._cachedDodge = tokenDoc.dodgeOptions;
+                finalActor._cachedBlock = tokenDoc.blockOptions;
                 return finalActor;
             } catch (e) {
                 console.warn("RMU Export | HUD derivation crashed:", e);
             }
         }
+
         try {
-            if (actor.prepareData) actor.prepareData();
+            actor.prepareData?.();
             return actor;
         } catch (e) {
+            console.warn("RMU Export | Data preparation failed:", e);
             return null;
         }
     }
@@ -86,9 +82,10 @@ export class DataExtractor {
             portraitData = await ExportHelpers.imageToBase64(targetActor.img);
         }
 
-        const rawObj = targetActor.toObject();
-        const cleanObj = ExportHelpers.cleanObject(rawObj);
-        const rawFoundryData = JSON.stringify(cleanObj);
+        // toObject() returns only the stored document data (no derived values), which is
+        // exactly what an import needs. Item ids must be kept: fighting style and ability
+        // items refer to their skill item by id, so stripping ids would break those links.
+        const rawFoundryData = ExportHelpers.toEmbeddedJSON(targetActor.toObject());
 
         return {
             options: {
@@ -130,8 +127,11 @@ export class DataExtractor {
 
             meta: {
                 timestamp: new Date().toLocaleString(),
+                systemId: game.system.id,
                 systemVersion: game.system.version,
-                moduleVersion: game.modules.get("rmu-character-sheet-exporter")?.version || "Unknown",
+                coreVersion: game.version,
+                capsuleFormat: CAPSULE_FORMAT,
+                moduleVersion: game.modules.get(MODULE_ID)?.version || ExportHelpers.i18n("RMU_EXPORT.Common.Unknown", "Unknown"),
             },
         };
     }

@@ -9,10 +9,7 @@ export function extractSpells(actor) {
             // Guard clause: Exclude the aggregate group to prevent duplicate entries
             if (typeGroup.listType === "All Known Spells") return;
 
-            let listType = typeGroup.listType;
-            if (game.i18n.has(`RMU.SpellListType.${listType}`)) {
-                listType = game.i18n.localize(`RMU.SpellListType.${listType}`);
-            }
+            const listType = ExportHelpers.localizeWithPrefix("RMU.SpellListType", typeGroup.listType);
 
             if (typeGroup.spellLists) {
                 typeGroup.spellLists.forEach((list) => {

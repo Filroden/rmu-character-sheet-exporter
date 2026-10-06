@@ -10,11 +10,7 @@ export function extractStats(actor) {
         const data = sourceBlock[key];
         if (!data) continue;
 
-        const systemKey = `rmu.stats.${key}`;
-        let label = game.i18n.localize(systemKey);
-        if (label === systemKey) {
-            label = ExportHelpers.i18n(`RMU_EXPORT.Stats.${key}`, key);
-        }
+        const label = ExportHelpers.i18n(`rmu.stats.${key}`, ExportHelpers.i18n(`RMU_EXPORT.Stats.${key}`, key));
 
         stats.push({
             label: label,

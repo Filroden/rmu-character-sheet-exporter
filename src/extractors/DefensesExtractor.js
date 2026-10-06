@@ -6,11 +6,12 @@ export function extractDefenses(actor) {
     const quDb = dbBlock.quicknessDB ?? 0;
     const armorDb = dbBlock.armorDB ?? 0;
     const otherDb = sys.defense?.other ?? 0;
-    const shieldBonus = sys.defenses?.shield?.bonus || 0;
     const baseTotal = quDb + armorDb + otherDb;
 
-    let dodgeOpts = dbBlock.dodgeOptions || (actor._cachedDodge ? actor._cachedDodge : []);
-    let blockOpts = dbBlock.blockOptions || (actor._cachedBlock ? actor._cachedBlock : []);
+    // The system's block option modifiers already include the bonus of the equipped shield,
+    // so no separate shield term is added to the Block DB totals.
+    const dodgeOpts = dbBlock.dodgeOptions || actor._cachedDodge || [];
+    const blockOpts = dbBlock.blockOptions || actor._cachedBlock || [];
 
     const getModifier = (opts, modeValue) => {
         if (!Array.isArray(opts)) return 0;
@@ -25,7 +26,7 @@ export function extractDefenses(actor) {
         const currentDodgeMod = getModifier(dodgeOpts, modeKey);
         const currentBlockMod = getModifier(blockOpts, modeKey);
         let totalDodge = baseTotal + currentDodgeMod;
-        let totalBlock = baseTotal + currentBlockMod + shieldBonus;
+        let totalBlock = baseTotal + currentBlockMod;
 
         if (modeKey !== "passive") {
             totalDodge += passiveBlockMod;
@@ -46,16 +47,11 @@ export function extractDefenses(actor) {
         const part = armorData[loc];
         if (!part) return { name: noneTxt, at: 1 };
 
-        let matName = part.piece?._base?.material || noneTxt;
-
-        if (part.piece?._base?.material) {
-            const rawMat = part.piece._base.material;
-            const cleanMat = rawMat.replaceAll(/\s+/g, "");
-
-            const armorKey = `RMU.ArmorTypes.${cleanMat}`;
-            if (game.i18n.has(armorKey)) {
-                matName = game.i18n.localize(armorKey);
-            }
+        const rawMat = part.piece?._base?.material;
+        let matName = noneTxt;
+        if (rawMat) {
+            // Armour type keys have no spaces (e.g. "Soft Leather" is RMU.ArmorTypes.SoftLeather).
+            matName = ExportHelpers.i18n(`RMU.ArmorTypes.${rawMat.replaceAll(/\s+/g, "")}`, rawMat);
         }
 
         return {

@@ -2,6 +2,8 @@ import js from "@eslint/js";
 import globals from "globals";
 
 export default [
+    // Build output is a copy of the source, so it is not linted twice.
+    { ignores: ["dist/**"] },
     js.configs.recommended,
     {
         files: ["**/*.js", "**/*.mjs"],

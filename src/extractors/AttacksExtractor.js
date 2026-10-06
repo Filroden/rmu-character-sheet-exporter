@@ -46,20 +46,11 @@ export function extractAttacks(actor) {
             attackName = game.i18n.localize(`RMU.Attacks.${a.attackName}`);
         }
 
-        // Refactored: Eliminated useless assignment and the 'else' block by setting the default first
-        let chartName = unknownTxt;
-        if (a.chart?.name) {
-            chartName = game.i18n.has(`RMU.AttackTables.${a.chart.name}`) ? game.i18n.localize(`RMU.AttackTables.${a.chart.name}`) : a.chart.name;
-        }
+        const chartName = ExportHelpers.localizeWithPrefix("RMU.AttackTables", a.chart?.name) || unknownTxt;
+        const specialization = ExportHelpers.localizeWithPrefix("RMU.Specializations", a.specialization) || unknownTxt;
 
-        // Refactored: Flattened the nested ternary by applying the default fallback immediately
-        let specialization = unknownTxt;
-        if (a.specialization) {
-            specialization = game.i18n.has(`RMU.Specializations.${a.specialization}`) ? game.i18n.localize(`RMU.Specializations.${a.specialization}`) : a.specialization;
-        }
-
-        let strength = a.itemStrength ?? a.weapon?.strength ?? "—";
-        let breakage_dmg = strength !== "—" && a.damagePenalty ? a.damagePenalty : "—";
+        const strength = a.itemStrength ?? a.weapon?.strength ?? "—";
+        const breakage_dmg = strength !== "—" && a.damagePenalty ? a.damagePenalty : "—";
 
         return {
             name: attackName,

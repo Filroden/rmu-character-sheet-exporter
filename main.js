@@ -2,84 +2,7 @@ import { DataExtractor } from "./src/DataExtractor.js";
 import { OutputGenerator } from "./src/OutputGenerator.js";
 import { ExportDialog } from "./src/ExportDialog.js";
 import { ImportHandler } from "./src/ImportHandler.js";
-
-const MODULE_ID = "rmu-character-sheet-exporter";
-
-// --- CONFIGURATION: VALID ACTOR TYPES ---
-// Only these types will show the Export/Import buttons.
-const VALID_ACTOR_TYPES = new Set(["Character", "Creature", "Loot"]);
-
-const RMU_EXPORT_CONFIG = {
-    layouts: {
-        standard: {
-            id: "standard",
-            label: "RMU_EXPORT.Layouts.Standard",
-            path: "modules/rmu-character-sheet-exporter/templates/layouts/standard_layout.hbs",
-        },
-        compact: {
-            id: "compact",
-            label: "RMU_EXPORT.Layouts.Compact",
-            path: "modules/rmu-character-sheet-exporter/templates/layouts/compact_layout.hbs",
-        },
-        extended: {
-            id: "extended",
-            label: "RMU_EXPORT.Layouts.Extended",
-            path: "modules/rmu-character-sheet-exporter/templates/layouts/extended_layout.hbs",
-        },
-        tournament: {
-            id: "tournament",
-            label: "RMU_EXPORT.Layouts.Tournament",
-            path: "modules/rmu-character-sheet-exporter/templates/layouts/tournament_layout.hbs",
-        },
-    },
-
-    themes: {
-        standard: {
-            id: "standard",
-            label: "RMU_EXPORT.Themes.Standard",
-            path: "modules/rmu-character-sheet-exporter/styles/themes/standard.css",
-        },
-        dark: {
-            id: "dark",
-            label: "RMU_EXPORT.Themes.DarkMode",
-            path: "modules/rmu-character-sheet-exporter/styles/themes/dark.css",
-        },
-        rulebook: {
-            id: "rulebook",
-            label: "RMU_EXPORT.Themes.Rulebook",
-            path: "modules/rmu-character-sheet-exporter/styles/themes/rulebook.css",
-        },
-        boba: {
-            id: "boba",
-            label: "RMU_EXPORT.Themes.Boba",
-            path: "modules/rmu-character-sheet-exporter/styles/themes/boba.css",
-        },
-        print: {
-            id: "print",
-            label: "RMU_EXPORT.Themes.PrintHighContrast",
-            path: "modules/rmu-character-sheet-exporter/styles/themes/print.css",
-        },
-    },
-
-    sections: {
-        header: { label: "RMU_EXPORT.Section.Header", default: true, validTypes: ["Character", "Creature", "Loot"] },
-        quick_info: { label: "RMU_EXPORT.Section.QuickInfo", default: true, validTypes: ["Character", "Creature"] },
-        movement: { label: "RMU_EXPORT.Section.Movement", default: true, validTypes: ["Character", "Creature"] },
-        stats: { label: "RMU_EXPORT.Section.Stats", default: true, validTypes: ["Character", "Creature"] },
-        portrait: { label: "RMU_EXPORT.Section.Portrait", default: true, validTypes: ["Character", "Creature", "Loot"] },
-        details: { label: "RMU_EXPORT.Section.Details", default: true, validTypes: ["Character", "Creature", "Loot"] },
-        biography: { label: "RMU_EXPORT.Section.Biography", default: false, validTypes: ["Character", "Creature", "Loot"] },
-        conditions: { label: "RMU_EXPORT.Section.Conditions", default: false, validTypes: ["Character", "Creature"] },
-        defenses: { label: "RMU_EXPORT.Section.Defenses", default: true, validTypes: ["Character", "Creature"] },
-        attacks: { label: "RMU_EXPORT.Section.Attacks", default: true, validTypes: ["Character", "Creature"] },
-        skills: { label: "RMU_EXPORT.Section.Skills", default: true, validTypes: ["Character", "Creature"] },
-        training_packages: { label: "RMU_EXPORT.Section.TrainingPackages", default: true, validTypes: ["Character"] },
-        fighting_styles: { label: "RMU_EXPORT.Section.FightingStyles", default: true, validTypes: ["Character"] },
-        spells: { label: "RMU_EXPORT.Section.SpellLists", default: true, validTypes: ["Character", "Creature"] },
-        inventory: { label: "RMU_EXPORT.Section.Inventory", default: true, validTypes: ["Character", "Creature", "Loot"] },
-        talents: { label: "RMU_EXPORT.Section.Talents", default: true, validTypes: ["Character", "Creature"] },
-    },
-};
+import { MODULE_ID, VALID_ACTOR_TYPES, buildSectionOptions, resolveLayoutPath, resolveThemePath } from "./src/ExportConfig.js";
 
 Hooks.once("init", () => {
     console.log(`${MODULE_ID} | Initializing RMU Character Sheet Export`);
@@ -154,7 +77,7 @@ async function startExportProcess(actor) {
             console.warn(`${MODULE_ID} | Data initialization failed completely.`);
         }
 
-        const result = await ExportDialog.wait(derivedActor || actor, RMU_EXPORT_CONFIG);
+        const result = await ExportDialog.wait(derivedActor || actor);
 
         if (result) {
             await handleExportSubmit(result, derivedActor || actor);
@@ -170,28 +93,13 @@ async function startExportProcess(actor) {
 }
 
 async function handleExportSubmit(formData, actor) {
-    const layoutId = formData.layout;
-    const themeId = formData.theme;
-    const sectionOptions = {};
-
-    // SCALABLE FILTERING: Force 'false' if the actor type isn't allowed for this section
-    Object.keys(RMU_EXPORT_CONFIG.sections).forEach((key) => {
-        const validTypes = RMU_EXPORT_CONFIG.sections[key].validTypes;
-        const isTypeValid = validTypes ? validTypes.includes(actor.type) : true;
-
-        sectionOptions[key] = isTypeValid ? formData[key] : false;
-    });
-
-    const skillFilter = formData.skillFilter || "ranked";
-    sectionOptions.showAllSkills = skillFilter === "all";
-
-    // DataExtractor receives pre-filtered options. It won't even try to fetch Stats for Loot.
+    // Sections that do not apply to this actor type are forced off, so no extractor runs for
+    // data the actor cannot have (e.g. stats on a Loot actor).
+    const sectionOptions = buildSectionOptions(actor.type, (key) => formData[key], formData.skillFilter);
     const cleanData = await DataExtractor.getCleanData(actor, sectionOptions);
 
-    const themePath = RMU_EXPORT_CONFIG.themes[themeId].path;
-    let rawLayoutPath = RMU_EXPORT_CONFIG.layouts[layoutId].path;
-    const typeSuffix = actor.type.toLowerCase();
-    const layoutPath = rawLayoutPath.replace("_layout.hbs", `_${typeSuffix}_layout.hbs`);
+    const layoutPath = resolveLayoutPath(formData.layout, actor.type);
+    const themePath = resolveThemePath(formData.theme);
 
     await OutputGenerator.download(cleanData, formData.format, actor.name, layoutPath, themePath);
 }
@@ -201,7 +109,8 @@ async function handleExportSubmit(formData, actor) {
 /* -------------------------------------------- */
 
 function getActorIdFromElement(li) {
-    const element = li instanceof jQuery ? li[0] : li;
+    // Foundry v13 can still pass a jQuery object to context menu callbacks; v14 passes an element.
+    const element = globalThis.jQuery && li instanceof globalThis.jQuery ? li[0] : li;
     return element.dataset?.entryId || element.dataset?.documentId;
 }
 

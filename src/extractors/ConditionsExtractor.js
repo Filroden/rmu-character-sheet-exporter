@@ -1,7 +1,12 @@
 import { ExportHelpers } from "../utils/ExportHelpers.js";
 
+// Stun penalty bands, in the order the system stores their remaining rounds.
+const STUN_LABELS = ["-25", "-50", "-75"];
+
 export function extractConditions(actor) {
     const sys = actor.system;
+    const injuryTxt = ExportHelpers.i18n("RMU_EXPORT.Conditions.Injury", "Injury");
+    const unknownTxt = ExportHelpers.i18n("RMU_EXPORT.Common.Unknown", "Unknown");
 
     // Priority 1: actor.appliedEffects (Foundry standard for ALL active + transferred effects)
     // Priority 2: sys._injuryBlock._effects (System specific fallback)
@@ -34,22 +39,22 @@ export function extractConditions(actor) {
         // 2. Categorize the effects
         if (rmuType === "injury") {
             let severity = effectSys.penalty ? `${effectSys.penalty}` : "";
-            if (effectSys.value && effectSys.effect === "Bleed") severity = `${effectSys.value}/rd`;
+            if (effectSys.value && effectSys.effect === "Bleed") {
+                severity = ExportHelpers.format("RMU_EXPORT.Units.PerRound", { value: effectSys.value }, `${effectSys.value}/rd`);
+            }
 
             conditions.injuries.push({
-                effect: effectSys.effect || "Injury",
-                location: effectSys.location?.locationLabel || "Unknown",
+                effect: effectSys.effect || injuryTxt,
+                location: effectSys.location?.locationLabel || unknownTxt,
                 severity: severity,
                 description: effectSys.description || "",
             });
         } else if (rmuType === "stun") {
             const roundsArr = effectSys.rounds || [];
             const stunDetails = [];
-            const labels = ["-25", "-50", "-75"];
-
-            for (let i = 2; i >= 0; i--) {
+            for (let i = STUN_LABELS.length - 1; i >= 0; i--) {
                 if (roundsArr[i] > 0) {
-                    stunDetails.push({ stunLabel: labels[i], stunRounds: roundsArr[i] });
+                    stunDetails.push({ stunLabel: STUN_LABELS[i], stunRounds: roundsArr[i] });
                 }
             }
             const totalRounds = roundsArr.reduce((a, b) => a + b, 0);
@@ -66,14 +71,14 @@ export function extractConditions(actor) {
 
             // Localize the summary label if it exists, otherwise fallback to the raw description
             if (effectSys.summary?.sub1Label) {
-                description = ExportHelpers.i18n(effectSys.summary.sub1Label);
+                description = ExportHelpers.i18n(effectSys.summary.sub1Label, effectSys.summary.sub1Label);
             } else if (effectSys.description) {
                 description = effectSys.description;
             }
 
             // If it's a generic Foundry effect with no RMU summary, try to extract the mod count
             if (bonus === "—" && e.changes?.length > 0) {
-                bonus = `${e.changes.length} Mods`;
+                bonus = ExportHelpers.format("RMU_EXPORT.Conditions.ModCount", { count: e.changes.length }, `${e.changes.length} Mods`);
             }
 
             // Prevent blank/corrupted entities from breaking the table
@@ -81,7 +86,7 @@ export function extractConditions(actor) {
                 conditions.activeEffects.push({
                     name: e.name,
                     bonus: bonus,
-                    duration: e.duration?.rounds ? `${e.duration.rounds} rds` : "—",
+                    duration: e.duration?.rounds ? ExportHelpers.format("RMU_EXPORT.Units.Rounds", { value: e.duration.rounds }, `${e.duration.rounds} rds`) : "—",
                     description: description,
                 });
             }

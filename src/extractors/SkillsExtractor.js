@@ -39,24 +39,10 @@ export function extractSkills(actor, options) {
         if (options.showAllSkills || s._totalRanks > 0 || s.favorite) {
             let finalBonus = s._bonus ?? s.bonus ?? 0;
 
-            let displayName = s.name;
-            const skillKey = `RMU.Skills.${s.name}`;
-            if (game.i18n.has(skillKey)) {
-                displayName = game.i18n.localize(skillKey);
-            }
-
-            let displaySpec = s.specialization || "";
-            if (displaySpec) {
-                const specKey = `RMU.Specializations.${displaySpec}`;
-                if (game.i18n.has(specKey)) {
-                    displaySpec = game.i18n.localize(specKey);
-                }
-            }
-
             grouped[rawCat].push({
                 sortName: s.name,
-                name: displayName,
-                specialisation: displaySpec,
+                name: ExportHelpers.localizeWithPrefix("RMU.Skills", s.name),
+                specialisation: ExportHelpers.localizeWithPrefix("RMU.Specializations", s.specialization),
                 ranks: s._totalRanks ?? 0,
                 bonus: ExportHelpers.formatBonus(finalBonus),
             });
@@ -67,15 +53,7 @@ export function extractSkills(actor, options) {
         .filter((key) => grouped[key].length > 0)
         .sort()
         .map((rawKey) => {
-            let displayCat = rawKey;
-            if (rawKey === "General") {
-                displayCat = generalTxt;
-            } else {
-                const catKey = `RMU.SkillCategory.${rawKey}`;
-                if (game.i18n.has(catKey)) {
-                    displayCat = game.i18n.localize(catKey);
-                }
-            }
+            const displayCat = rawKey === "General" ? generalTxt : ExportHelpers.localizeWithPrefix("RMU.SkillCategory", rawKey);
 
             const sortedList = grouped[rawKey].sort((a, b) => a.sortName.localeCompare(b.sortName));
 

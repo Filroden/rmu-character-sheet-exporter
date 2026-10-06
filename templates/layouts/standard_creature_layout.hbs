@@ -98,7 +98,7 @@
                         <div class="bio-portrait">
                             <img
                                 src="{{portrait_data}}"
-                                alt="Creature Portrait"
+                                alt="{{localize 'RMU_EXPORT.Section.Portrait'}}"
                             />
                         </div>
                     {{/if}}
@@ -106,7 +106,7 @@
 
                 {{! Column 2: Creature Details (Single Wide Column) }}
                 {{#if options.details}}
-                    <div class="bio-col" style="grid-column: span 2;">
+                    <div class="bio-col span-2">
                         <div class="header">{{localize
                                 "RMU_EXPORT.Section.Details"
                             }}</div>
@@ -142,9 +142,7 @@
                                 <span>{{localize
                                         "RMU_EXPORT.Details.SizeDesc"
                                     }}:</span>
-                                <span
-                                    style="text-align: right;"
-                                >{{details_data.size_description}}</span>
+                                <span class="text-right">{{details_data.size_description}}</span>
                             </div>
                         {{/if}}
 
@@ -153,9 +151,7 @@
                                 <span>{{localize
                                         "RMU_EXPORT.Details.ArmorDesc"
                                     }}:</span>
-                                <span
-                                    style="text-align: right;"
-                                >{{details_data.armor_description}}</span>
+                                <span class="text-right">{{details_data.armor_description}}</span>
                             </div>
                         {{/if}}
                     </div>

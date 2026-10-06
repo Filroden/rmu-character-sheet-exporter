@@ -1,3 +1,5 @@
+import { ExportHelpers } from "../utils/ExportHelpers.js";
+
 /**
  * Extracts Fighting Styles and their chosen abilities.
  *
@@ -55,18 +57,6 @@ const STATUS_LABEL_KEYS = Object.freeze({
 function toRankCount(value) {
     const num = Number.parseInt(value, 10);
     return Number.isFinite(num) && num > 0 ? num : 0;
-}
-
-/**
- * Localises a value using a system key prefix, falling back to the raw value.
- * @param {string} prefix - The system localisation prefix (e.g. "RMU.Skills").
- * @param {string} value - The raw value to localise.
- * @returns {string}
- */
-function localizeWithPrefix(prefix, value) {
-    if (!value) return "";
-    const key = `${prefix}.${value}`;
-    return game.i18n.has(key) ? game.i18n.localize(key) : value;
 }
 
 /* -------------------------------------------- */
@@ -287,9 +277,9 @@ function buildStyleEntry(skillId, group, actor, derivedSkills) {
     const rawName = group.style?.name || skillData.specialization || skillData.name || "";
 
     return {
-        name: localizeWithPrefix("RMU.Specializations", rawName),
-        skill: localizeWithPrefix("RMU.Skills", skillData.name),
-        category: localizeWithPrefix("RMU.SkillCategory", skillData.category),
+        name: ExportHelpers.localizeWithPrefix("RMU.Specializations", rawName),
+        skill: ExportHelpers.localizeWithPrefix("RMU.Skills", skillData.name),
+        category: ExportHelpers.localizeWithPrefix("RMU.SkillCategory", skillData.category),
         styleType: group.style?.system?.styleType ?? "",
         totalRanks,
         allocatedRanks,

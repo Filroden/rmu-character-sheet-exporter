@@ -1,38 +1,20 @@
 import { ExportHelpers } from "../utils/ExportHelpers.js";
 
 export function extractQuickInfo(actor) {
-    let bmr = 0;
     const sys = actor.system;
     const mode = sys.activeMovementName || "Running";
-    const moveData = sys._movementBlock || {};
-    const modeTable = moveData._table?.[mode];
-
-    if (modeTable?.paceRates) {
-        const walkEntry = modeTable.paceRates.find((p) => p.pace?.value === "Walk");
-        bmr = walkEntry?.perRound || 0;
-    }
+    const bmr = ExportHelpers.getWalkRate(sys._movementBlock?._table?.[mode]);
 
     const init = sys._totalInitiativeBonus || 0;
 
     const pEnc = sys._injuryBlock?._endurance?._bonusWithRacial ?? 0;
     const mEnc = sys._injuryBlock?._concentration?._bonusWithRacial ?? 0;
 
-    let modeLabel = mode;
-    const skillKey = `RMU.Skills.${mode}`;
-
-    if (game.i18n.has(skillKey)) {
-        modeLabel = game.i18n.localize(skillKey);
-    } else if (game.i18n.localize(mode) !== mode) {
-        modeLabel = game.i18n.localize(mode);
-    }
-
-    let bmrDisplay = `${bmr}'/rd`;
-    if (ExportHelpers.isMetric) {
-        bmrDisplay = `${ExportHelpers.toMetricMovement(bmr)}/rd`;
-    }
+    // The movement mode may be a skill name or, for some creatures, a full localisation key.
+    const modeLabel = ExportHelpers.safeLocalize(mode, "RMU.Skills");
 
     return {
-        bmr_value: bmrDisplay,
+        bmr_value: ExportHelpers.formatPerRound(bmr),
         bmr_mode: modeLabel,
         initiative: ExportHelpers.formatBonus(init),
         hits: {

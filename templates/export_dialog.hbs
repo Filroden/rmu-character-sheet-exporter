@@ -73,13 +73,13 @@
         </div>
     </aside>
 
-    {{! RIGHT COLUMN: PREVIEW (Unchanged) }}
+    {{! RIGHT COLUMN: PREVIEW }}
     <div class="preview-panel">
         <div class="preview-header">
             <span>{{localize "RMU_EXPORT.Dialog.Preview"}}</span>
-            <span id="preview-status" style="opacity: 0.5;"></span>
+            <span id="preview-status" class="status-message"></span>
         </div>
-        <iframe id="rmu-preview-frame" class="preview-frame" title="Export Preview"></iframe>
+        <iframe id="rmu-preview-frame" class="preview-frame" title="{{localize 'RMU_EXPORT.Dialog.Preview'}}"></iframe>
     </div>
 
 </div>

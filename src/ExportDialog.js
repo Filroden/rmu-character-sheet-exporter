@@ -1,18 +1,23 @@
 import { DataExtractor } from "./DataExtractor.js";
 import { OutputGenerator } from "./OutputGenerator.js";
+import { EXPORT_CONFIG, buildSectionOptions, isSectionValidForType, resolveLayoutPath, resolveThemePath } from "./ExportConfig.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
+// Delay before the preview refreshes after a change, so rapid toggling does not re-render the
+// sheet for every click.
+const PREVIEW_DEBOUNCE_MS = 500;
+
+// Checkbox values arrive from the browser's FormData as the string "on".
+const CHECKBOX_ON = "on";
+
 export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
-    constructor(actor, config, options = {}) {
+    constructor(actor, options = {}) {
         super(options);
         this.actor = actor;
-        this.config = config;
         this._resolve = null;
-        this._reject = null;
 
-        // Debounce the preview refresh to prevent lag on rapid changes
-        this._debouncedPreview = foundry.utils.debounce(this._refreshPreview.bind(this), 500);
+        this._debouncedPreview = foundry.utils.debounce(this._refreshPreview.bind(this), PREVIEW_DEBOUNCE_MS);
     }
 
     static get DEFAULT_OPTIONS() {
@@ -42,9 +47,14 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         };
     }
 
-    static async wait(actor, config) {
-        return new Promise((resolve, reject) => {
-            const app = new ExportDialog(actor, config, {
+    /**
+     * Opens the dialog and resolves with the submitted form data, or null if it is closed.
+     * @param {Actor} actor - The actor being exported.
+     * @returns {Promise<Object|null>}
+     */
+    static async wait(actor) {
+        return new Promise((resolve) => {
+            const app = new ExportDialog(actor, {
                 window: {
                     title: game.i18n.format("RMU_EXPORT.Dialog.Title", {
                         name: actor.name,
@@ -52,28 +62,23 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 },
             });
             app._resolve = resolve;
-            app._reject = reject;
             app.render(true);
         });
     }
 
-    async _prepareContext(options) {
-        // Prepare lists for the select dropdowns
-        const layouts = Object.values(this.config.layouts);
-        const themes = Object.values(this.config.themes);
-
+    async _prepareContext(_options) {
         const availableSections = {};
-        for (const [key, sectionConfig] of Object.entries(this.config.sections)) {
-            if (!sectionConfig.validTypes || sectionConfig.validTypes.includes(this.actor.type)) {
+        for (const [key, sectionConfig] of Object.entries(EXPORT_CONFIG.sections)) {
+            if (isSectionValidForType(sectionConfig, this.actor.type)) {
                 availableSections[key] = sectionConfig;
             }
         }
 
         return {
             actor: this.actor,
-            layouts: layouts,
-            themes: themes,
-            sections: availableSections, // <-- We use the filtered list here
+            layouts: Object.values(EXPORT_CONFIG.layouts),
+            themes: Object.values(EXPORT_CONFIG.themes),
+            sections: availableSections,
             defaultLayout: "standard",
             defaultTheme: "standard",
         };
@@ -83,84 +88,72 @@ export class ExportDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     /* Event Listeners & Logic                     */
     /* -------------------------------------------- */
 
+    /**
+     * Binds the change listener once. The application's root element survives re-renders
+     * (only its parts are replaced), so binding in _onRender would add a duplicate listener
+     * every time the dialog re-renders.
+     */
+    _onFirstRender(context, options) {
+        super._onFirstRender(context, options);
+        this.element.addEventListener("change", () => this._debouncedPreview());
+    }
+
     _onRender(context, options) {
         super._onRender(context, options);
-
-        const html = this.element;
-
-        // Listen for ANY input change (selects or checkboxes)
-        html.addEventListener("change", (event) => {
-            this._debouncedPreview();
-        });
-
         this._refreshPreview();
     }
 
-    async _refreshPreview() {
-        // Natively locate the form, whether it is the root element or a child
-        const form = this.element.tagName === "FORM" ? this.element : this.element.querySelector("form");
-        if (!form) return;
-
-        const formData = new FormData(form);
-        const dataObj = Object.fromEntries(formData.entries());
-
-        const layoutId = dataObj.layout;
-        const themeId = dataObj.theme;
-
+    /**
+     * Shows a short status message above the preview (an empty string clears it).
+     * @param {string} message - The message to show.
+     */
+    _setStatus(message) {
         const status = this.element.querySelector(".status-message");
+        if (status) status.innerText = message;
+    }
+
+    async _refreshPreview() {
+        // Locate the form, whether it is the root element or a child.
+        const form = this.element.tagName === "FORM" ? this.element : this.element.querySelector("form");
         const frame = this.element.querySelector("iframe.preview-frame");
+        if (!form || !frame) return;
 
-        if (!frame) return;
+        const formValues = Object.fromEntries(new FormData(form).entries());
 
-        if (status) status.innerText = "Generating preview...";
-
-        const sectionOptions = {};
-        Object.keys(this.config.sections).forEach((key) => {
-            const validTypes = this.config.sections[key].validTypes;
-            const isTypeValid = validTypes ? validTypes.includes(this.actor.type) : true;
-            sectionOptions[key] = isTypeValid ? dataObj[key] === "on" : false;
-        });
-
-        const skillFilter = dataObj.skillFilter || "ranked";
-        sectionOptions.showAllSkills = skillFilter === "all";
-
-        const cleanData = await DataExtractor.getCleanData(this.actor, sectionOptions);
-
-        let layoutPath = this.config?.layouts?.[layoutId]?.path;
-        const themePath = this.config?.themes?.[themeId]?.path;
-
+        const layoutPath = resolveLayoutPath(formValues.layout, this.actor.type);
+        const themePath = resolveThemePath(formValues.theme);
         if (!layoutPath || !themePath) {
             console.warn("RMU Export | Missing layout or theme path.");
-            if (status) status.innerText = "Error: Invalid selection";
+            this._setStatus(game.i18n.localize("RMU_EXPORT.Dialog.InvalidSelection"));
             return;
         }
 
-        const typeSuffix = this.actor.type.toLowerCase();
-        if (layoutPath.includes("_layout.hbs")) {
-            layoutPath = layoutPath.replace("_layout.hbs", `_${typeSuffix}_layout.hbs`);
-        }
+        this._setStatus(game.i18n.localize("RMU_EXPORT.Dialog.GeneratingPreview"));
 
+        const sectionOptions = buildSectionOptions(this.actor.type, (key) => formValues[key] === CHECKBOX_ON, formValues.skillFilter);
+        const cleanData = await DataExtractor.getCleanData(this.actor, sectionOptions);
         const htmlContent = await OutputGenerator.generateHTML(cleanData, layoutPath, themePath);
 
-        // --- SRCDOC IMPLEMENTATION ---
-        // Binds the HTML directly to the iframe attribute so it survives V14 reparenting
+        // Binding the HTML to the srcdoc attribute (rather than writing into the frame's
+        // document) keeps the preview intact when Foundry v14 re-parents a popped-out window.
         frame.srcdoc = htmlContent;
 
-        if (status) status.innerText = "";
+        this._setStatus("");
     }
 
     /* -------------------------------------------- */
     /* Form Handling                               */
     /* -------------------------------------------- */
 
-    static async formHandler(event, form, formData) {
-        if (this._resolve) {
-            this._resolve(formData.object);
-        }
+    static async formHandler(_event, _form, formData) {
+        this._resolve?.(formData.object);
+        this._resolve = null;
     }
 
     _onClose(options) {
         super._onClose(options);
-        if (this._resolve) this._resolve(null);
+        // Resolves with null only if the form was not submitted first.
+        this._resolve?.(null);
+        this._resolve = null;
     }
 }

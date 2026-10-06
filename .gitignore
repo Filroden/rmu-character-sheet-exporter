@@ -3,4 +3,6 @@
 /dist
 /unpacked
 
+/design
+
 *.iml

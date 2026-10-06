@@ -88,7 +88,7 @@
             {{#if options.portrait}}
                 {{#if portrait_data}}
                     <div class="compact-portrait">
-                        <img src="{{portrait_data}}" alt="Portrait" />
+                        <img src="{{portrait_data}}" alt="{{localize 'RMU_EXPORT.Section.Portrait'}}" />
                     </div>
                 {{/if}}
             {{/if}}
@@ -127,7 +127,7 @@
     {{#if options.biography}}
         {{#if biography_data.text}}
             <div class="section-title">{{localize "RMU_EXPORT.Bio.Biography"}}</div>
-            <div class="compact-row" style="margin-top:5px; font-size: 0.9em; font-style:italic;">
+            <div class="compact-row compact-bio-note">
                 {{{biography_data.text}}}
             </div>
         {{/if}}
@@ -281,7 +281,7 @@
         <div class="compact-list-flow">
             {{#each inventory_data.items}}
                 <span>{{name}}
-                    <span style="opacity: 0.7;">(x{{qty}})</span></span>{{#unless @last}}, {{/unless}}
+                    <span class="qty-note">(x{{qty}})</span></span>{{#unless @last}}, {{/unless}}
             {{/each}}
         </div>
     {{/if}}

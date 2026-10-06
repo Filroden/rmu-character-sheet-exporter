@@ -1,3 +1,5 @@
+import { ExportHelpers } from "../utils/ExportHelpers.js";
+
 /**
  * Extracts the Training Packages owned by an actor.
  *
@@ -12,18 +14,6 @@ const TRAINING_PACKAGE_TYPE = "training-package";
 const SKILL_GRANT_SEPARATOR = "|";
 
 /**
- * Localises a value using a system key prefix, falling back to the raw value.
- * @param {string} prefix - The system localisation prefix (e.g. "RMU.Skills").
- * @param {string} value - The raw value to localise.
- * @returns {string} The localised value, or the raw value if no key exists.
- */
-function localizeWithPrefix(prefix, value) {
-    if (!value) return "";
-    const key = `${prefix}.${value}`;
-    return game.i18n.has(key) ? game.i18n.localize(key) : value;
-}
-
-/**
  * Converts the stored skill grant choice into a display label that matches the format used
  * in the Skills section ("Skill: Specialisation").
  * The category is deliberately omitted because the skill name is already unambiguous on a sheet.
@@ -34,8 +24,8 @@ function formatSkillGrant(choice) {
     if (!choice || typeof choice !== "string") return "";
 
     const [, skill = "", specialization = ""] = choice.split(SKILL_GRANT_SEPARATOR);
-    const skillLabel = localizeWithPrefix("RMU.Skills", skill);
-    const specLabel = localizeWithPrefix("RMU.Specializations", specialization);
+    const skillLabel = ExportHelpers.localizeWithPrefix("RMU.Skills", skill);
+    const specLabel = ExportHelpers.localizeWithPrefix("RMU.Specializations", specialization);
 
     if (!specLabel) return skillLabel;
     if (!skillLabel) return specLabel;
