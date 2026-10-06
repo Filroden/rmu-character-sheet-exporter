@@ -113,7 +113,8 @@ export class OutputGenerator {
             // 2. Generate the HTML String
             const fullHtml = await this.generateHTML(data, layoutPath, themePath);
 
-            // 3. Save HTML using Foundry's helper (Fixes Blob/OS warning)
+            // 3. Save HTML using Foundry's helper, which avoids the browser and operating system
+            // warnings that a manually created Blob download can trigger
             foundry.utils.saveDataToFile(fullHtml, "text/html", `${filename}.html`);
         }
     }

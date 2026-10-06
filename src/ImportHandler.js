@@ -233,7 +233,7 @@ export class ImportHandler {
      * recursive: false. That matters for two reasons:
      *  - The actor is never left without items part-way through. The RMU system cannot prepare
      *    a character that has no race item, so deleting the items first and recreating them
-     *    afterwards made the system's data preparation throw on every intermediate step.
+     *    afterwards would make the system's data preparation throw at every intermediate step.
      *  - Embedded items are written as stored data rather than created one by one, so the
      *    system's item creation hooks do not run. Those hooks are meant for players adding
      *    items by hand (for example, the system refuses a fighting style item on its own

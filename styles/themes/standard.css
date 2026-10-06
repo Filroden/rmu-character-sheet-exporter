@@ -374,7 +374,7 @@
 .inv-wgt {
     width: 60px;
     text-align: right;
-    border-right: 1px solid var(--rmu-cse-border-light); /* Added separator */
+    border-right: 1px solid var(--rmu-cse-border-light); /* Separates the weight from the cost */
     margin-right: 5px;
     padding-right: 5px;
 }

@@ -3,9 +3,9 @@
    Structural rules shared by every export theme (column widths, spacing
    and write-in rows). The output generator places this file before the
    chosen theme, so a theme can override any rule here.
-   Rules that replace an older inline style use a compound selector
-   (e.g. ".group-wrapper.inline-gap") so they keep winning over the
-   theme's single-class rules, as the inline style did.
+   Some rules use a compound selector (e.g. ".group-wrapper.inline-gap")
+   so that they take precedence over a theme's single-class rule for the
+   same element (for example, a theme's own .group-wrapper margin).
 =================================================================== */
 
 /* --- TABLE COLUMN WIDTHS --- */
